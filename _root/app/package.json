@@ -1,0 +1,32 @@
+{
+  "name": "socket.io-redis-appsample",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "body-parser": "^1.17.1",
+    "express": "^4.15.2",
+    "jade": "^1.11.0",
+    "socket.io": "^1.7.3",
+    "socket.io-redis": "^4.0.0",
+    "jsonwebtoken": "^8.5.1",
+    "jwk-to-pem": "~2.0.4",
+    "query-string": "^6.13.1",
+    "yaml-js": "^0.2.3",
+    "moment-timezone": "^0.5.31",
+    "node-fetch": "^2.6.0",
+    "path": "^0.12.7",
+    "aws-sdk": "^2.789.0"
+  },
+  "description": "Chat based on socket.io.",
+  "main": "app.js",
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "author": "Abdrea Tarquini <tarquiniandreagm@gmail.com>",
+  "license": "MIT"
+}

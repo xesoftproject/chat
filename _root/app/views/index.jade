@@ -1,0 +1,14 @@
+extends layout
+
+block content
+  h3 Broadcast to room (room id taken from jwt)
+  p
+    input#message(type='text', placeholder='your message')
+    button#roomID submit message
+  div#message-room
+    ul
+
+
+  script(src='https://code.jquery.com/jquery-1.10.1.min.js')
+  script(src='/socket.io/socket.io.js')
+  script(src='/javascripts/index.js')
