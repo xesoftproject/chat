@@ -1,7 +1,22 @@
 extends layout
 
 block content
-  h3 Broadcast to room (room id taken from jwt)
+
+  textarea#transcript(placeholder="Press Start and speak into your mic" rows="5" readonly="readonly")
+
+  div(class="row")
+    div(class="col")
+      button#start-button(class="button-xl" title="Start Transcription")
+        i(class="fa fa-microphone")
+          span Start
+      button#stop-button(class="button-xl" title="Stop Transcription" disabled="true")
+        i(class="fa fa-stop-circle")
+          span Stop
+      button#reset-button(class="button-xl button-secondary" title="Clear Transcript")
+        span Clear Transcript
+
+
+  h3 Broadcast to room (TODO: retrieve the room from? the same for usernames.)
   p
     input#message(type='text', placeholder='your message')
     button#roomID submit message
@@ -12,3 +27,4 @@ block content
   script(src='https://code.jquery.com/jquery-1.10.1.min.js')
   script(src='/socket.io/socket.io.js')
   script(src='/javascripts/index.js')
+  script(src='/javascripts/dist/main.js')

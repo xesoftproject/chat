@@ -19,7 +19,7 @@ class DynamoManager {
         this.AWS = require("aws-sdk");
 
         // Set the region
-        this.AWS.config.update({region: region});
+        this.AWS.config.update({region: 'eu-west-1', accessKeyId: process.env.ACCESS_KEY_ID, secretAccessKey: process.env.SECRET_ACCESS_KEY});
 
         // Create the DynamoDB service object
         this.ddb = new this.AWS.DynamoDB({apiVersion: '2012-08-10'});

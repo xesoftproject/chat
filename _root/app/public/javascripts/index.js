@@ -2,13 +2,13 @@
     console.log("index started")
     var roomID = '666'; //from jwt
     var username = 'theKiller'; //choose at login stage by the user
-    var socket = io(document.location.origin + '/xesoft');
+    var socket = io(document.location.origin + '/xesoft_chat');
     console.log(`document.location.origin: ${document.location.origin}`)
     var start = new Date();
-    //jwt retrieved from cognito
-    var jwtStr = 'eyJraWQiOiJaMlh6enRJdFo4XC9RYU5YXC8zUEs2MmxzRE1oaGRrOUZCeUsrYll1QTZwTUE9IiwiYWxnIjoiUlMyNTYifQ.eyJzdWIiOiJhNGE5YTg2NC00MDU0LTRlNTYtOTgyYS00MTE0NzI3MjQzMTMiLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiY3VzdG9tOmV2ZW50SWQiOiIxNDgiLCJpc3MiOiJodHRwczpcL1wvY29nbml0by1pZHAuZXUtd2VzdC0xLmFtYXpvbmF3cy5jb21cL2V1LXdlc3QtMV9TOFVYU3lGTEkiLCJjb2duaXRvOnVzZXJuYW1lIjoiY2luZW1hMDAyOTgzIiwiY3VzdG9tOmluc3RhbmNlSWQiOiJ2aXJ0dWFsY2luZW1hIiwiY3VzdG9tOmV2ZW50TmFtZSI6ImRhcmlvIiwiY3VzdG9tOmJvdW5kYXJ5SWQiOiJOdW92byBUZXN0IiwiYXVkIjoiNWE2ZWUyaG1jdWMycTkzZGZkZW82bGc2c2QiLCJldmVudF9pZCI6ImMzY2NkOGU5LWFlOWYtNDlhNy04ZDk5LTg5NTZmNjRkNDQ0NyIsInRva2VuX3VzZSI6ImlkIiwiYXV0aF90aW1lIjoxNjA1ODU5NDY1LCJuYW1lIjoiY2luZW1hMDAyOTgzIiwiZXhwIjoxNjA1ODYzMDY1LCJpYXQiOjE2MDU4NTk0NjUsImVtYWlsIjoidGVzdGNvZ25pdG9AeW9wbWFpbC5jb20ifQ.qXbFi4f9T3SOSdcb6KK6r0SaYn-v9ZPhGINLlFodqruDBFFBDOHjICY4OxGSE9FxRufN6nuKam_GPJpZZlwK-c_JamGQtHs_ZD3j6TPit71wb5KERoXfXMkEajmQAe0fJlYNdA_3wOfoYYIcpKmvDqCSuvUMb9mybwQfsbMYFXjhQuRa3vKPeiA2CkbF7HotTPBobkPaeuP0hRzvnQW56PvTcf5imo2w6_cc5TU7YWx8jK_l667oyldHqI0eDn_ZDW5eG1CfJ-pFWflo921EX9Ue1X_ND1Mx57DHRw7kfR9oCuUqAE2Oy1oIJh_iSTtEqPhXvdHwopPyAfSCVKvJjw';
+    var jwtStr = 'eyJraWQiOiJucmNod0ZQNzZaNXdJMzJrbXVwOW80UHozaHQxbit0OXlpMER3RUhWWXhZPSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiIzOGMyNTEyOC1jNzFkLTQ2NWItYjFiMi1jMjMxYTExMmQ0M2MiLCJhdWQiOiI2dmxpZ3RxdW84OGZndWo3ZTVkc3I2bWxtaiIsImV2ZW50X2lkIjoiMmI1YzlhNzYtZTcwOC00MWYwLWE4Y2ItNDFhYWViM2JhMzU2IiwidG9rZW5fdXNlIjoiaWQiLCJhdXRoX3RpbWUiOjE2MTAyOTg5MjQsInByb2ZpbGUiOiJnaW9jYXRvcmUiLCJpc3MiOiJodHRwczpcL1wvY29nbml0by1pZHAuZXUtd2VzdC0xLmFtYXpvbmF3cy5jb21cL2V1LXdlc3QtMV9CT3I2SWFCeEMiLCJuaWNrbmFtZSI6ImtpbGxlciIsImNvZ25pdG86dXNlcm5hbWUiOiJkYXJpby5icmFtYmlsbGFAZmluY29uc2dyb3VwLmNvbSIsImV4cCI6MTYxMDMwMjUyNCwiaWF0IjoxNjEwMjk4OTI0LCJlbWFpbCI6ImRhcmlvLmJyYW1iaWxsYUBmaW5jb25zZ3JvdXAuY29tIn0.R5kuIh2yonpkliUnnmR5xsqM7dqoyPFVRYeMX2NvWB-qtkM4yHt2dnkMxAJu6J7eLx4-AuY_yF0qqjsAqsakmsBJnIdV8Vq0bZOAxjmaPqUVT9pWwnwf4pZbklKcQQn3hPUL2Vri9n1XAXJwG5IIhkKhbGD5LBGXigXQUfQj0KnxptvFAoZgN40cnHiEdSWWi7pxqZYJLnKTWv_EjS0_WI8gneGlFEbjTS0sTOC60m8fktNupMbAtLsnffh3FpmdV2nRNLsIpJm-fE8ICsshHSNz3toEXxHllKApFU5n4goCaNFrL48G72njowqs2kiCo8qeOtFBwz3dU_0xpuIQIQ';
 
     socket.on('connect', function () {
+        console.log("connecting")
         var index = socket.io.engine.upgrade ? 1 : 0;
         console.log('Connection established in ' + (new Date() - start) + 'msec. ' +
             'SocketID: ' + socket.id + '. ' +
