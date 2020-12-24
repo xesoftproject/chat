@@ -1,13 +1,28 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const redis = require('socket.io-redis');
 const path = require('path');
 const lgg = require("./custom-logger");
 const jwtValidator = require("./jwtValidator");
 const dynamo = require("./dynamo");
 const ping = require("./ping");
 const configuration = require("./configuration");
+
+
+var fs = require('fs');
+// var http = require('http');
+var https = require('https');
+var privateKey  = fs.readFileSync('/etc/letsencrypt/live/www.xesoft.ml/privkey.pem', 'utf8');
+var certificate = fs.readFileSync('/etc/letsencrypt/live/www.xesoft.ml/cert.pem', 'utf8');
+var credentials = {key: privateKey, cert: certificate};
+
+//TODO fa digerire ad app le credentials
 const app = module.exports = express();
+// your express configuration here
+// var httpServer = http.createServer(app);
+var httpsServer = https.createServer(credentials, app);
+// httpServer.listen(3000);
+httpsServer.listen(3000);
+
 const logger = new lgg({
     level: 'debug',
     common: [
@@ -15,7 +30,7 @@ const logger = new lgg({
     ]
 });
 const TIMEOUT_5_MINUTI = 5 * 60 * 1000
-app.set('port', process.env.PORT || 3000);
+app.set('port', process.env.PORT || 3001);
 const server = app.listen(app.get('port'), () => {
     logger.info('Chat listening on port ' + app.get('port'));
 });
@@ -82,14 +97,10 @@ const reloadConfigInterval = setInterval(async function () {
 
         socket.on('room-manager', (data) => {
             const jwtToken = data.jwt;
-            const roomId = data.room;
-            const msgType = data.msgType;
-            logger.info(`room-manager room id: ${roomId}, socket id: ${socket.id}, nickname: ${data.nickname}, msg type: ${msgType}`);
+            const roomId = "666"; //TODO
+            logger.info(`room-manager room id: ${roomId}, socket id: ${socket.id}, nickname: ${data.nickname}`);
 
             try {
-                if (msgType != "chat") {
-                    throw("INVALID Message type \"" + msgType + "\"");
-                }
 
                 if (data.message.length > config.chatMaxLengthMsg) {
                     throw("Exceeded the maximum length of the message (" + config.chatMaxLengthMsg + " characters)");
@@ -101,14 +112,12 @@ const reloadConfigInterval = setInterval(async function () {
                 const expDate = creationDate + 1000 * 60 * 60 * config.chatTTLInH
 
                 var params = {
-                    TableName: config.awsDynamoEnv + "-" + config.awsDynamoChatHistoryTableName,
+                    TableName: config.awsDynamoChatHistoryTableName,
                     Item: {
                         "creationDate": {S: "" + creationDate},
                         "expDate": {S: "" + expDate},
                         "msg": {S: data.message},
                         "msgId": {S: creationDate + "-" + decodedJwt.payload['cognito:username']},
-                        "msgType": {S: msgType},
-                        "ownerId": {S: "decodedJwt.payload.ownerId"},
                         "roomId": {S: roomId},
                         "sender": {S: decodedJwt.payload['cognito:username']},
                         "senderNickname": {S: data.nickname}
@@ -125,9 +134,7 @@ const reloadConfigInterval = setInterval(async function () {
         socket.on('error', (reason) => {
             logger.error(reason);
         });
-
     });
-
 })
 ();
 
@@ -138,9 +145,10 @@ function validateJWT(jwtToken, awsUserPoolId, awsServiceRegion, awsJwks, roomId)
         throw("JWT provided NOT valid.");
     }
     var decodedJwt = validation[1];
-    if (roomId != decodedJwt.payload['custom:eventId']) {
-        throw("Room requested does not match jwt custom:eventId");
-    }
+    //TODO check sulla room ma non tramite jwt
+    // if (roomId != decodedJwt.payload['custom:eventId']) {
+    //     throw("Room requested does not match jwt custom:eventId");
+    // }
     return decodedJwt;
 }
 
@@ -150,8 +158,6 @@ function initializeViewEngine() {
     app.set('views', path.join(__dirname, 'views'));
     app.set('view engine', 'jade');
     app.use(bodyParser.json());
-
-
     app.use(bodyParser.urlencoded({
         extended: false
     }));
