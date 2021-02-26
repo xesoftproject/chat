@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+
+    <!-- Javascript SDKs-->
+
+
+    <style>
+        .key {
+            font-weight: bold;
+            color: darkblue;
+        }
+    </style>
+
+    <link rel="stylesheet" href="/stylesheets/style.css">
+</head>
+<body>
+
+<textarea id="transcript" placeholder="Press Start and speak into your mic" rows="5" readonly="readonly"></textarea>
+<div class="row">
+    <div class="col">
+        <button id="start-button" title="Start Transcription" class="button-xl"><i class="fa fa-microphone"><span>Start</span></i></button>
+        <button id="stop-button" title="Stop Transcription" disabled="true" class="button-xl"><i class="fa fa-stop-circle"><span>Stop</span></i></button>
+        <button id="reset-button" title="Clear Transcript" class="button-xl button-secondary"><span>Clear Transcript</span></button>
+    </div>
+</div>
+<h3>Broadcast to room (TODO: retrieve the room from? the same for usernames.)</h3>
+<p><input id="message" type="text" placeholder="your message">
+    <button id="roomID">submit message</button>
+</p>
+<div id="message-room">
+    <ul></ul>
+</div>
+
+<form>
+    <h1>Please sign in</h1>
+
+    <input type="text" id="inputUsername" placeholder="Email address" name="username" value="" required autofocus>
+    <input type="password" id="inputPassword" placeholder="Password" name="password" value="" required>
+    <button type="button" onclick="signInButton()">Sign in</button>
+    <br><br>
+    <button type="button" onclick="resetPassword()">Reset Password</button>
+    <br><br>
+    <button type="button" onclick="refreshToken()">Refresh</button>
+    <br><br>
+    <h4>Access Token - Last chars: <span id="tokenLast"></span></h4>
+    <div id="divAccessTokenJwt" style="width: 1024px; overflow-x: scroll; border: 1px solid black;"></div>
+    <div id="divAccessTokenData" style="width: 1024px; overflow-x: scroll; border: 1px solid black;"></div>
+
+    <h4>ID Token</h4>
+    <div id="divIdTokenJwt" style="width: 1024px; overflow-x: scroll; border: 1px solid black;"></div>
+    <div id="divIdTokenData" style="width: 1024px; overflow-x: scroll; border: 1px solid black;"></div>
+
+    <h4>Refresh Token</h4>
+    <div id="divRefreshTokenJwt" style="width: 1024px; overflow-x: scroll; border: 1px solid black;"></div>
+</form>
+
+<script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+<script src="javascripts/lib/amazon-cognito-identity.min.js"></script>
+<script src="javascripts/lib/config.js"></script>
+<!--    <script src="https://code.jquery.com/jquery-1.10.1.min.js"></script>-->
+<script src="/socket.io/socket.io.js"></script>
+<script src="/javascripts/index.js"></script>
+<script src="/javascripts/dist/main.js"></script>
+<script>
+
+    $(document).ready(function () {
+        var poolData = {
+            UserPoolId: "eu-west-1_BOr6IaBxC", // Your user pool id here
+            ClientId: "6vligtquo88fguj7e5dsr6mlmj", // Your client id here
+        };
+
+        var userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
+
+        var cognitoUser = userPool.getCurrentUser();
+
+        if (cognitoUser == null) {
+            console.log("user not found");
+            return;
+        }
+
+        cognitoUser.getSession(function (err, session) {
+            loginOK(session);
+        });
+
+    });
+
+    function refreshToken() {
+        var poolData = {
+            UserPoolId: _config.cognito.userPoolId, // Your user pool id here
+            ClientId: _config.cognito.clientId, // Your client id here
+        };
+
+        var userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
+
+        var cognitoUser = userPool.getCurrentUser();
+
+        if (cognitoUser == null) {
+            console.log("user not found");
+            return;
+        }
+
+        cognitoUser.getSession(function (err, session) {
+            if (session) {
+                var refresh_token = session.getRefreshToken();
+
+                cognitoUser.refreshSession(refresh_token, (err, newSession) => {
+                    console.log("err", err);
+                    loginOK(newSession)
+                });
+            } else {
+                alert("session not found");
+                return;
+            }
+        });
+
+
+    }
+
+    function resetPassword() {
+        var poolData = {
+            UserPoolId: _config.cognito.userPoolId, // Your user pool id here
+            ClientId: _config.cognito.clientId, // Your client id here
+        };
+
+        var userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
+
+        var userData = {
+            Username: document.getElementById("inputUsername").value,
+            Pool: userPool,
+        };
+
+        var cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
+
+        /*
+        cognitoUser.forgotPassword({
+            onSuccess: function (result) {
+                alert("forgotPassword onSuccess");
+                console.log("forgotPassword onSuccess",result);
+                loginOK(result);
+            },
+            onFailure: function(err) {
+                alert("forgotPassword onFailure" + JSON.stringify(err));
+                console.log("forgotPassword onFailure",err);
+                loginKO(err);
+            },
+            inputVerificationCode() {
+                var verificationCode = prompt('Please input verification code ' ,'');
+                var newPassword = prompt('Enter new password ' ,'');
+                cognitoUser.confirmPassword(verificationCode, newPassword, this);
+            }
+        });
+        */
+
+        cognitoUser.forgotPassword({
+            onSuccess: function (data) {
+                // successfully initiated reset password request
+                console.log('CodeDeliveryData from forgotPassword: ' + data);
+            },
+            onFailure: function (err) {
+                alert(err.message || JSON.stringify(err));
+            },
+            //Optional automatic callback
+            inputVerificationCode: function (data) {
+                console.log('Code sent to: ' + JSON.stringify(data));
+                var verificationCode = prompt('Please input verification code ', '');
+                var newPassword = prompt('Enter new password ', '');
+                cognitoUser.confirmPassword(verificationCode, newPassword, {
+                    onSuccess() {
+                        console.log('Password confirmed!');
+                    },
+                    onFailure(err) {
+                        console.log('Password not confirmed!');
+                    },
+                });
+            },
+        });
+    }
+
+    function signInButton() {
+
+        var authenticationData = {
+            Username: document.getElementById("inputUsername").value,
+            Password: document.getElementById("inputPassword").value,
+        };
+
+        var authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails(authenticationData);
+
+        var poolData = {
+            UserPoolId: "eu-west-1_BOr6IaBxC", // Your user pool id here
+            ClientId: "6vligtquo88fguj7e5dsr6mlmj", // Your client id here
+        };
+
+        var userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
+
+        console.log('userpool: ' + JSON.stringify(userPool))
+
+        var userData = {
+            Username: document.getElementById("inputUsername").value,
+            Pool: userPool,
+        };
+
+        var cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
+
+        cognitoUser.authenticateUser(authenticationDetails, {
+            onSuccess: function (result) {
+                alert("authenticateUser onSuccess");
+                console.log("authenticateUser onSuccess", result);
+                loginOK(result);
+                localStorage.setItem("xejwt", result.idToken.jwtToken);
+            },
+
+            onFailure: function (err) {
+                alert("authenticateUser onFailure" + JSON.stringify(err));
+                console.log("authenticateUser onFailure", err);
+                loginKO(err);
+            },
+
+            newPasswordRequired: function (userAttributes, requiredAttributes) {
+                var newPassword = prompt('Enter new password ', '');
+                console.log("newPasswordRequired", userAttributes, requiredAttributes);
+                cognitoUser.completeNewPasswordChallenge(newPassword, null, this)
+
+            }
+        });
+    }
+
+    function loginOK(result) {
+        $("#divAccessTokenJwt").html(result.accessToken.jwtToken).fadeOut("500", function () {
+            $(this).fadeIn("500")
+        });
+        $("#divIdTokenJwt").html(result.idToken.jwtToken).fadeOut("500", function () {
+            $(this).fadeIn("500")
+        });
+        $("#divRefreshTokenJwt").html(result.refreshToken.token).fadeOut("500", function () {
+            $(this).fadeIn("500")
+        });
+        $("#divAccessTokenData").html(syntaxHighlight(result.accessToken.payload)).fadeOut("500", function () {
+            $(this).fadeIn("500")
+        });
+        $("#divIdTokenData").html(syntaxHighlight(result.idToken.payload)).fadeOut("500", function () {
+            $(this).fadeIn("500")
+        });
+        $("#tokenLast").html(result.accessToken.jwtToken.substr(result.accessToken.jwtToken.length - 5)).fadeOut("500", function () {
+            $(this).fadeIn("500")
+        });
+    }
+
+    function loginKO(result) {
+        $("#divAccessTokenJwt").html("").fadeOut("500", function () {
+            $(this).fadeIn("500")
+        });
+        $("#divIdTokenJwt").html("").fadeOut("500", function () {
+            $(this).fadeIn("500")
+        });
+        $("#divRefreshTokenJwt").html("").fadeOut("500", function () {
+            $(this).fadeIn("500")
+        });
+        $("#divAccessTokenData").html("").fadeOut("500", function () {
+            $(this).fadeIn("500")
+        });
+        $("#divIdTokenData").html("").fadeOut("500", function () {
+            $(this).fadeIn("500")
+        });
+    }
+
+    function syntaxHighlight(json) {
+        if (typeof json != 'string') {
+            json = JSON.stringify(json, undefined, 2);
+        }
+        json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g, "<br>");
+        return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+            var cls = 'number';
+            if (/^"/.test(match)) {
+                if (/:$/.test(match)) {
+                    cls = 'key';
+                } else {
+                    cls = 'string';
+                }
+            } else if (/true|false/.test(match)) {
+                cls = 'boolean';
+            } else if (/null/.test(match)) {
+                cls = 'null';
+            }
+            return '<span class="' + cls + '">' + match + '</span>';
+        });
+    }
+
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+

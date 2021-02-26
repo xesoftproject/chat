@@ -6,23 +6,7 @@ const jwtValidator = require("./jwtValidator");
 const dynamo = require("./dynamo");
 const ping = require("./ping");
 const configuration = require("./configuration");
-
-
-var fs = require('fs');
-// var http = require('http');
-var https = require('https');
-var privateKey  = fs.readFileSync('/etc/letsencrypt/live/www.xesoft.ml/privkey.pem', 'utf8');
-var certificate = fs.readFileSync('/etc/letsencrypt/live/www.xesoft.ml/cert.pem', 'utf8');
-var credentials = {key: privateKey, cert: certificate};
-
-//TODO fa digerire ad app le credentials
 const app = module.exports = express();
-// your express configuration here
-// var httpServer = http.createServer(app);
-var httpsServer = https.createServer(credentials, app);
-// httpServer.listen(3000);
-httpsServer.listen(3000);
-
 const logger = new lgg({
     level: 'debug',
     common: [
@@ -30,7 +14,7 @@ const logger = new lgg({
     ]
 });
 const TIMEOUT_5_MINUTI = 5 * 60 * 1000
-app.set('port', process.env.PORT || 3001);
+app.set('port', process.env.PORT || 3000);
 const server = app.listen(app.get('port'), () => {
     logger.info('Chat listening on port ' + app.get('port'));
 });
@@ -61,7 +45,7 @@ const reloadConfigInterval = setInterval(async function () {
 
 (async function app() {
     try {
-        config = await configuration.readConfigFile(configUrl);
+        config = await configuration.readConfigFile("C:\\Users\\dario.brambilla\\Documents\\ws\\xesoft\\chat\\config.yml");//"configUrl);
         logger.setLogLevel(config.logging.loggers['chat'] || config.logging.level || "DEBUG");
         logger.warn("DEBUGGING ACTIVE: this log must be visibile only in local env. NOT FOR TEST OR PRODUCTION")
         initializeViewEngine();
@@ -77,7 +61,7 @@ const reloadConfigInterval = setInterval(async function () {
     var dm = new dynamo(config.awsDynamoChatRegion);
 
     io.on('connection', (socket) => {
-        var dm = new dynamo(config.awsDynamoChatRegion);
+        // var dm = new dynamo(config.awsDynamoChatRegion);
 
         socket.on('join', (data) => {
             try {
@@ -97,10 +81,14 @@ const reloadConfigInterval = setInterval(async function () {
 
         socket.on('room-manager', (data) => {
             const jwtToken = data.jwt;
-            const roomId = "666"; //TODO
-            logger.info(`room-manager room id: ${roomId}, socket id: ${socket.id}, nickname: ${data.nickname}`);
+            const roomId = data.room;
+            const msgType = data.msgType;
+            logger.info(`room-manager room id: ${roomId}, socket id: ${socket.id}, nickname: ${data.nickname}, msg type: ${msgType}`);
 
             try {
+                if (msgType != "chat") {
+                    throw("INVALID Message type \"" + msgType + "\"");
+                }
 
                 if (data.message.length > config.chatMaxLengthMsg) {
                     throw("Exceeded the maximum length of the message (" + config.chatMaxLengthMsg + " characters)");
@@ -112,12 +100,14 @@ const reloadConfigInterval = setInterval(async function () {
                 const expDate = creationDate + 1000 * 60 * 60 * config.chatTTLInH
 
                 var params = {
-                    TableName: config.awsDynamoChatHistoryTableName,
+                    TableName: config.awsDynamoEnv + "-" + config.awsDynamoChatHistoryTableName,
                     Item: {
                         "creationDate": {S: "" + creationDate},
                         "expDate": {S: "" + expDate},
                         "msg": {S: data.message},
                         "msgId": {S: creationDate + "-" + decodedJwt.payload['cognito:username']},
+                        "msgType": {S: msgType},
+                        "ownerId": {S: "decodedJwt.payload.ownerId"},
                         "roomId": {S: roomId},
                         "sender": {S: decodedJwt.payload['cognito:username']},
                         "senderNickname": {S: data.nickname}
@@ -134,7 +124,9 @@ const reloadConfigInterval = setInterval(async function () {
         socket.on('error', (reason) => {
             logger.error(reason);
         });
+
     });
+
 })
 ();
 
@@ -145,7 +137,7 @@ function validateJWT(jwtToken, awsUserPoolId, awsServiceRegion, awsJwks, roomId)
         throw("JWT provided NOT valid.");
     }
     var decodedJwt = validation[1];
-    //TODO check sulla room ma non tramite jwt
+    //TODO: trovare un modo per legare la room alla partita
     // if (roomId != decodedJwt.payload['custom:eventId']) {
     //     throw("Room requested does not match jwt custom:eventId");
     // }
@@ -158,6 +150,8 @@ function initializeViewEngine() {
     app.set('views', path.join(__dirname, 'views'));
     app.set('view engine', 'jade');
     app.use(bodyParser.json());
+
+
     app.use(bodyParser.urlencoded({
         extended: false
     }));
@@ -168,3 +162,11 @@ function initializeViewEngine() {
 }
 
 app.get('/ping.html', ping());
+//
+// var http = require('http');
+//
+// var server = http.createServer(function(req, res) {
+//     res.writeHead(200);
+//     res.end('Ciao a tutti, sono un web server!');
+// });
+// server.listen(8080);
