@@ -113,7 +113,7 @@ const reloadConfigInterval = setInterval(async function () {
                         "senderNickname": {S: data.nickname}
                     }
                 };
-                dm.put(params);
+                // dm.put(params);
                 io.in(roomId).emit('message', {"message": data.message, "nickname": data.nickname, "username": decodedJwt.payload['cognito:username'], "creationDate": creationDate});
             } catch (err) {
                 logger.error(`room-manager error: ${err}`);
@@ -146,12 +146,10 @@ function validateJWT(jwtToken, awsUserPoolId, awsServiceRegion, awsJwks, roomId)
 
 // view engine setup, so that you can easily debug locally
 function initializeViewEngine() {
-    logger.info("Initializing view engine: ONLY FOR DEBUGGING PURPOSE!");
-    app.set('views', path.join(__dirname, 'views'));
-    app.set('view engine', 'jade');
+    // logger.info("Initializing view engine: ONLY FOR DEBUGGING PURPOSE!");
+    // app.set('views', path.join(__dirname, 'views'));
+    // app.set('view engine', 'jade');
     app.use(bodyParser.json());
-
-
     app.use(bodyParser.urlencoded({
         extended: false
     }));

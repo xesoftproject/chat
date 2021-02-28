@@ -38,7 +38,7 @@
     <h1>Please sign in</h1>
 
     <input type="text" id="inputUsername" placeholder="Email address" name="username" value="" required autofocus>
-    <input type="password" id="inputPassword" placeholder="Password" name="password" value="" required>
+    <input type="password" id="inputPassword" placeholder="Password" name="password" value="a7S+R%!(eawX" required>
     <button type="button" onclick="signInButton()">Sign in</button>
     <br><br>
     <button type="button" onclick="resetPassword()">Reset Password</button>
@@ -210,6 +210,7 @@
                 console.log("authenticateUser onSuccess", result);
                 loginOK(result);
                 localStorage.setItem("xejwt", result.idToken.jwtToken);
+                location.reload(); //altrimenti la chat non fa il reconnect, solo temporaneo
             },
 
             onFailure: function (err) {
