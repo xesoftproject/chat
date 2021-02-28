@@ -45,7 +45,8 @@ const reloadConfigInterval = setInterval(async function () {
 
 (async function app() {
     try {
-        config = await configuration.readConfigFile("C:\\Users\\dario.brambilla\\Documents\\ws\\xesoft\\chat\\config.yml");//"configUrl);
+        config = await configuration.readConfigFile(configUrl);
+        // config = await configuration.readConfigFile("C:\\Users\\dario.brambilla\\Documents\\ws\\xesoft\\chat\\config.yml");//"configUrl);
         logger.setLogLevel(config.logging.loggers['chat'] || config.logging.level || "DEBUG");
         logger.warn("DEBUGGING ACTIVE: this log must be visibile only in local env. NOT FOR TEST OR PRODUCTION")
         initializeViewEngine();
