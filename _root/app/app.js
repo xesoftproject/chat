@@ -17,23 +17,41 @@ const logger = new lgg({
 
 // *** HTTPS ***
 var https = require('https');
-// var privateKey  = fs.readFileSync('privkey.pem', 'utf8');
-// var certificate = fs.readFileSync('cert.pem', 'utf8');
-var privateKey  = fs.readFileSync('/etc/letsencrypt/live/www.xesoft.ml/privkey.pem', 'utf8');
-var certificate = fs.readFileSync('/etc/letsencrypt/live/www.xesoft.ml/cert.pem', 'utf8');
+var privateKey  = fs.readFileSync('_root/app/privkey.pem', 'utf8');
+var certificate = fs.readFileSync('_root/app/cert.pem', 'utf8');
+// var privateKey = fs.readFileSync('/etc/letsencrypt/live/www.xesoft.ml/privkey.pem', 'utf8');
+// var certificate = fs.readFileSync('/etc/letsencrypt/live/www.xesoft.ml/cert.pem', 'utf8');
 var credentials = {key: privateKey, cert: certificate};
 
 const app = module.exports = express();
-// app = express()
+
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({
+    extended: false
+}));
+app.use(express.static(path.join(__dirname, 'public')));
 app.get('/', (req, res) => {
-    res.send('Now using https..');
+    res.render('index');
 });
+const serverXE = https.createServer(credentials, app)
+    .listen(3001, function () {
+        console.log('Example app listening on port 3000! Go to https://localhost:3000/')
+    });
+
+// app = express()
+// app.get('/', (req, res) => {
+//     res.send('Now using https..');
+// });
+
 const TIMEOUT_5_MINUTI = 5 * 60 * 1000
-app.set('port', process.env.PORT || 3000);
-const server = app.listen(app.get('port'), () => {
-    logger.info('Chat listening (in https) on port ' + app.get('port'));
-});
-const io_s = require('socket.io')(server);
+// app.set('port', process.env.PORT || 3000);
+// const server = app.listen(app.get('port'), () => {
+//     logger.info('Chat listening (in https) on port ' + app.get('port'));
+// });
+// const io_s = require('socket.io')(server);
+
+const io_s = require('socket.io')(serverXE);
 const configUrl = process.env["CONFIG_URL"];
 
 let config;
@@ -64,7 +82,7 @@ const reloadConfigInterval = setInterval(async function () {
         // config = await configuration.readConfigFile("C:\\Users\\dario.brambilla\\Documents\\ws\\xesoft\\chat\\config.yml");//"configUrl);
         logger.setLogLevel(config.logging.loggers['chat'] || config.logging.level || "DEBUG");
         logger.warn("DEBUGGING ACTIVE: this log must be visibile only in local env. NOT FOR TEST OR PRODUCTION")
-        initializeViewEngine();
+        // initializeViewEngine();
     } catch
         (err) {
         logger.error(`Error: ${err}`);
@@ -161,19 +179,23 @@ function validateJWT(jwtToken, awsUserPoolId, awsServiceRegion, awsJwks, roomId)
 }
 
 // view engine setup, so that you can easily debug locally
-function initializeViewEngine() {
-    // logger.info("Initializing view engine: ONLY FOR DEBUGGING PURPOSE!");
-    // app.set('views', path.join(__dirname, 'views'));
-    // app.set('view engine', 'jade');
-    app.use(bodyParser.json());
-    app.use(bodyParser.urlencoded({
-        extended: false
-    }));
-    app.use(express.static(path.join(__dirname, 'public')));
-    app.get('/', (req, res) => {
-        res.render('index');
-    });
-}
+// function initializeViewEngine() {
+//     // logger.info("Initializing view engine: ONLY FOR DEBUGGING PURPOSE!");
+//     // app.set('views', path.join(__dirname, 'views'));
+//     // app.set('view engine', 'jade');
+//     app.use(bodyParser.json());
+//     app.use(bodyParser.urlencoded({
+//         extended: false
+//     }));
+//     app.use(express.static(path.join(__dirname, 'public')));
+//     app.get('/', (req, res) => {
+//         res.render('index');
+//     });
+//     https.createServer(credentials, app)
+//         .listen(3001, function () {
+//             console.log('Example app listening on port 3000! Go to https://localhost:3000/')
+//         })
+// }
 
 app.get('/ping.html', ping());
 //
