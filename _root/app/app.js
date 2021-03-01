@@ -4,6 +4,7 @@ const path = require('path');
 const lgg = require("./custom-logger");
 const jwtValidator = require("./jwtValidator");
 const dynamo = require("./dynamo");
+const cognito = require("./cognito");
 const ping = require("./ping");
 const configuration = require("./configuration");
 
@@ -24,6 +25,7 @@ var certificate = fs.readFileSync('_root/app/cert.pem', 'utf8');
 var credentials = {key: privateKey, cert: certificate};
 
 const app = module.exports = express();
+var cognitoManager;
 
 
 app.use(bodyParser.json());
@@ -34,22 +36,24 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.get('/', (req, res) => {
     res.render('index');
 });
+app.get('/user/delete', function(req, res) {
+    var password = req.body.password;
+    res.send('User deleted');
+});
+app.post('/user/signup', function(req, res) {
+    var nickname = req.body.nickname;
+    var email = req.body.email;
+    var pass = req.body.pass;
+    var profile = "player";
+    cognitoManager.createUser(nickname, email, profile, pass);
+
+    res.send("Registered as:"+email + ' ' + nickname);
+});
 const serverXE = https.createServer(credentials, app)
     .listen(3001, function () {
-        console.log('Example app listening on port 3000! Go to https://localhost:3000/')
+        console.log('Example app listening on port 3000! Go to https://www.xesoft.ml:3001/login.html')
     });
-
-// app = express()
-// app.get('/', (req, res) => {
-//     res.send('Now using https..');
-// });
-
 const TIMEOUT_5_MINUTI = 5 * 60 * 1000
-// app.set('port', process.env.PORT || 3000);
-// const server = app.listen(app.get('port'), () => {
-//     logger.info('Chat listening (in https) on port ' + app.get('port'));
-// });
-// const io_s = require('socket.io')(server);
 
 const io_s = require('socket.io')(serverXE);
 const configUrl = process.env["CONFIG_URL"];
@@ -70,6 +74,7 @@ const reloadConfigInterval = setInterval(async function () {
         logger.info(`Loading new config... global:${config.version} -> ${newConfig.version} - service: ${config.versionServiceChat} -> ${newConfig.versionServiceChat}`);
         config = newConfig;
         logger.setLogLevel(config.logging.loggers['filmbank~service~chat'] || config.logging.level || "TRACE");
+        cognitoManager = new cognito(config.awsUserPoolId);
     } catch (err) {
         logger.error(`Error on join: ${err}`);
     }
@@ -83,6 +88,7 @@ const reloadConfigInterval = setInterval(async function () {
         logger.setLogLevel(config.logging.loggers['chat'] || config.logging.level || "DEBUG");
         logger.warn("DEBUGGING ACTIVE: this log must be visibile only in local env. NOT FOR TEST OR PRODUCTION")
         // initializeViewEngine();
+        cognitoManager = new cognito(config.awsUserPoolId);
     } catch
         (err) {
         logger.error(`Error: ${err}`);
@@ -117,7 +123,7 @@ const reloadConfigInterval = setInterval(async function () {
             const jwtToken = data.jwt;
             const roomId = data.room;
             const msgType = data.msgType;
-            logger.info(`room-manager room id: ${roomId}, socket id: ${socket.id}, nickname: ${data.nickname}, msg type: ${msgType}`);
+            logger.info(`room-manager room id: ${roomId}, socket id: ${socket.id}, msg type: ${msgType}`);
 
             try {
                 if (msgType != "chat") {
@@ -131,7 +137,7 @@ const reloadConfigInterval = setInterval(async function () {
                 var decodedJwt = validateJWT(jwtToken, config.awsUserPoolId, config.awsServiceRegion, config.awsJwks, roomId);
 
                 const creationDate = Date.now();
-                const expDate = creationDate + 1000 * 60 * 60 * config.chatTTLInH
+                const expDate = creationDate + 1000 * 60 * 60 * config.chatTTLInH;
 
                 var params = {
                     TableName: config.awsDynamoEnv + "-" + config.awsDynamoChatHistoryTableName,
@@ -141,14 +147,14 @@ const reloadConfigInterval = setInterval(async function () {
                         "msg": {S: data.message},
                         "msgId": {S: creationDate + "-" + decodedJwt.payload['cognito:username']},
                         "msgType": {S: msgType},
-                        "ownerId": {S: "decodedJwt.payload.ownerId"},
+                        // "ownerId": {S: "decodedJwt.payload.ownerId"},
                         "roomId": {S: roomId},
                         "sender": {S: decodedJwt.payload['cognito:username']},
-                        "senderNickname": {S: data.nickname}
+                        "senderNickname": {S: decodedJwt.payload['nickname']},
                     }
                 };
                 // dm.put(params);
-                io.in(roomId).emit('message', {"message": data.message, "nickname": data.nickname, "username": decodedJwt.payload['cognito:username'], "creationDate": creationDate});
+                io.in(roomId).emit('message', {"message": data.message, "nickname": decodedJwt.payload['nickname'], "username": decodedJwt.payload['cognito:username'], "creationDate": creationDate});
             } catch (err) {
                 logger.error(`room-manager error: ${err}`);
                 socket.emit('errorMsg', {description: err});
@@ -178,31 +184,5 @@ function validateJWT(jwtToken, awsUserPoolId, awsServiceRegion, awsJwks, roomId)
     return decodedJwt;
 }
 
-// view engine setup, so that you can easily debug locally
-// function initializeViewEngine() {
-//     // logger.info("Initializing view engine: ONLY FOR DEBUGGING PURPOSE!");
-//     // app.set('views', path.join(__dirname, 'views'));
-//     // app.set('view engine', 'jade');
-//     app.use(bodyParser.json());
-//     app.use(bodyParser.urlencoded({
-//         extended: false
-//     }));
-//     app.use(express.static(path.join(__dirname, 'public')));
-//     app.get('/', (req, res) => {
-//         res.render('index');
-//     });
-//     https.createServer(credentials, app)
-//         .listen(3001, function () {
-//             console.log('Example app listening on port 3000! Go to https://localhost:3000/')
-//         })
-// }
-
 app.get('/ping.html', ping());
-//
-// var http = require('http');
-//
-// var server = http.createServer(function(req, res) {
-//     res.writeHead(200);
-//     res.end('Ciao a tutti, sono un web server!');
-// });
-// server.listen(8080);
+

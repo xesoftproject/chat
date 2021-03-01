@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+
+    <!-- Javascript SDKs-->
+
+    <style>
+        .key {
+            font-weight: bold;
+            color: darkblue;
+        }
+    </style>
+
+    <link rel="stylesheet" href="/stylesheets/style.css">
+</head>
+<body>
+
+<textarea id="transcript" placeholder="Press Start and speak into your mic" rows="5" readonly="readonly"></textarea>
+<div class="row">
+    <div class="col">
+        <button id="start-button" title="Start Transcription" class="button-xl"><i class="fa fa-microphone"><span>Start</span></i></button>
+        <button id="stop-button" title="Stop Transcription" disabled="true" class="button-xl"><i class="fa fa-stop-circle"><span>Stop</span></i></button>
+        <button id="reset-button" title="Clear Transcript" class="button-xl button-secondary"><span>Clear Transcript</span></button>
+    </div>
+</div>
+<h3>Broadcast to room (TODO: retrieve the room from? the same for usernames.)</h3>
+<p><input id="message" type="text" placeholder="your message">
+    <button id="roomID" data-roomID="chat">submit message</button>
+</p>
+<div id="message-room">
+    <ul></ul>
+</div>
+
+<script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+<script src="javascripts/lib/amazon-cognito-identity.min.js"></script>
+<script src="javascripts/lib/config.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<!--<script src="https://cdn.socket.io/3.1.1/socket.io.min.js" integrity="sha384-gDaozqUvc4HTgo8iZjwth73C6dDDeOJsAgpxBcMpZYztUfjHXpzrpdrHRdVp8ySO" crossorigin="anonymous"></script>-->
+<script src="/javascripts/index.js"></script>
+<script src="/javascripts/dist/main.js"></script>
+</body>
+</html>
+
+
+
+
+
+
+
+
