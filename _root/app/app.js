@@ -6,17 +6,32 @@ const jwtValidator = require("./jwtValidator");
 const dynamo = require("./dynamo");
 const ping = require("./ping");
 const configuration = require("./configuration");
-const app = module.exports = express();
+
+const fs = require('fs');
 const logger = new lgg({
     level: 'debug',
     common: [
         {"service": "chat"}
     ]
 });
+
+// *** HTTPS ***
+var https = require('https');
+// var privateKey  = fs.readFileSync('privkey.pem', 'utf8');
+// var certificate = fs.readFileSync('cert.pem', 'utf8');
+var privateKey  = fs.readFileSync('/etc/letsencrypt/live/www.xesoft.ml/privkey.pem', 'utf8');
+var certificate = fs.readFileSync('/etc/letsencrypt/live/www.xesoft.ml/cert.pem', 'utf8');
+var credentials = {key: privateKey, cert: certificate};
+
+const app = module.exports = express();
+// app = express()
+app.get('/', (req, res) => {
+    res.send('Now using https..');
+});
 const TIMEOUT_5_MINUTI = 5 * 60 * 1000
 app.set('port', process.env.PORT || 3000);
 const server = app.listen(app.get('port'), () => {
-    logger.info('Chat listening on port ' + app.get('port'));
+    logger.info('Chat listening (in https) on port ' + app.get('port'));
 });
 const io_s = require('socket.io')(server);
 const configUrl = process.env["CONFIG_URL"];
