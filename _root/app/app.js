@@ -1,9 +1,11 @@
 const express = require('express');
+const CryptoJS = require('crypto-js')
 const bodyParser = require('body-parser');
 const path = require('path');
 const lgg = require("./custom-logger");
 const jwtValidator = require("./jwtValidator");
 const dynamo = require("./dynamo");
+// const s3 = require("./s3");
 const cognito = require("./cognito");
 const ping = require("./ping");
 const configuration = require("./configuration");
@@ -18,7 +20,7 @@ const logger = new lgg({
 
 // *** HTTPS ***
 var https = require('https');
-var privateKey  = fs.readFileSync('_root/app/privkey.pem', 'utf8');
+var privateKey = fs.readFileSync('_root/app/privkey.pem', 'utf8');
 var certificate = fs.readFileSync('_root/app/cert.pem', 'utf8');
 // var privateKey = fs.readFileSync('/etc/letsencrypt/live/www.xesoft.ml/privkey.pem', 'utf8');
 // var certificate = fs.readFileSync('/etc/letsencrypt/live/www.xesoft.ml/cert.pem', 'utf8');
@@ -26,6 +28,15 @@ var credentials = {key: privateKey, cert: certificate};
 
 const app = module.exports = express();
 var cognitoManager;
+
+// var s3Params = {Bucket: 'xesoft-configuration', Key: 'xesoft_chat_accessKeys_enc.json'};
+// const AWS = require("aws-sdk");
+// new AWS.S3().getObject(s3Params, function (err, data) {
+//     if (!err)
+//         logger.info(data.Body.toString());
+//     else
+//         logger.error(err);
+// });
 
 
 app.use(bodyParser.json());
@@ -36,18 +47,25 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.get('/', (req, res) => {
     res.render('index');
 });
-app.get('/user/delete', function(req, res) {
+app.get('/clave', (req, res) => {
+    var encrypted = "U2FsdGVkX1/vaEvT3cmlJciMporrBIcEC6IfTpeA5nFPuCzx6ckSoliJsUkx/QMzbAude6HpG8INr5vAhqeDV5Yi3DEIT+28VVk9cVe9mHXYNrfYfNEMaED9RQbccuEZac8PIuQFc8RjZHSh3AG8ktTJAcZKZCMOeoYw6jUm2Mo=";
+    var mypwd = process.env.MYPWD;
+    var decrypted = CryptoJS.AES.decrypt(encrypted, mypwd);
+    var strDecrypted = decrypted.toString(CryptoJS.enc.Utf8);
+    res.send(strDecrypted);
+});
+app.get('/user/delete', function (req, res) {
     var password = req.body.password;
     res.send('User deleted');
 });
-app.post('/user/signup', function(req, res) {
+app.post('/user/signup', function (req, res) {
     var nickname = req.body.nickname;
     var email = req.body.email;
     var pass = req.body.pass;
     var profile = "player";
     cognitoManager.createUser(nickname, email, profile, pass);
 
-    res.send("Registered as:"+email + ' ' + nickname);
+    res.send("Registered as:" + email + ' ' + nickname);
 });
 const serverXE = https.createServer(credentials, app)
     .listen(3001, function () {

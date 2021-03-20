@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node app.js",
-    "build": "browserify public/javascripts/lib/main.js -o public/javascripts:wq:wq/dist/main.js -d"
+    "build": "browserify public/javascripts/lib/main.js -o public/javascripts/dist/main.js -d"
   },
   "browserify": {
     "transform": [
@@ -19,6 +19,7 @@
     ]
   },
   "dependencies": {
+    "crypto-js": "^4.0.0",
     "body-parser": "^1.17.1",
     "express": "^4.15.2",
     "socket.io": "^2.4.0",

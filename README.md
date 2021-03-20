@@ -14,6 +14,7 @@ create a nodejs launch configuration:
 - define a SECRET_ACCESS_KEY env variable valued with the dynamo SECRET_ACCESS_KEY
 - define and COGNITO_ACCESS_KEY_ID env variable valued with the cognito ACCESS_KEY_ID
 - define a COGNITO_SECRET_ACCESS_KEY env variable valued with the cognito SECRET_ACCESS_KEY
+- define a MYPWD env variable
  
 run the nodejs launcher   
 OR  
