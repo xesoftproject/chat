@@ -70,7 +70,7 @@ app.post('/user/signup', function (req, res) {
     res.send("Registered as:" + email + ' ' + nickname);
 });
 const serverXE = https.createServer(credentials, app)
-    .listen(80, function () {
+    .listen(443, function () {
         console.log('Example app listening on port 3000! Go to https://www.xesoft.ml:3001/login.html')
     });
 const TIMEOUT_5_MINUTI = 5 * 60 * 1000
