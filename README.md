@@ -23,4 +23,4 @@ OR
 execute this command in terminal (nodejs required):  
 `npm install;CONFIG_URL=config.yml ACCESS_KEY_ID=.... SECRET_ACCESS_KEY=.... COGNITO_ACCESS_KEY_ID=.... COGNITO_SECRET_ACCESS_KEY=.... node _root/app/app.js`
 
-then open your browser here: https://www.xesoft.ml/login.html
+then open your browser here: https://www.xesoft.ml/login.html 
