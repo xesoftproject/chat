@@ -78,8 +78,6 @@ const TIMEOUT_5_MINUTI = 5 * 60 * 1000
 const io_s = require('socket.io')(serverXE);
 const configUrl = process.env["CONFIG_URL"];
 
-console.log('[configUrl: %o]', configUrl)
-
 let config;
 
 logger.info("Starting service packager...");
@@ -118,8 +116,6 @@ const reloadConfigInterval = setInterval(async function () {
             clearInterval(reloadConfigInterval);
         }
     }
-
-	console.log('[config: %o]', config)
 
     const io = io_s.of("/" + config.chatNamespace);
     var dm = new dynamo(config.awsDynamoChatRegion);
