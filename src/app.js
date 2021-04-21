@@ -20,10 +20,12 @@ const logger = new lgg({
 
 // *** HTTPS ***
 var https = require('https');
-var privateKey = fs.readFileSync('_root/app/privkey.pem', 'utf8');
-var certificate = fs.readFileSync('_root/app/cert.pem', 'utf8');
-// var privateKey = fs.readFileSync('/etc/letsencrypt/live/www.xesoft.ml/privkey.pem', 'utf8');
-// var certificate = fs.readFileSync('/etc/letsencrypt/live/www.xesoft.ml/cert.pem', 'utf8');
+
+const { PRIVKEY_PATH, CERT_PATH } = require('./configurations/configurations');
+
+
+var privateKey = fs.readFileSync(PRIVKEY_PATH, 'utf8');
+var certificate = fs.readFileSync(CERT_PATH, 'utf8');
 var credentials = {key: privateKey, cert: certificate};
 
 const app = module.exports = express();
@@ -68,7 +70,7 @@ app.post('/user/signup', function (req, res) {
     res.send("Registered as:" + email + ' ' + nickname);
 });
 const serverXE = https.createServer(credentials, app)
-    .listen(3001, function () {
+    .listen(80, function () {
         console.log('Example app listening on port 3000! Go to https://www.xesoft.ml:3001/login.html')
     });
 const TIMEOUT_5_MINUTI = 5 * 60 * 1000
