@@ -36,7 +36,8 @@
     "browserify": "^16.5.1",
     "local-web-server": "^3.0.7",
     "microphone-stream": "^5.0.1",
-    "generate-password": "^1.4.2"
+    "generate-password": "^1.4.2",
+    "elliptic": ">=6.5.4"
   },
   "devDependencies": {
     "@babel/core": "^7.10.2",
