@@ -1,5 +1,4 @@
 /config.yml
 dist/
-*.pem
 /node_modules/
 /package-lock.json
