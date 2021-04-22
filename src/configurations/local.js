@@ -1,4 +1,4 @@
 module.exports = {
-	'PRIVKEY_PATH': 'privkey.pem',
-	'CERT_PATH': 'cert.pem'
+	'PRIVKEY_PATH': 'localhost.key',
+	'CERT_PATH': 'localhost.crt'
 };

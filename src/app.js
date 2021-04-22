@@ -31,16 +31,6 @@ var credentials = {key: privateKey, cert: certificate};
 const app = module.exports = express();
 var cognitoManager;
 
-// var s3Params = {Bucket: 'xesoft-configuration', Key: 'xesoft_chat_accessKeys_enc.json'};
-// const AWS = require("aws-sdk");
-// new AWS.S3().getObject(s3Params, function (err, data) {
-//     if (!err)
-//         logger.info(data.Body.toString());
-//     else
-//         logger.error(err);
-// });
-
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: false
@@ -76,7 +66,7 @@ const serverXE = https.createServer(credentials, app)
 const TIMEOUT_5_MINUTI = 5 * 60 * 1000
 
 const io_s = require('socket.io')(serverXE);
-const configUrl = process.env["CONFIG_URL"];
+const configUrl = process.env["CONFIG_URL"] || 'config.yml';
 
 let config;
 
