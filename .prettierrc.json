@@ -1,0 +1,10 @@
+{
+    "tabWidth": 4,
+    "singleQuote": true,
+    "quoteProps": "consistent",
+    "jsxSingleQuote": true,
+    "trailingComma": "none",
+    "bracketSpacing": false,
+    "proseWrap": "always",
+    "endOfLine": "crlf"
+}

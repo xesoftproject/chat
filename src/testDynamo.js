@@ -1,17 +1,19 @@
 'use strict';
 
 /*
-* Manage connection to Dynamo and provide persistence method
-*/
+ * Manage connection to Dynamo and provide persistence method
+ */
 
 class DynamoManager {
-
     constructor(region) {
-        this.AWS = require("aws-sdk");
+        this.AWS = require('aws-sdk');
 
         // Set the region
-        this.AWS.config.update({region: 'eu-west-1', accessKeyId: process.env.ACCESS_KEY_ID, secretAccessKey: process.env.SECRET_ACCESS_KEY});
-        
+        this.AWS.config.update({
+            region: 'eu-west-1',
+            accessKeyId: process.env.ACCESS_KEY_ID,
+            secretAccessKey: process.env.SECRET_ACCESS_KEY
+        });
 
         // Create the DynamoDB service object
         this.ddb = new this.AWS.DynamoDB({apiVersion: '2012-08-10'});
@@ -19,10 +21,13 @@ class DynamoManager {
     }
 
     put(params) {
-        console.log("Adding a new item...");
+        console.log('Adding a new item...');
         this.ddb.putItem(params, function (err, data) {
-            console.error("Unable to add item. Error JSON:", JSON.stringify(err, null, 2));
-            console.log("Added item:", JSON.stringify(data, null, 2));
+            console.error(
+                'Unable to add item. Error JSON:',
+                JSON.stringify(err, null, 2)
+            );
+            console.log('Added item:', JSON.stringify(data, null, 2));
         });
     }
 
@@ -38,17 +43,17 @@ class DynamoManager {
 let dm = new DynamoManager('eu-west-1');
 var params = {
     // TableName: "test2",
-    TableName: "chat-history",
+    TableName: 'chat-history',
     Item: {
-        "creationDate": {S: "1608879543"},
-        "expDate": {S: "1608889543"},
-        "msg": {S: "test message 2"},
-        "msgId": {S: "1608879543-testSender"},
-        "msgType": {S: "chat"},
-        "ownerId": {S: "testOwner"},
-        "roomId": {S: "roomTest"},
-        "sender": {S: "testSender"},
-        "senderNickname": {S: "testNickname"},
+        creationDate: {S: '1608879543'},
+        expDate: {S: '1608889543'},
+        msg: {S: 'test message 2'},
+        msgId: {S: '1608879543-testSender'},
+        msgType: {S: 'chat'},
+        ownerId: {S: 'testOwner'},
+        roomId: {S: 'roomTest'},
+        sender: {S: 'testSender'},
+        senderNickname: {S: 'testNickname'}
     }
 };
 

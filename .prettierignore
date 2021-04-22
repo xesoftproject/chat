@@ -1,0 +1,5 @@
+/config.yml
+dist/
+/node_modules/
+/package-lock.json
+/web/

@@ -1,55 +1,54 @@
 {
-	"name": "chat",
-	"version": "1.0.0",
-	"private": true,
-	"scripts": {
-		"start": "node src/app.js",
-		"build": "browserify web/javascripts/lib/main.js -o web/javascripts/dist/main.js -d"
-	},
-	"browserify": {
-		"transform": [
-			[
-				"babelify",
-				{
-					"presets": [
-						"@babel/env"
-					]
-				}
-			]
-		]
-	},
-	"dependencies": {
-		"crypto-js": "^4.0.0",
-		"body-parser": "^1.17.1",
-		"express": "^4.15.2",
-		"socket.io": "^2.4.0",
-		"jsonwebtoken": "^8.5.1",
-		"jwk-to-pem": "~2.0.4",
-		"query-string": "^6.12.1",
-		"yaml-js": "^0.2.3",
-		"moment-timezone": "^0.5.31",
-		"node-fetch": "^2.6.0",
-		"path": "^0.12.7",
-		"aws-sdk": "^2.789.0",
-		"@aws-sdk/eventstream-marshaller": "0.1.0-preview.2",
-		"@aws-sdk/util-utf8-node": "0.1.0-preview.1",
-		"browserify": "^16.5.1",
-		"local-web-server": "^3.0.7",
-		"microphone-stream": "^5.0.1",
-		"generate-password": "^1.4.2",
-		"elliptic": ">=6.5.4"
-	},
-	"devDependencies": {
-		"@babel/core": "^7.10.2",
-		"@babel/preset-env": "^7.10.2",
-		"babelify": "^10.0.0"
-	},
-	"description": "Chat based on socket.io.",
-	"main": "app.js",
-	"repository": {
-		"type": "git",
-		"url": ""
-	},
-	"author": "",
-	"license": ""
+    "name": "chat",
+    "version": "1.0.0",
+    "scripts": {
+        "start": "node src/app.js",
+        "build": "browserify web/javascripts/lib/main.js -o web/javascripts/dist/main.js -d"
+    },
+    "browserify": {
+        "transform": [
+            [
+                "babelify",
+                {
+                    "presets": [
+                        "@babel/env"
+                    ]
+                }
+            ]
+        ]
+    },
+    "dependencies": {
+        "crypto-js": "^4.0.0",
+        "body-parser": "^1.17.1",
+        "express": "^4.15.2",
+        "socket.io": "^2.4.0",
+        "jsonwebtoken": "^8.5.1",
+        "jwk-to-pem": "~2.0.4",
+        "query-string": "^6.12.1",
+        "yaml-js": "^0.2.3",
+        "moment-timezone": "^0.5.31",
+        "node-fetch": "^2.6.0",
+        "path": "^0.12.7",
+        "aws-sdk": "^2.789.0",
+        "@aws-sdk/eventstream-marshaller": "0.1.0-preview.2",
+        "@aws-sdk/util-utf8-node": "0.1.0-preview.1",
+        "browserify": "^16.5.1",
+        "local-web-server": "^3.0.7",
+        "microphone-stream": "^5.0.1",
+        "generate-password": "^1.4.2",
+        "elliptic": ">=6.5.4"
+    },
+    "devDependencies": {
+        "@babel/core": "^7.10.2",
+        "@babel/preset-env": "^7.10.2",
+        "babelify": "^10.0.0",
+        "prettier": "*"
+    },
+    "description": "Chat based on socket.io.",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/xesoftproject/chat"
+    },
+    "author": "xesoft",
+    "license": "GPL-3.0"
 }

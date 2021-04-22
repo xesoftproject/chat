@@ -1,23 +1,20 @@
 'use strict';
 
 /*
-*   This function validate and check the JWK
-*   Return false in case anyone of the checks fails
-*   Return true in case all the checks are successful
-*/
+ *   This function validate and check the JWK
+ *   Return false in case anyone of the checks fails
+ *   Return true in case all the checks are successful
+ */
 
 const jwkToPem = require('jwk-to-pem');
 const jwt = require('jsonwebtoken');
-const lgg = require("./custom-logger");
+const lgg = require('./custom-logger');
 const logger = new lgg({
     level: 'info',
-    common: [
-        {"service": "chat"}
-    ]
+    common: [{service: 'chat'}]
 });
 
-function validate(jwtToken, userPoolId, region, JWKS){
-
+function validate(jwtToken, userPoolId, region, JWKS) {
     var iss = 'https://cognito-idp.' + region + '.amazonaws.com/' + userPoolId;
     //logger.debug("iss: ", iss)
     var pems;
@@ -41,19 +38,19 @@ function validate(jwtToken, userPoolId, region, JWKS){
     //Fail if the token is not jwt
     var decodedJwt = jwt.decode(jwtToken, {complete: true});
     if (!decodedJwt) {
-        logger.error("Not a valid JWT token");
+        logger.error('Not a valid JWT token');
         return false;
     }
 
     //Fail if token is not from your UserPool
     if (decodedJwt.payload.iss != iss) {
-        logger.error("Invalid issuer");
+        logger.error('Invalid issuer');
         return false;
     }
 
     //Reject the jwt if it's not an 'Id Token'
     if (decodedJwt.payload.token_use != 'id') {
-        logger.error("Not an access token");
+        logger.error('Not an access token');
         return false;
     }
 
