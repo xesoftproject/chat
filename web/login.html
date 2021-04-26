@@ -118,6 +118,7 @@
         var poolData = {
             UserPoolId: "eu-west-1_BOr6IaBxC", // Your user pool id here
             ClientId: "6vligtquo88fguj7e5dsr6mlmj", // Your client id here
+            Storage: new AmazonCognitoIdentity.CookieStorage({domain: location.hostname})
         };
 
         var userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
@@ -139,6 +140,7 @@
         var poolData = {
             UserPoolId: _config.cognito.userPoolId, // Your user pool id here
             ClientId: _config.cognito.clientId, // Your client id here
+            Storage: new AmazonCognitoIdentity.CookieStorage({domain: location.hostname})
         };
 
         var userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
@@ -178,6 +180,7 @@
         var userData = {
             Username: document.getElementById("inputUsername").value,
             Pool: userPool,
+            Storage: new AmazonCognitoIdentity.CookieStorage({domain: location.hostname})
         };
 
         var cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
@@ -233,7 +236,7 @@
 
     function signUp() {
         data = {'email':document.getElementById("email").value,'nickname':document.getElementById("nickname").value, 'pass': document.getElementById("pass").value}
-        $.post('https://www.xesoft.ml:3001/user/signup', data, function(response) {
+        $.post('/user/signup', data, function(response) {
             alert(response);
         });
     }
@@ -259,6 +262,7 @@
         var userData = {
             Username: document.getElementById("emailSignIn").value,
             Pool: userPool,
+            Storage: new AmazonCognitoIdentity.CookieStorage({domain: location.hostname})
         };
 
         var cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
@@ -270,7 +274,11 @@
                 loginOK(result);
                 localStorage.setItem("xejwt", result.idToken.jwtToken);
                 console.log("xejwt: "+localStorage.getItem("xejwt"));
-                window.location = 'https://www.xesoft.ml:3001/chat.html';
+                
+                AmazonCognitoIdentity.CookieSto
+                
+                
+                window.location = '/chat.html';
             },
 
             onFailure: function (err) {
