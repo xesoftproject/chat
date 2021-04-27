@@ -7,7 +7,7 @@ const https = require('https');
 const socket_io = require('socket.io');
 
 const cognito = require('./cognito');
-const { CONFIG, CREDENTIALS } = require('./configurations/configurations');
+const { CONFIG, CREDENTIALS, HTTP, WS, HOSTNAME, REST_PORT } = require('./configurations/configurations');
 const lgg = require('./custom-logger');
 const dynamo = require('./dynamo');
 const jwtValidator = require('./jwtValidator');
@@ -47,8 +47,17 @@ app.all('*', (req, res, next) => {
 	else
 		res.redirect('/login.html');
 });
-app.use('/', express.static('web'));
 
+// TODO: use a template engine?
+app.get('/js/configuration.js', (_, res) => {
+	res.type('.js').send(`export const HTTP = '${HTTP}';
+export const WS = '${WS}';
+export const HOSTNAME = '${HOSTNAME}';
+export const REST_PORT = ${REST_PORT};
+`);
+});
+
+app.use('/', express.static('web'));
 
 // TODO ?
 app.get('/user/delete', (req, res) => {
