@@ -26,7 +26,7 @@ async function* register(game_id) {
 
 import { get_query_param } from './commons.js'
 import { QUERY_PARAMS_GAME_ID } from './constants.js';
-import { I_AM } from './configuration.js'
+import { get_username } from './cognitoclient.js';
 
 // page requirement: ?game_id=xxx
 let GAME_ID;
@@ -182,7 +182,7 @@ const maybe_castling = async (piece, delta_x, delta_y) => {
 
 
 const onload = async () => {
-	console.debug('I_AM', I_AM, 'GAME_ID', GAME_ID);
+	console.debug('I_AM', get_username(), 'GAME_ID', GAME_ID);
 
 	const fn = async () => {
 		for await (const { move, table, winner } of register(GAME_ID)) {

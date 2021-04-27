@@ -6,7 +6,7 @@ const express = require('express');
 const https = require('https');
 const socket_io = require('socket.io');
 
-const cognito = require('./cognito');
+const { CognitoManager } = require('./cognito');
 const { CONFIG, CREDENTIALS, HTTP, WS, HOSTNAME, REST_PORT } = require('./configurations/configurations');
 const lgg = require('./custom-logger');
 const dynamo = require('./dynamo');
@@ -18,10 +18,11 @@ const logger = new lgg({
 });
 
 const app = express();
-const cognitoManager = new cognito(CONFIG.awsUserPoolId);
+const cognitoManager = new CognitoManager(CONFIG.awsUserPoolId);
 const dm = new dynamo(CONFIG.awsDynamoChatRegion);
 
-const PRIVATE_PAGES = ['/room.html', '/game.html'];
+const PRIVATE_PAGES = ['/', '/game.html'];
+const LOGIN_PAGE = '/login.html';
 
 
 app.use(bodyParser.json());
@@ -32,29 +33,27 @@ app.use(cookieParser())
 app.all('*', (req, res, next) => {
 	console.log('ALL *');
 
-	console.log('[req.path: %o]', req.path)
-	console.log('[req.cookies: %o]', req.cookies)
-
 	const is_public = !PRIVATE_PAGES.includes(req.path);
 	const is_logged = req.cookies['CognitoIdentityServiceProvider.6vligtquo88fguj7e5dsr6mlmj.LastAuthUser'];
 	// TODO: verify jwt, extract username, etc
+	const is_logged_login = is_logged && LOGIN_PAGE === req.path;
 
-	console.log('[is_public: %o]', is_public)
-	console.log('[is_logged: %o]', is_logged)
+	console.log('[is_public: %o, is_logged: %o, is_logged_login: %o]',
+		is_public, is_logged, is_logged_login);
 
 	if (is_public || is_logged)
 		next();
+	else if (is_logged_login)
+		res.redirect('/');
 	else
-		res.redirect('/login.html');
+		res.redirect(LOGIN_PAGE);
 });
 
 // TODO: use a template engine?
 app.get('/js/configuration.js', (_, res) => {
-	res.type('.js').send(`export const HTTP = '${HTTP}';
-export const WS = '${WS}';
-export const HOSTNAME = '${HOSTNAME}';
-export const REST_PORT = ${REST_PORT};
-`);
+	console.log('GET /js/configuration.js');
+
+	res.type('.js').send(`export const HOSTNAME = '${HOSTNAME}';`);
 });
 
 app.use('/', express.static('web'));
@@ -62,23 +61,22 @@ app.use('/', express.static('web'));
 // TODO ?
 app.get('/user/delete', (req, res) => {
 	var password = req.body.password;
+
 	res.send('User deleted');
 });
 
-app.post('/user/signup', function(req, res) {
+app.post('/user/signup', (req, res) => {
 	var nickname = req.body.nickname;
 	var email = req.body.email;
 	var pass = req.body.pass;
 	var profile = 'player';
+
 	cognitoManager.createUser(nickname, email, profile, pass);
 
 	res.send('Registered as:' + email + ' ' + nickname);
 });
 
-const serverXE = https.createServer(CREDENTIALS, app).listen(443);
-const io_s = socket_io(serverXE);
-
-const io = io_s.of('/' + CONFIG.chatNamespace);
+const io = socket_io(https.createServer(CREDENTIALS, app).listen(443)).of('/' + CONFIG.chatNamespace);
 
 io.on('connection', (socket) => {
 	socket.on('join', (data) => {

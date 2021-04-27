@@ -1,10 +1,10 @@
 'use strict';
 
-import { HTTP, WS, HOSTNAME, REST_PORT } from './configuration.js';
+import { HOSTNAME } from './configuration.js';
 import { messages, json_parse } from './commons.js';
 
-const HTTP_BASENAME = `${HTTP}://${HOSTNAME}:${REST_PORT}`;
-const WS_BASENAME = `${WS}://${HOSTNAME}:${REST_PORT}`;
+const HTTP_BASENAME = `https://${HOSTNAME}:8443`;
+const WS_BASENAME = `wss://${HOSTNAME}::8443`;
 
 /**
  * @param {string} white

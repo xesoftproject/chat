@@ -1,10 +1,35 @@
+<!DOCTYPE html>
 <html>
+
 <head>
-    <meta charset="utf-8"/>
-    <link rel="icon" type="image/png" href="/img/xesoft.png">
-    <title>Index</title>
+	<meta charset="utf-8" />
+	<title>TEMP create a game and join in it</title>
+	<link rel="icon" type="image/png" href="img/xesoft.png">
+	<script src="javascripts/lib/amazon-cognito-identity.min.js"></script>
+	<script type="module" src="js/temp-create-game.js"></script>
 </head>
+
 <body>
-This is the home page.
+	<p id="username"></p>
+	<form action="#" id="newgame">
+		<label for="color">Colore</label>
+		<select id="color" name="color">
+			<option value="white" selected>Bianco</option>
+			<option value="black">Nero</option>
+		</select>
+
+		<label for="opponent">Sfidante</label>
+		<select id="opponent" name="opponent">
+			<option value="cpu" selected>CPU</option>
+			<option value="friend">Amico</option>
+		</select>
+
+		<label for="friend">Amici</label>
+		<select id="friend" name="friend" disabled>
+		</select>
+
+		<input type="submit" />
+	</form>
 </body>
+
 </html>

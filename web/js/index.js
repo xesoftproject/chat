@@ -2,7 +2,7 @@
 
 import { PATH_GAME, QUERY_PARAMS_GAME_ID } from './constants.js';
 import { start_new_game, games } from './moves-rest-client.js';
-import { I_AM } from './configuration.js'
+import { get_username } from './cognitoclient.js';
 
 const join = (game_id) => {
 	window.open(`audio.html?${QUERY_PARAMS_GAME_ID}=${game_id}`, '_blank');
@@ -10,13 +10,13 @@ const join = (game_id) => {
 }
 
 const onload = async () => {
-	document.querySelector('.i_am').textContent = I_AM;
+	document.querySelector('.i_am').textContent = get_username();
 
 	document.querySelector('#start_new_game').addEventListener('click', async () => {
 		const white = document.querySelector('[name="white"]:checked').value;
 		const black = document.querySelector('[name="black"]:checked').value;
 
-		const game_id = await start_new_game(I_AM, white, black);
+		const game_id = await start_new_game(get_username(), white, black);
 		console.log('game_id: %o', game_id);
 	});
 

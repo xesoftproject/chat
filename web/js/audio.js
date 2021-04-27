@@ -1,7 +1,7 @@
 import { update, register } from './moves-rest-client.js';
 import { get_query_param } from './commons.js';
 import { QUERY_PARAMS_GAME_ID } from './constants.js';
-import { I_AM } from './configuration.js'
+import { get_username } from './cognitoclient.js';
 
 // page requirement: ?game_id=xxx
 let GAME_ID;
@@ -24,7 +24,7 @@ const onload = async () => {
 		const move = document.querySelector('[type=text]').value;
 
 		try {
-			await update(I_AM, game_id, move);
+			await update(get_username(), game_id, move);
 		}
 		catch (e) {
 			window.alert(e);
