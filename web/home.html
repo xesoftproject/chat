@@ -1,0 +1,100 @@
+
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <title>Xesoft Chess - Start</title>
+        <link rel="icon" type="image/png" href="img/xesoft.png">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+        <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,user-scalable=no"/>
+    
+        <link rel="stylesheet" href="css/common.css" type="text/css">
+        <link rel="stylesheet" href="css/home.css" type="text/css">
+            
+    </head>
+    <body id="home-container" class="background-wrapper">
+        <header class="header-wrapper">
+            <div class="grid-container">
+                <div class="grid-cl-4-mobile grid-cl-12-tablet grid-cl-12-desktop">
+                    <div>
+                        <img src="img/logo.png" alt="logo">
+                    </div>
+                </div>
+            </div>
+        </header>
+        <article>
+            <div class="grid-container">
+                <div class="grid-cl-4-mobile grid-cl-3-tablet grid-cl-3-desktop"></div>
+                <div class="grid-cl-4-mobile grid-cl-6-tablet grid-cl-6-desktop grid-cl-container">
+                    <div class="content-wrapper content-wrapper__top">
+                        <h2 class="title">UserName</h2>
+                        <div class="grid-container grid-container__nested">
+                            <div class="hidden-xs hidden-sm grid-cl-2-desktop">
+                                <div>
+                                    <img src="" alt="user-icon">
+                                </div>
+                            </div>
+                            <div class="grid-cl-2-mobile grid-cl-6-tablet grid-cl-7-desktop">
+                                <div class="statistiche">
+                                    <p>Vittorie: 0</p>
+                                    <p>Sconfitte: 0</p>
+                                    <p>Pareggi: 0</p>
+                                </div>
+                            </div>
+                            <div class="grid-cl-2-mobile grid-cl-6-tablet grid-cl-3-desktop statistiche__container-link">
+                                <a href="#">Storico partite</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="content-wrapper">
+                        <h2 class="title">Start New Game</h2>
+                        <div class="grid-container grid-container__nested">
+                            <div class="grid-cl-4-mobile grid-cl-12-tablet grid-cl-12-desktop">
+                                <form action="#" id="newgame">
+                                    <div class="form__group">
+                                        <div class="form__group__wrapper">
+                                            <select name="colori" id="colori">
+                                                <option value="white" selected>Bianco</option>
+                                                <option value="black">Nero</option>
+                                            </select>
+                                            <label for="colors" class="form-group__label">Colore</label>
+                                        </div>
+                                        <div class="form__group__wrapper">
+                                            <select name="opponent" id="opponent">
+                                                <option value="cpu" selected>CPU</option>
+                                                <option value="friend">Amico</option>
+                                            </select>
+                                            <label for="opponent" class="form-group__label">Sfidante</label>
+                                        </div>
+                                        <div class="form__group__wrapper">
+                                            <select id="friend" name="friend" disabled>
+                                            </select>
+                                            <label for="email" class="form-group__label">Amici</label>
+                                        </div>
+                                        <div class="button__wrapper">
+                                            <button type="submit" class="button__content">Inizia partita</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="grid-cl-4-mobile grid-cl-3-tablet grid-cl-3-desktop"></div>
+            </div>
+        </article>
+        <footer class="footer-wrapper">
+            <div class="grid-container">
+                <div class="grid-cl-4-mobile grid-cl-12-tablet grid-cl-12-desktop">
+                    <div>
+                        <p>Copyright ©2021 Xesoft</p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+        <script src="javascripts/lib/amazon-cognito-identity.min.js"></script>
+        <script type="module" src="js/temp-create-game.js"></script>
+    </body>
+</html>

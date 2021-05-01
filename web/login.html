@@ -2,113 +2,110 @@
 <html>
 <head>
     <meta charset="utf-8"/>
-    <title>Xesoft Chess</title>
+    <title>Xesoft Chess - Login</title>
+    <link rel="icon" type="image/png" href="img/xesoft.png">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
     <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,user-scalable=no"/>
-
     <link rel="stylesheet" href="css/common.css" type="text/css">
     <link rel="stylesheet" href="css/login.css" type="text/css">
-
 </head>
-<body>
-<header class="header-wrapper">
-    <div class="grid-container">
-        <div class="grid-cl-4-mobile grid-cl-12-tablet grid-cl-12-desktop">
-            <div>
-                <img src="img/logo.png" alt="logo">
+<body id="login-content" class="background-wrapper">
+    <header class="header-wrapper">
+        <div class="grid-container">
+            <div class="grid-cl-4-mobile grid-cl-12-tablet grid-cl-12-desktop">
+                <div>
+                    <img src="img/logo.png" alt="logo">
+                </div>
             </div>
         </div>
-    </div>
-</header>
-<article class="background-wrapper">
-    <div class="grid-container">
-        <div class="grid-cl-4-mobile grid-cl-2-tablet grid-cl-6-desktop"></div>
-        <div class="grid-cl-4-mobile grid-cl-8-tablet grid-cl-6-desktop">
-            <div class="content-wrapper">
-                <div class="tabs__wrapper">
-                    <div class="tabs__element">
-                        <input type="radio" id="login" name="acesso-portale" checked>
-                        <label class="tabs__element__label" for="login">Accedi</label>
-                        <div class="tabs__content">
-                            <div class="form__group">
-                                <div class="form__group__wrapper">
-                                    <input type="email" id="emailSignIn" value="dario.brambilla@finconsgroup.com" required>
-                                    <label for="email" class="form-group__label">Email</label>
+    </header>
+    <article class="login-content__wrpper">
+        <div class="grid-container">
+            <div class="grid-cl-4-mobile grid-cl-2-tablet grid-cl-6-desktop"></div>
+            <div class="grid-cl-4-mobile grid-cl-8-tablet grid-cl-6-desktop">
+                <div class="content-wrapper">
+                    <div class="tabs__wrapper">
+                        <div class="tabs__element">
+                            <input type="radio" id="login" name="acesso-portale" checked>
+                            <label class="tabs__element__label" for="login">Accedi</label>
+                            <div class="tabs__content">
+                                <div class="form__group">
+                                    <div class="form__group__wrapper">
+                                        <input type="email" id="emailSignIn" value="dario.brambilla@finconsgroup.com" required>
+                                        <label for="email" class="form-group__label">Email</label>
+                                    </div>
+                                    <div class="form__group__wrapper">
+                                        <input type="password" id="passwordSignIn" name="password" minlength="8" value="a7S+R%!(eawX" required>
+                                        <label for="pass" class="form-group__label">Password</label>
+                                    </div>
                                 </div>
-                                <div class="form__group__wrapper">
-                                    <input type="password" id="passwordSignIn" name="password" minlength="8" value="a7S+R%!(eawX" required>
-                                    <label for="pass" class="form-group__label">Password</label>
+                                <div class="button__wrapper">
+                                    <button class="button__content" onclick="signInButton()">Accedi</button>
                                 </div>
-                            </div>
-                            <div class="button__wrapper">
-                                <button class="button__content" onclick="signInButton()">Accedi</button>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="tabs__element">
-                        <input type="radio" id="registrazione" name="acesso-portale">
-                        <label class="tabs__element__label" for="registrazione">Registrati</label>
-                        <div class="tabs__content">
-                            <div class="form__group">
-                                <div class="form__group__wrapper">
-                                    <input type="text" id="nickname" value="test_01" required>
-                                    <label for="email" class="form-group__label">Nickname</label>
+                        <div class="tabs__element">
+                            <input type="radio" id="registrazione" name="acesso-portale">
+                            <label class="tabs__element__label" for="registrazione">Registrati</label>
+                            <div class="tabs__content">
+                                <div class="form__group">
+                                    <div class="form__group__wrapper">
+                                        <input type="text" id="nickname" value="test_01" required>
+                                        <label for="email" class="form-group__label">Nickname</label>
+                                    </div>
+                                    <div class="form__group__wrapper">
+                                        <input type="email" id="email" value="ldlipanmeppmiilvoi@kiabws.com" required>
+                                        <label for="email" class="form-group__label">Email</label>
+                                    </div>
+                                    <div class="form__group__wrapper">
+                                        <input type="password" id="pass" name="password" minlength="8" value="pippo2021:" required>
+                                        <label for="pass" class="form-group__label">Password</label>
+                                    </div>
                                 </div>
-                                <div class="form__group__wrapper">
-                                    <input type="email" id="email" value="ldlipanmeppmiilvoi@kiabws.com" required>
-                                    <label for="email" class="form-group__label">Email</label>
+                                <div class="">
+                                    <button onclick="signUp()">Dario Registrati</button>
                                 </div>
-                                <div class="form__group__wrapper">
-                                    <input type="password" id="pass" name="password" minlength="8" value="pippo2021:" required>
-                                    <label for="pass" class="form-group__label">Password</label>
+                                <div class="button__wrapper">
+                                    <button class="button__content">Registrati</button>
                                 </div>
-                            </div>
-                            <div class="">
-                                <button onclick="signUp()">Dario Registrati</button>
-                            </div>
-                            <div class="button__wrapper">
-                                <button class="button__content">Registrati</button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</article>
-<form>
-    <h1>Please sign in</h1>
-    <input type="text" id="inputUsername" placeholder="Email address" name="username" value="" required autofocus>
-    <input type="password" id="inputPassword" placeholder="Password" name="password" value="a7S+R%!(eawX" required>
-    <button type="button" onclick="signInButton()">Sign in</button>
-    <br><br>
-    <button type="button" onclick="resetPassword()">Reset Password</button>
-    <br><br>
-    <button type="button" onclick="refreshToken()">Refresh</button>
-    <br><br>
-    <h4>Access Token - Last chars: <span id="tokenLast"></span></h4>
-    <div id="divAccessTokenJwt" style="width: 1024px; overflow-x: scroll; border: 1px solid black;"></div>
-    <div id="divAccessTokenData" style="width: 1024px; overflow-x: scroll; border: 1px solid black;"></div>
+    </article>
+    <form>
+        <h1>Please sign in</h1>
+        <input type="text" id="inputUsername" placeholder="Email address" name="username" value="" required autofocus>
+        <input type="password" id="inputPassword" placeholder="Password" name="password" value="a7S+R%!(eawX" required>
+        <button type="button" onclick="signInButton()">Sign in</button>
+        <br><br>
+        <button type="button" onclick="resetPassword()">Reset Password</button>
+        <br><br>
+        <button type="button" onclick="refreshToken()">Refresh</button>
+        <br><br>
+        <h4>Access Token - Last chars: <span id="tokenLast"></span></h4>
+        <div id="divAccessTokenJwt" style="width: 1024px; overflow-x: scroll; border: 1px solid black;"></div>
+        <div id="divAccessTokenData" style="width: 1024px; overflow-x: scroll; border: 1px solid black;"></div>
 
-    <h4>ID Token</h4>
-    <div id="divIdTokenJwt" style="width: 1024px; overflow-x: scroll; border: 1px solid black;"></div>
-    <div id="divIdTokenData" style="width: 1024px; overflow-x: scroll; border: 1px solid black;"></div>
+        <h4>ID Token</h4>
+        <div id="divIdTokenJwt" style="width: 1024px; overflow-x: scroll; border: 1px solid black;"></div>
+        <div id="divIdTokenData" style="width: 1024px; overflow-x: scroll; border: 1px solid black;"></div>
 
-    <h4>Refresh Token</h4>
-    <div id="divRefreshTokenJwt" style="width: 1024px; overflow-x: scroll; border: 1px solid black;"></div>
-</form>
-<footer class="footer-wrapper">
-    <div class="grid-container">
-        <div class="grid-cl-4-mobile grid-cl-12-tablet grid-cl-12-desktop">
-            <div>
-                <p>Copyright ©2021 Xesoft</p>
+        <h4>Refresh Token</h4>
+        <div id="divRefreshTokenJwt" style="width: 1024px; overflow-x: scroll; border: 1px solid black;"></div>
+    </form>
+    <footer class="footer-wrapper">
+        <div class="grid-container">
+            <div class="grid-cl-4-mobile grid-cl-12-tablet grid-cl-12-desktop">
+                <div>
+                    <p>Copyright ©2021 Xesoft</p>
+                </div>
             </div>
         </div>
-    </div>
-</footer>
-
-<!--script type="text/javascript" src="/js/js.js"></script-->
+    </footer>
 </body>
 <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
 <script src="javascripts/lib/amazon-cognito-identity.min.js"></script>
@@ -278,7 +275,7 @@
                 AmazonCognitoIdentity.CookieSto
                 
                 
-                window.location = '/chat.html';
+                window.location = '/home.html';
             },
 
             onFailure: function (err) {
