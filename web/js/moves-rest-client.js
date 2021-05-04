@@ -4,7 +4,7 @@ import { HOSTNAME } from './configuration.js';
 import { messages, json_parse } from './commons.js';
 
 const HTTP_BASENAME = `https://${HOSTNAME}:8443`;
-const WS_BASENAME = `wss://${HOSTNAME}::8443`;
+const WS_BASENAME = `wss://${HOSTNAME}:8443`;
 
 /**
  * @param {string} white
