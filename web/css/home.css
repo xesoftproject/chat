@@ -1,0 +1,80 @@
+/*BG - BEGIN*/
+.background-wrapper{
+    background-image: url("../img/sfondo-login-mobile.png");
+}
+.content-wrapper.content-wrapper__top{
+    margin-top: 80px;
+}
+.content-wrapper{
+    background-color: rgb(193, 226, 229, 0.8);
+    padding: 10px 15px;
+    margin-top: 15px;
+    border-radius: 4px;
+}
+.title{
+    margin: 0;
+    text-align: center;
+    font-size: 24px;
+    font-weight: normal;
+    color: #533987;
+    padding-bottom: 15px;
+}
+.statistiche__container-link{
+    align-self: self-end;
+    padding-bottom: 15px;
+    text-align: right;
+}
+
+.statistiche__container-link a{
+    color: #645ca1;
+    white-space: nowrap;
+}
+.statistiche{
+    padding-bottom: 15px;
+    color: #645ca1;
+    font-size: 18px;
+}
+
+#home-container .form-group__label{
+    top: -59px;
+}
+
+@media (min-width: 768px) {
+    #home-container .footer-wrapper{
+        position: absolute;
+        bottom: 0;
+    }
+    .content-wrapper{
+        padding: 20px 30px;
+    }
+}
+@media (min-width: 1024px) {
+    .background-wrapper{
+        background-image: url("../img/sfondo-login-desktop.jpg");
+    }
+    .content-wrapper.content-wrapper__top{
+        margin-top: 120px;
+    }
+    .content-wrapper{
+        margin-top: 30px;
+    }
+    #home-container .footer-wrapper{
+        position: relative;
+    }
+
+}
+@media (min-width: 1280px) {
+    .statistiche__container-link{
+        padding-bottom: 0;
+    }
+    .statistiche p{
+        display: inline-block;
+        padding-right: 15px;
+    }
+}
+
+@media (min-width: 1920px) {
+    .content-wrapper{
+        padding: 40px 130px
+    }
+}

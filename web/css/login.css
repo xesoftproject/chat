@@ -1,6 +1,8 @@
-/*BG - BEGIN*/
 .background-wrapper{
     background-image: url("../img/sfondo-login-mobile.png");
+}
+.login-content__wrpper{
+    height: 100vh;
 }
 .content-wrapper{
     margin-top: 95px;
@@ -56,12 +58,27 @@
     visibility: hidden;
 }
 
+.content-wrapper::after {
+    content: "";
+    clear: both;
+    position: relative;
+    width: 100%;
+    height: 558px;
+    display: table;
+}
+
 @media (min-width: 1024px) {
     .background-wrapper{
         background-image: url("../img/sfondo-login-desktop.jpg");
     }
+    .login-content__wrpper{
+        height: auto;
+    }
     .content-wrapper{
         margin-top: 180px;
+    }
+    .content-wrapper::after {
+        margin-bottom: 200px;
     }
     .form__group__wrapper{
         width: 100%;
@@ -90,4 +107,6 @@
     .button__wrapper{
         margin: 65px 0 30px;
     }
+
 }
+
