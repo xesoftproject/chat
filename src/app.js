@@ -6,15 +6,15 @@ const express = require('express');
 const https = require('https');
 const socket_io = require('socket.io');
 
-const { CognitoManager } = require('./cognito');
-const { CONFIG, CREDENTIALS, HTTP, WS, HOSTNAME, REST_PORT } = require('./configurations/configurations');
+const {CognitoManager} = require('./cognito');
+const {CONFIG, CREDENTIALS, HTTP, WS, HOSTNAME, REST_PORT} = require('./configurations/configurations');
 const lgg = require('./custom-logger');
 const dynamo = require('./dynamo');
 const jwtValidator = require('./jwtValidator');
 
 const logger = new lgg({
 	level: CONFIG.logging.loggers['chat'] || CONFIG.logging.level || 'DEBUG',
-	common: [{ service: 'chat' }]
+	common: [{service: 'chat'}]
 });
 
 const app = express();
@@ -24,9 +24,11 @@ const dm = new dynamo(CONFIG.awsDynamoChatRegion);
 const PRIVATE_PAGES = ['/', '/game.html'];
 const LOGIN_PAGE = '/login.html';
 
+var socketUsers = {};
+
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser())
 
 
@@ -58,10 +60,10 @@ app.get('/js/configuration.js', (_, res) => {
 
 app.use('/', express.static('web'));
 
-// TODO ?
+
 app.get('/user/delete', (req, res) => {
 	var password = req.body.password;
-
+	//todo
 	res.send('User deleted');
 });
 
@@ -78,6 +80,18 @@ app.post('/user/signup', (req, res) => {
 
 const io = socket_io(https.createServer(CREDENTIALS, app).listen(443)).of('/' + CONFIG.chatNamespace);
 
+
+app.get('/room/users', (req, res) => {
+	var room = req.body.room;
+	var roomMembers = [];
+	var nsp = (typeof _nsp !== 'string') ? '/' : _nsp;
+
+	for (var member in io.nsps[nsp].adapter.rooms[room]) {
+		roomMembers.push(member);
+	}
+	res.send(roomMembers);
+});
+
 io.on('connection', (socket) => {
 	socket.on('join', (data) => {
 		try {
@@ -85,7 +99,7 @@ io.on('connection', (socket) => {
 			logger.info(`socket ${socket.id} joining room ${roomId}`);
 			const jwtToken = data.jwt;
 
-			validateJWT(
+			var decodedJwt = validateJWT(
 				jwtToken,
 				CONFIG.awsUserPoolId,
 				CONFIG.awsServiceRegion,
@@ -94,13 +108,15 @@ io.on('connection', (socket) => {
 			);
 
 			socket.join(roomId);
+			socketUsers[socket.id] = decodedJwt.payload['nickname'];
 			io.in(roomId).emit(
 				'message',
 				`Socket ${socket.id} joined to room ${roomId}`
 			);
+
 		} catch (err) {
 			logger.error(`Error joining: ${err}`);
-			socket.emit('errorMsg', { description: err });
+			socket.emit('errorMsg', {description: err});
 		}
 	});
 
@@ -142,20 +158,20 @@ io.on('connection', (socket) => {
 					'-' +
 					CONFIG.awsDynamoChatHistoryTableName,
 				Item: {
-					creationDate: { S: '' + creationDate },
-					expDate: { S: '' + expDate },
-					msg: { S: data.message },
+					creationDate: {S: '' + creationDate},
+					expDate: {S: '' + expDate},
+					msg: {S: data.message},
 					msgId: {
 						S:
 							creationDate +
 							'-' +
 							decodedJwt.payload['cognito:username']
 					},
-					msgType: { S: msgType },
+					msgType: {S: msgType},
 					// "ownerId": {S: "decodedJwt.payload.ownerId"},
-					roomId: { S: roomId },
-					sender: { S: decodedJwt.payload['cognito:username'] },
-					senderNickname: { S: decodedJwt.payload['nickname'] }
+					roomId: {S: roomId},
+					sender: {S: decodedJwt.payload['cognito:username']},
+					senderNickname: {S: decodedJwt.payload['nickname']}
 				}
 			};
 			// dm.put(params);
@@ -167,12 +183,54 @@ io.on('connection', (socket) => {
 			});
 		} catch (err) {
 			logger.error(`room-manager error: ${err}`);
-			socket.emit('errorMsg', { description: err });
+			socket.emit('errorMsg', {description: err});
 		}
 	});
 
 	socket.on('error', (reason) => {
 		logger.error(reason);
+	});
+
+	socket.on('room-users-list', (data) => {
+		const jwtToken = data.jwt;
+		const roomId = data.room;
+		const msgType = data.msgType;
+		logger.info(
+			`room-users-list room id: ${roomId}, socket id: ${socket.id}, msg type: ${msgType}`
+		);
+		try {
+			if (msgType != 'command') {
+				throw 'INVALID Message type "' + msgType + '"';
+			}
+
+			var decodedJwt = validateJWT(
+				jwtToken,
+				CONFIG.awsUserPoolId,
+				CONFIG.awsServiceRegion,
+				CONFIG.awsJwks,
+				roomId
+			);
+
+			var clients = io.adapter.rooms[roomId].sockets;
+
+			let usersListInReturn = [];
+
+			let i = 0
+
+			for (const [key, value] of Object.entries(clients)) {
+				usersListInReturn.push(socketUsers[key]);
+			}
+
+			socket.emit('room-users-list', {
+				users: usersListInReturn,
+				nickname: decodedJwt.payload['nickname'],
+				username: decodedJwt.payload['cognito:username'],
+				creationDate: Date.now()
+			});
+		} catch (err) {
+			logger.error(`roomUsersList error: ${err}`);
+			socket.emit('errorMsg', {description: err});
+		}
 	});
 });
 

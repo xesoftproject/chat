@@ -1,6 +1,6 @@
 'use strict';
 
-const { config, CognitoIdentityServiceProvider } = require('aws-sdk');
+const {config, CognitoIdentityServiceProvider} = require('aws-sdk');
 
 config.update({
 	region: 'eu-west-1',
@@ -92,4 +92,4 @@ class CognitoManager {
 	// }
 }
 
-module.exports = { CognitoManager };
+module.exports = {CognitoManager};
