@@ -23,10 +23,11 @@
             </div>
         </header>
         <article>
-            <div class="grid-container">
+            <div class="grid-container" >
                 <div class="grid-cl-4-mobile grid-cl-3-tablet grid-cl-3-desktop"></div>
                 <div class="grid-cl-4-mobile grid-cl-6-tablet grid-cl-6-desktop grid-cl-container">
                     <div class="content-wrapper content-wrapper__top">
+                        <div id="info"></div>
                         <h2 class="title">UserName</h2>
                         <div class="grid-container grid-container__nested">
                             <div class="hidden-xs hidden-sm grid-cl-2-desktop">
@@ -47,7 +48,7 @@
                         </div>
                     </div>
 
-                    <div class="content-wrapper">
+                    <div class="content-wrapper" id="start-game">
                         <h2 class="title">Start New Game</h2>
                         <div class="grid-container grid-container__nested">
                             <div class="grid-cl-4-mobile grid-cl-12-tablet grid-cl-12-desktop">
@@ -94,7 +95,13 @@
             </div>
         </footer>
 
+        <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>  
+        <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
+
         <script src="javascripts/lib/amazon-cognito-identity.min.js"></script>
         <script type="module" src="js/temp-create-game.js"></script>
+      
+        
+        <script type="module" src="js/home.js"></script>
     </body>
 </html>
