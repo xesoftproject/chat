@@ -1,12 +1,15 @@
 'use strict';
 
+let template1 = `
+<div>
+    <h2>This is ComponentTwo</h2>
+    
+</div>
+`;
+
 class InfoUtente extends React.Component {
     render() {
-      return (
-        <div>
-          <h1>Ciao, mondo!</h1>
-        </div>
-      );
+      return (eval(Babel.transform(template1, { presets: ['es2017', 'react'] }).code))
     }
   }
 
