@@ -8,7 +8,7 @@ const onload = async () => {
 	const user_id = get_username();
 	console.log('[user_id: %o]', user_id);
 
-	document.querySelector('#username').textContent = user_id;
+	//document.querySelector('#username').textContent = user_id;
 
 	// TODO: populate select#friend with an <option>friend</option>
 

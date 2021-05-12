@@ -1,12 +1,6 @@
-import StartGame from './js/StartGame.js';
-import InfoUtente from './js/InfoUtente.js';
+import StartGame from './StartGame.js';
+import InfoUtente from './InfoUtente.js';
 
-ReactDOM.render(
-    <InfoUtente />,
-    document.getElementById('info')
-);
+ReactDOM.render(React.createElement(InfoUtente, null), document.getElementById('info'));
 
-ReactDOM.render(
-    <StartGame />,
-    document.getElementById('start-game')
-);
+ReactDOM.render(React.createElement(StartGame, null), document.getElementById('start-game'));
