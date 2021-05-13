@@ -3,7 +3,7 @@ import InfoUtente from './InfoUtente.js';
 
 ReactDOM.render(
     <InfoUtente />,
-    document.getElementById('info')
+    document.getElementById('info-utente')
 );
 
 ReactDOM.render(

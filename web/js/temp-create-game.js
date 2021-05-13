@@ -1,12 +1,12 @@
 'use strict';
 
-import { get_username } from './cognitoclient.js';
+//import { get_username } from './cognitoclient.js';
 import { PATH_GAME, QUERY_PARAMS_GAME_ID } from './constants.js';
 import { start_new_game } from './moves-rest-client.js';
 
 const onload = async () => {
-	const user_id = get_username();
-	console.log('[user_id: %o]', user_id);
+	//const user_id = get_username();
+	//console.log('[user_id: %o]', user_id);
 
 	//document.querySelector('#username').textContent = user_id;
 

@@ -5,8 +5,7 @@ const COGNITO_USER_POOL = new AmazonCognitoIdentity.CognitoUserPool({
 });
 
 const get_username = () => {
-	//return COGNITO_USER_POOL.getCurrentUser().username;
-	return "piero"
+	return COGNITO_USER_POOL.getCurrentUser().username;
 };
 
 export { get_username };

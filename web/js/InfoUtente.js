@@ -8,7 +8,7 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var template1 = '\n<div>\n    <h2>This is ComponentTwo</h2>\n    \n</div>\n';
+import { get_username } from './cognitoclient.js';
 
 var InfoUtente = function (_React$Component) {
   _inherits(InfoUtente, _React$Component);
@@ -25,16 +25,88 @@ var InfoUtente = function (_React$Component) {
       return React.createElement(
         'div',
         null,
+        React.createElement(UseraName, null),
         React.createElement(
-          'h2',
-          null,
-          'This is ComponentTwo'
+          'div',
+          { className: 'grid-container grid-container__nested' },
+          React.createElement(
+            'div',
+            { className: 'hidden-xs hidden-sm grid-cl-2-desktop' },
+            React.createElement(
+              'div',
+              null,
+              React.createElement('img', { src: '', alt: 'user-icon' })
+            )
+          ),
+          React.createElement(
+            'div',
+            { className: 'grid-cl-2-mobile grid-cl-6-tablet grid-cl-7-desktop' },
+            React.createElement(
+              'div',
+              { className: 'statistiche' },
+              React.createElement(
+                'p',
+                null,
+                'Vittorie: 0'
+              ),
+              React.createElement(
+                'p',
+                null,
+                'Sconfitte: 0'
+              ),
+              React.createElement(
+                'p',
+                null,
+                'Pareggi: 0'
+              )
+            )
+          ),
+          React.createElement(
+            'div',
+            { className: 'grid-cl-2-mobile grid-cl-6-tablet grid-cl-3-desktop statistiche__container-link' },
+            React.createElement(
+              'a',
+              { href: '#' },
+              'Storico partite'
+            )
+          )
         )
       );
     }
   }]);
 
   return InfoUtente;
+}(React.Component);
+
+var UseraName = function (_React$Component2) {
+  _inherits(UseraName, _React$Component2);
+
+  function UseraName(props) {
+    _classCallCheck(this, UseraName);
+
+    var _this2 = _possibleConstructorReturn(this, (UseraName.__proto__ || Object.getPrototypeOf(UseraName)).call(this, props));
+
+    _this2.state = { name: null };
+    return _this2;
+  }
+
+  _createClass(UseraName, [{
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      this.setState({ name: get_username() });
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      return React.createElement(
+        'h2',
+        { className: 'title' },
+        this.state.name
+      );
+    }
+  }]);
+
+  return UseraName;
 }(React.Component);
 
 export default InfoUtente;
