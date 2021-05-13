@@ -19,3 +19,7 @@ then open your browser [here](https://localhost/login.html)
 # to deploy
 
 just relies on `moves-script/update.sh`
+
+# To build react component 
+
+`npx babel --watch web/src --out-dir web/js --presets react-app/prod`
