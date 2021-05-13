@@ -7,6 +7,7 @@ import { register } from './moves-rest-client.js';
 import { get_query_param } from './commons.js'
 import { QUERY_PARAMS_GAME_ID } from './constants.js';
 import { get_username } from './cognitoclient.js';
+import { HOSTNAME } from './configuration.js';
 
 
 // page requirement: ?game_id=xxx
@@ -162,10 +163,58 @@ const maybe_castling = async (piece, delta_x, delta_y) => {
 };
 
 
+const b64encode = (blob) => {
+	const reader = new FileReader();
+	reader.readAsDataURL(blob);
+	return new Promise(resolve => {
+		reader.onloadend = () => {
+			resolve(reader.result.split(',', 2)[1]);
+		};
+	});
+};
+
 const onload = async () => {
-	console.debug('I_AM', get_username(), 'GAME_ID', GAME_ID);
+	const user_id = get_username();
+	console.debug('I_AM', user_id, 'GAME_ID', GAME_ID);
 
 	const fn = async () => {
+		const ws = new WebSocket(`wss://${HOSTNAME}:8443/moves/16000`);
+
+		ws.onmessage = (event) => {
+			const status = JSON.parse(event.data);
+			console.log(status);
+			const msg = status.error ? status.error : status.success ? status.success : '';
+			document.querySelector('#overlay pre').textContent += msg + '\n';
+		};
+
+		ws.onerror = console.error.bind(console)
+
+		const microphone = await navigator.mediaDevices.getUserMedia({
+			audio: {
+				echoCancellation: true
+			}
+		});
+
+
+		RecordRTC(microphone, {
+			type: 'audio',
+			mimeType: 'audio/wav;codecs=pcm',
+			recorderType: StereoAudioRecorder,
+			timeSlice: 1000,
+			ondataavailable: async (data) => {
+				console.log('recorded stuff');
+				ws.send(JSON.stringify({
+					'user_id': user_id,
+					'game_id': GAME_ID,
+					'data': await b64encode(data)
+				}));
+			},
+			desiredSampRate: 16000,
+			numberOfAudioChannels: 1
+		}).startRecording();
+
+		console.log('output loop')
+
 		for await (const { move, table, winner } of register(GAME_ID)) {
 			console.info('move: %o, winner: %o', move, winner);
 

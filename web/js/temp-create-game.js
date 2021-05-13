@@ -28,7 +28,6 @@ const onload = async () => {
 		const game_id = await start_new_game(user_id, white, black)
 		console.log('[game_id: %o]', game_id);
 
-		window.open(`audio.html?${QUERY_PARAMS_GAME_ID}=${game_id}`, '_blank');
 		window.location.assign(`${PATH_GAME}?${QUERY_PARAMS_GAME_ID}=${game_id}`);
 	});
 };
