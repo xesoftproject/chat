@@ -12,6 +12,7 @@ class StartGame extends React.Component{
             dataFromChild : null,
             userId: null,
         };
+        this.handleCallback = this.handleCallback.bind(this);
     }
 
     handleCallback = (childData) =>{
@@ -77,7 +78,8 @@ class FormGroupSelect extends React.Component{
     
     onChange(event,needCallback,checkValue) {
         console.log(needCallback)
-        if(!needCallback){
+        needCallback = (needCallback == 'true')
+        if(needCallback){
             if(event.target.value === checkValue){
                 this.props.parentCallback(true);
             }else{
@@ -128,12 +130,8 @@ class StartGameButton extends React.Component{
 
 		const game_id = start_new_game(this.props.userId, white, black).then(function(){
             console.log('[game_id: %o]', game_id);
-            
-            //window.location.assign(`${PATH_GAME}?${QUERY_PARAMS_GAME_ID}=${game_id}`);
-        })
-		
-
-		
+            window.location.assign(`${PATH_GAME}?${QUERY_PARAMS_GAME_ID}=${game_id}`);
+        })		
     }
 
     render(){

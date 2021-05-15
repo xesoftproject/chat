@@ -31,6 +31,7 @@ var StartGame = function (_React$Component) {
             dataFromChild: null,
             userId: null
         };
+        _this.handleCallback = _this.handleCallback.bind(_this);
         return _this;
     }
 
@@ -95,7 +96,8 @@ var FormGroupSelect = function (_React$Component2) {
         key: 'onChange',
         value: function onChange(event, needCallback, checkValue) {
             console.log(needCallback);
-            if (!needCallback) {
+            needCallback = needCallback == 'true';
+            if (needCallback) {
                 if (event.target.value === checkValue) {
                     this.props.parentCallback(true);
                 } else {
@@ -173,8 +175,7 @@ var StartGameButton = function (_React$Component3) {
 
             var game_id = start_new_game(this.props.userId, white, black).then(function () {
                 console.log('[game_id: %o]', game_id);
-
-                //window.location.assign(`${PATH_GAME}?${QUERY_PARAMS_GAME_ID}=${game_id}`);
+                window.location.assign(PATH_GAME + '?' + QUERY_PARAMS_GAME_ID + '=' + game_id);
             });
         }
     }, {
