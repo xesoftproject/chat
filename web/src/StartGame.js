@@ -1,20 +1,30 @@
 'use strict';
 
+import { PATH_GAME, QUERY_PARAMS_GAME_ID } from './constants.js';
+import { start_new_game } from './moves-rest-client.js';
+import { get_username } from './cognitoclient.js';
+
 class StartGame extends React.Component{
     constructor(props) {
         super(props);
         this.state = {
             friendsOptions: [],
-            dataFromChild : null
+            dataFromChild : null,
+            userId: null,
         };
     }
 
     handleCallback = (childData) =>{
-        this.setState({dataFromChild: childData})
+        this.setState({
+            dataFromChild: childData, 
+        })
     }
 
     componentDidMount() {
-        this.setState({friendsOptions: this.getFriendsOptions()});
+        this.setState({
+            friendsOptions: this.getFriendsOptions(),
+            userId: get_username()
+        });
     }
 
     getFriendsOptions(){
@@ -29,6 +39,7 @@ class StartGame extends React.Component{
         return options;
     }
 
+
     render(){
         const colorOptions = [
             { value: 'white', label: 'Bianco' },
@@ -38,8 +49,6 @@ class StartGame extends React.Component{
             { value: 'cpu', label: 'CPU' },
             { value: 'friend', label: 'Amico' }
         ]
-
-        console.log(this.state.dataFromChild)
 
         let friendSelect;
 
@@ -54,6 +63,7 @@ class StartGame extends React.Component{
                 <FormGroupSelect data="color" options={colorOptions} label="Colore" needCallback="false"/>
                 <FormGroupSelect data="opponent" options={opponentOptions} label="Sfidante" needCallback="true" parentCallback = {this.handleCallback} checkValue="friend"/>
                 {friendSelect}
+                <StartGameButton userId={this.state.userId} />
             </div>
         )
     }
@@ -67,7 +77,7 @@ class FormGroupSelect extends React.Component{
     
     onChange(event,needCallback,checkValue) {
         console.log(needCallback)
-        if(needCallback){
+        if(!needCallback){
             if(event.target.value === checkValue){
                 this.props.parentCallback(true);
             }else{
@@ -90,6 +100,46 @@ class FormGroupSelect extends React.Component{
                     })}
                 </select>
                 <label htmlFor={this.props.data} className="form-group__label">{this.props.label}</label>
+            </div>
+        )
+    }
+}
+
+class StartGameButton extends React.Component{
+    constructor(props) {
+        super(props);
+        this.onClick = this.onClick.bind(this);
+    }
+
+   onClick(event) {
+        event.preventDefault();
+        
+        const formData = new FormData(event.target.form);
+        console.log(formData.get("color"))
+
+        const color = formData.get("color");
+		const opponent = formData.get("opponent");
+		const friend =formData.get("friend");
+		console.log('[color: %o, opponent: %o, friend: %o]', color, opponent, friend);
+
+		const white = color === 'white' ? 'human' : opponent === 'cpu' ? 'cpu' : 'human';
+		const black = color === 'black' ? 'human' : opponent === 'cpu' ? 'cpu' : 'human';
+		console.log('[white: %o, black: %o]', white, black);
+
+		const game_id = start_new_game(this.props.userId, white, black).then(function(){
+            console.log('[game_id: %o]', game_id);
+            
+            //window.location.assign(`${PATH_GAME}?${QUERY_PARAMS_GAME_ID}=${game_id}`);
+        })
+		
+
+		
+    }
+
+    render(){
+        return (
+            <div className="button__wrapper">
+                <button onClick={this.onClick} type="submit" className="button__content">Inizia partita</button>
             </div>
         )
     }
