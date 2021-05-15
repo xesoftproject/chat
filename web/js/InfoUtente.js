@@ -10,22 +10,44 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 import { get_username } from './cognitoclient.js';
 
+var url_link = "#";
+var label_link = "Storico partite";
+
 var InfoUtente = function (_React$Component) {
   _inherits(InfoUtente, _React$Component);
 
-  function InfoUtente() {
+  function InfoUtente(props) {
     _classCallCheck(this, InfoUtente);
 
-    return _possibleConstructorReturn(this, (InfoUtente.__proto__ || Object.getPrototypeOf(InfoUtente)).apply(this, arguments));
+    var _this = _possibleConstructorReturn(this, (InfoUtente.__proto__ || Object.getPrototypeOf(InfoUtente)).call(this, props));
+
+    _this.state = {
+      userName: null,
+      userIcon: null,
+      statistiche: {
+        victories: 0,
+        defeats: 0,
+        draws: 0
+      }
+    };
+    return _this;
   }
 
   _createClass(InfoUtente, [{
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      this.setState({ userName: get_username() });
+      /*TO DO
+        settare i valori delle statistiche, l'icona utente
+      */
+    }
+  }, {
     key: 'render',
     value: function render() {
       return React.createElement(
         'div',
         null,
-        React.createElement(UseraName, null),
+        React.createElement(UseraName, { userName: this.state.userName }),
         React.createElement(
           'div',
           { className: 'grid-container grid-container__nested' },
@@ -35,39 +57,21 @@ var InfoUtente = function (_React$Component) {
             React.createElement(
               'div',
               null,
-              React.createElement('img', { src: '', alt: 'user-icon' })
+              React.createElement('img', { src: this.state.userIcon, alt: 'user-icon' })
             )
           ),
           React.createElement(
             'div',
             { className: 'grid-cl-2-mobile grid-cl-6-tablet grid-cl-7-desktop' },
-            React.createElement(
-              'div',
-              { className: 'statistiche' },
-              React.createElement(
-                'p',
-                null,
-                'Vittorie: 0'
-              ),
-              React.createElement(
-                'p',
-                null,
-                'Sconfitte: 0'
-              ),
-              React.createElement(
-                'p',
-                null,
-                'Pareggi: 0'
-              )
-            )
+            React.createElement(Statistiche, { statistiche: this.state.statistiche })
           ),
           React.createElement(
             'div',
             { className: 'grid-cl-2-mobile grid-cl-6-tablet grid-cl-3-desktop statistiche__container-link' },
             React.createElement(
               'a',
-              { href: '#' },
-              'Storico partite'
+              { href: url_link },
+              label_link
             )
           )
         )
@@ -81,32 +85,64 @@ var InfoUtente = function (_React$Component) {
 var UseraName = function (_React$Component2) {
   _inherits(UseraName, _React$Component2);
 
-  function UseraName(props) {
+  function UseraName() {
     _classCallCheck(this, UseraName);
 
-    var _this2 = _possibleConstructorReturn(this, (UseraName.__proto__ || Object.getPrototypeOf(UseraName)).call(this, props));
-
-    _this2.state = { name: null };
-    return _this2;
+    return _possibleConstructorReturn(this, (UseraName.__proto__ || Object.getPrototypeOf(UseraName)).apply(this, arguments));
   }
 
   _createClass(UseraName, [{
-    key: 'componentDidMount',
-    value: function componentDidMount() {
-      this.setState({ name: get_username() });
-    }
-  }, {
     key: 'render',
     value: function render() {
       return React.createElement(
         'h2',
         { className: 'title' },
-        this.state.name
+        this.props.userName
       );
     }
   }]);
 
   return UseraName;
+}(React.Component);
+
+var Statistiche = function (_React$Component3) {
+  _inherits(Statistiche, _React$Component3);
+
+  function Statistiche() {
+    _classCallCheck(this, Statistiche);
+
+    return _possibleConstructorReturn(this, (Statistiche.__proto__ || Object.getPrototypeOf(Statistiche)).apply(this, arguments));
+  }
+
+  _createClass(Statistiche, [{
+    key: 'render',
+    value: function render() {
+      return React.createElement(
+        'div',
+        { className: 'statistiche' },
+        React.createElement(
+          'p',
+          null,
+          'Vittorie: ',
+          this.props.statistiche.victories
+        ),
+        React.createElement(
+          'p',
+          null,
+          'Sconfitte: ',
+          this.props.statistiche.defeats
+        ),
+        React.createElement(
+          'p',
+          null,
+          'Pareggi: ',
+          this.props.statistiche.draws
+        )
+      );
+    }
+  }]);
+
+  return Statistiche;
 }(React.Component);
 
 export default InfoUtente;
