@@ -8,10 +8,6 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var colorOptions = [{ value: 'white', label: 'Bianco' }, { value: 'black', label: 'Nero' }];
-
-var opponentOptions = [{ value: 'cpu', label: 'CPU' }, { value: 'friend', label: 'Amico' }];
-
 var StartGame = function (_React$Component) {
     _inherits(StartGame, _React$Component);
 
@@ -20,18 +16,53 @@ var StartGame = function (_React$Component) {
 
         var _this = _possibleConstructorReturn(this, (StartGame.__proto__ || Object.getPrototypeOf(StartGame)).call(this, props));
 
-        _this.state = { date: new Date() };
+        _this.handleCallback = function (childData) {
+            _this.setState({ dataFromChild: childData });
+        };
+
+        _this.state = {
+            friendsOptions: [],
+            dataFromChild: null
+        };
         return _this;
     }
 
     _createClass(StartGame, [{
-        key: 'render',
+        key: "componentDidMount",
+        value: function componentDidMount() {
+            this.setState({ friendsOptions: this.getFriendsOptions() });
+        }
+    }, {
+        key: "getFriendsOptions",
+        value: function getFriendsOptions() {
+            /*TO DO LISTA AMICI*/
+            var friends = ["giovanni", "mario"];
+            var options = [];
+            friends.forEach(function (items) {
+                options.push({ value: items, label: items });
+            });
+            return options;
+        }
+    }, {
+        key: "render",
         value: function render() {
+            var colorOptions = [{ value: 'white', label: 'Bianco' }, { value: 'black', label: 'Nero' }];
+            var opponentOptions = [{ value: 'cpu', label: 'CPU' }, { value: 'friend', label: 'Amico' }];
+
+            console.log(this.state.dataFromChild);
+
+            var friendSelect = void 0;
+
+            if (this.state.dataFromChild) {
+                friendSelect = React.createElement(FormGroupSelect, { data: "friend", options: this.state.friendsOptions, label: "Amici", needCallback: "false" });
+            }
+
             return React.createElement(
-                'div',
-                { className: 'form__group' },
-                React.createElement(FormGroupElements, { name: 'color', id: 'colori', options: colorOptions, label: 'Colore', htmlFor: 'colors' }),
-                React.createElement(FormGroupElements, { name: 'opponent', id: 'opponent', options: opponentOptions, label: 'Sfidante', htmlFor: 'opponent' })
+                "div",
+                { className: "form__group" },
+                React.createElement(FormGroupSelect, { data: "color", options: colorOptions, label: "Colore", needCallback: "false" }),
+                React.createElement(FormGroupSelect, { data: "opponent", options: opponentOptions, label: "Sfidante", needCallback: "true", parentCallback: this.handleCallback, checkValue: "friend" }),
+                friendSelect
             );
         }
     }]);
@@ -39,70 +70,67 @@ var StartGame = function (_React$Component) {
     return StartGame;
 }(React.Component);
 
-var FormGroupElements = function (_React$Component2) {
-    _inherits(FormGroupElements, _React$Component2);
+var FormGroupSelect = function (_React$Component2) {
+    _inherits(FormGroupSelect, _React$Component2);
 
-    function FormGroupElements() {
-        _classCallCheck(this, FormGroupElements);
+    function FormGroupSelect() {
+        _classCallCheck(this, FormGroupSelect);
 
-        return _possibleConstructorReturn(this, (FormGroupElements.__proto__ || Object.getPrototypeOf(FormGroupElements)).apply(this, arguments));
+        var _this2 = _possibleConstructorReturn(this, (FormGroupSelect.__proto__ || Object.getPrototypeOf(FormGroupSelect)).call(this));
+
+        _this2.onChange = _this2.onChange.bind(_this2);
+        return _this2;
     }
 
-    _createClass(FormGroupElements, [{
-        key: 'render',
+    _createClass(FormGroupSelect, [{
+        key: "onChange",
+        value: function onChange(event, needCallback, checkValue) {
+            console.log(needCallback);
+            if (needCallback) {
+                if (event.target.value === checkValue) {
+                    this.props.parentCallback(true);
+                } else {
+                    this.props.parentCallback(false);
+                }
+            }
+
+            event.preventDefault();
+        }
+    }, {
+        key: "render",
         value: function render() {
+            var _this3 = this;
+
+            var options = this.props.options;
+            var needCallback = this.props.needCallback;
+            var checkValue = this.props.checkValue;
+
             return React.createElement(
-                'div',
-                { className: 'form__group__wrapper' },
-                React.createElement(Select, { name: this.props.name, id: this.props.id, options: this.props.options }),
+                "div",
+                { className: "form__group__wrapper" },
                 React.createElement(
-                    'label',
-                    { htmlFor: this.props.htmlFor, className: 'form-group__label' },
+                    "select",
+                    { id: this.props.data, name: this.props.data, onChange: function onChange(event) {
+                            return _this3.onChange(event, needCallback, checkValue);
+                        } },
+                    options.map(function (item, index) {
+                        return React.createElement(
+                            "option",
+                            { value: item.value, key: index },
+                            item.label
+                        );
+                    })
+                ),
+                React.createElement(
+                    "label",
+                    { htmlFor: this.props.data, className: "form-group__label" },
                     this.props.label
                 )
             );
         }
     }]);
 
-    return FormGroupElements;
-}(React.Component);
-
-var Select = function (_React$Component3) {
-    _inherits(Select, _React$Component3);
-
-    function Select() {
-        _classCallCheck(this, Select);
-
-        var _this3 = _possibleConstructorReturn(this, (Select.__proto__ || Object.getPrototypeOf(Select)).call(this));
-
-        _this3.onChange = _this3.onChange.bind(_this3);
-        return _this3;
-    }
-
-    _createClass(Select, [{
-        key: 'onChange',
-        value: function onChange(event) {
-            console.log(event.target.value);
-        }
-    }, {
-        key: 'render',
-        value: function render() {
-            var options = this.props.options;
-            return React.createElement(
-                'select',
-                { id: this.props.id, name: this.props.name, onChange: this.onChange },
-                options.map(function (item, index) {
-                    return React.createElement(
-                        'option',
-                        { value: item.value, key: index },
-                        item.label
-                    );
-                })
-            );
-        }
-    }]);
-
-    return Select;
+    return FormGroupSelect;
 }(React.Component);
 
 export default StartGame;
