@@ -55,15 +55,21 @@ class StartGame extends React.Component{
 
         if (this.state.dataFromChild) {      
             friendSelect = (
-                <FormGroupSelect data="friend" options={this.state.friendsOptions} label="Amici" needCallback="false"/>
+                <FormGroupSelect className={this.state.dataFromChild? "col-lg-6" : "col-lg-2"} 
+                data="friend" options={this.state.friendsOptions} label="Amici" needCallback="false"/>
             ); 
         }
 
         return (
             <div className="form__group">
-                <FormGroupSelect data="color" options={colorOptions} label="Colore" needCallback="false"/>
-                <FormGroupSelect data="opponent" options={opponentOptions} label="Sfidante" needCallback="true" parentCallback = {this.handleCallback} checkValue="friend"/>
-                {friendSelect}
+                <FormGroupSelect data="color" options={colorOptions} label="Colore" needCallback="false" className=""/>
+                
+                <FormGroupSelect data="opponent" options={opponentOptions} label="Sfidante" className=""
+                needCallback="true" parentCallback = {this.handleCallback} checkValue="friend"/>
+                
+                <FormGroupSelect className={this.state.dataFromChild ? "visibility-visible" : "visibility-hidden"}  data="friend" 
+                options={this.state.friendsOptions} label="Amici" needCallback="false"/>
+                
                 <StartGameButton userId={this.state.userId} />
             </div>
         )
@@ -95,7 +101,7 @@ class FormGroupSelect extends React.Component{
         const checkValue = this.props.checkValue;
 
         return (
-            <div className="form__group__wrapper">
+            <div className={"form__group__wrapper " + this.props.className}>
                 <select id={this.props.data} name={this.props.data} onChange={(event) => this.onChange(event,needCallback,checkValue)}>
                     {options.map((item, index) => {
                         return <option value={item.value} key={index}>{item.label}</option>;

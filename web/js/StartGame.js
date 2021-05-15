@@ -63,15 +63,18 @@ var StartGame = function (_React$Component) {
             var friendSelect = void 0;
 
             if (this.state.dataFromChild) {
-                friendSelect = React.createElement(FormGroupSelect, { data: 'friend', options: this.state.friendsOptions, label: 'Amici', needCallback: 'false' });
+                friendSelect = React.createElement(FormGroupSelect, { className: this.state.dataFromChild ? "col-lg-6" : "col-lg-2",
+                    data: 'friend', options: this.state.friendsOptions, label: 'Amici', needCallback: 'false' });
             }
 
             return React.createElement(
                 'div',
                 { className: 'form__group' },
-                React.createElement(FormGroupSelect, { data: 'color', options: colorOptions, label: 'Colore', needCallback: 'false' }),
-                React.createElement(FormGroupSelect, { data: 'opponent', options: opponentOptions, label: 'Sfidante', needCallback: 'true', parentCallback: this.handleCallback, checkValue: 'friend' }),
-                friendSelect,
+                React.createElement(FormGroupSelect, { data: 'color', options: colorOptions, label: 'Colore', needCallback: 'false', className: '' }),
+                React.createElement(FormGroupSelect, { data: 'opponent', options: opponentOptions, label: 'Sfidante', className: '',
+                    needCallback: 'true', parentCallback: this.handleCallback, checkValue: 'friend' }),
+                React.createElement(FormGroupSelect, { className: this.state.dataFromChild ? "visibility-visible" : "visibility-hidden", data: 'friend',
+                    options: this.state.friendsOptions, label: 'Amici', needCallback: 'false' }),
                 React.createElement(StartGameButton, { userId: this.state.userId })
             );
         }
@@ -118,7 +121,7 @@ var FormGroupSelect = function (_React$Component2) {
 
             return React.createElement(
                 'div',
-                { className: 'form__group__wrapper' },
+                { className: "form__group__wrapper " + this.props.className },
                 React.createElement(
                     'select',
                     { id: this.props.data, name: this.props.data, onChange: function onChange(event) {
