@@ -73,16 +73,27 @@ var FormGroupInputEmail = function (_React$Component2) {
     function FormGroupInputEmail(props) {
         _classCallCheck(this, FormGroupInputEmail);
 
-        return _possibleConstructorReturn(this, (FormGroupInputEmail.__proto__ || Object.getPrototypeOf(FormGroupInputEmail)).call(this, props));
+        var _this2 = _possibleConstructorReturn(this, (FormGroupInputEmail.__proto__ || Object.getPrototypeOf(FormGroupInputEmail)).call(this, props));
+
+        _this2.state = {
+            value: "dario.brambilla@finconsgroup.com"
+        };
+        _this2.handleChange = _this2.handleChange.bind(_this2);
+        return _this2;
     }
 
     _createClass(FormGroupInputEmail, [{
+        key: 'handleChange',
+        value: function handleChange(event) {
+            this.setState({ value: event.target.value });
+        }
+    }, {
         key: 'render',
         value: function render() {
             return React.createElement(
                 'div',
                 { className: 'form__group__wrapper' },
-                React.createElement('input', { type: 'email', id: this.props.id, name: this.props.id, value: 'dario.brambilla@finconsgroup.com', required: true }),
+                React.createElement('input', { type: 'email', id: this.props.id, name: this.props.id, value: this.state.value, onChange: this.handleChange, required: true }),
                 React.createElement(
                     'label',
                     { htmlFor: this.props.id, className: 'form-group__label' },
@@ -101,16 +112,27 @@ var FormGroupInputPwd = function (_React$Component3) {
     function FormGroupInputPwd(props) {
         _classCallCheck(this, FormGroupInputPwd);
 
-        return _possibleConstructorReturn(this, (FormGroupInputPwd.__proto__ || Object.getPrototypeOf(FormGroupInputPwd)).call(this, props));
+        var _this3 = _possibleConstructorReturn(this, (FormGroupInputPwd.__proto__ || Object.getPrototypeOf(FormGroupInputPwd)).call(this, props));
+
+        _this3.state = {
+            value: "a7S+R%!(eawX"
+        };
+        _this3.handleChange = _this3.handleChange.bind(_this3);
+        return _this3;
     }
 
     _createClass(FormGroupInputPwd, [{
+        key: 'handleChange',
+        value: function handleChange(event) {
+            this.setState({ value: event.target.value });
+        }
+    }, {
         key: 'render',
         value: function render() {
             return React.createElement(
                 'div',
                 { className: 'form__group__wrapper' },
-                React.createElement('input', { type: 'password', id: this.props.id, name: this.props.id, minLength: '8', value: 'a7S+R%!(eawX', required: true }),
+                React.createElement('input', { type: 'password', id: this.props.id, name: this.props.id, minLength: '8', value: this.state.value, onChange: this.handleChange, required: true }),
                 React.createElement(
                     'label',
                     { htmlFor: this.props.id, className: 'form-group__label' },
