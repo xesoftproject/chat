@@ -37,26 +37,7 @@
                             <input type="radio" id="registrazione" name="accesso-portale">
                             <label class="tabs__element__label" for="registrazione">Registrati</label>
                             <div class="tabs__content">
-                                <div class="form__group">
-                                    <div class="form__group__wrapper">
-                                        <input type="text" id="nickname" value="test_01" required>
-                                        <label for="email" class="form-group__label">Nickname</label>
-                                    </div>
-                                    <div class="form__group__wrapper">
-                                        <input type="email" id="email" value="ldlipanmeppmiilvoi@kiabws.com" required>
-                                        <label for="email" class="form-group__label">Email</label>
-                                    </div>
-                                    <div class="form__group__wrapper">
-                                        <input type="password" id="pass" name="password" minlength="8" value="pippo2021:" required>
-                                        <label for="pass" class="form-group__label">Password</label>
-                                    </div>
-                                </div>
-                                <div class="">
-                                    <button onclick="signUp()">Dario Registrati</button>
-                                </div>
-                                <div class="button__wrapper">
-                                    <button class="button__content">Registrati</button>
-                                </div>
+                                <form id="registrazione-form"></form>
                             </div>
                         </div>
                     </div>
@@ -64,7 +45,7 @@
             </div>
         </div>
     </article>
-    <form>
+    <!--form>
         <h1>Please sign in</h1>
         <input type="text" id="inputUsername" placeholder="Email address" name="username" value="" required autofocus>
         <input type="password" id="inputPassword" placeholder="Password" name="password" value="a7S+R%!(eawX" required>
@@ -84,7 +65,7 @@
 
         <h4>Refresh Token</h4>
         <div id="divRefreshTokenJwt" style="width: 1024px; overflow-x: scroll; border: 1px solid black;"></div>
-    </form>
+    </form-->
     <footer class="footer-wrapper">
         <div class="grid-container">
             <div class="grid-cl-4-mobile grid-cl-12-tablet grid-cl-12-desktop">
@@ -107,7 +88,7 @@
 
 
 
-<script>
+<!--script>
 
    function refreshToken() {
         var poolData = {
@@ -203,12 +184,6 @@
         });
     }
 
-    function signUp() {
-        data = {'email':document.getElementById("email").value,'nickname':document.getElementById("nickname").value, 'pass': document.getElementById("pass").value}
-        $.post('/user/signup', data, function(response) {
-            alert(response);
-        });
-    }
 
     function loginOK(result) {
         $("#divAccessTokenJwt").html(result.accessToken.jwtToken).fadeOut("500", function () {
@@ -271,6 +246,6 @@
         });
     }
 
-</script>
+</script-->
 
 </html>

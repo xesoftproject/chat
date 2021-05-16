@@ -39,7 +39,7 @@ class FormGroupInputEmail extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            value: "dario.brambilla@finconsgroup.com"
+            value: ""
         };
         this.handleChange = this.handleChange.bind(this);
     }
@@ -63,7 +63,7 @@ class FormGroupInputPwd extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            value: "a7S+R%!(eawX"
+            value: ""
         };
         this.handleChange = this.handleChange.bind(this);
     }
@@ -82,4 +82,27 @@ class FormGroupInputPwd extends React.Component {
     }
 }
 
-export {FormGroupSelect,FormGroupInputEmail,FormGroupInputPwd};
+class FormGroupInputText extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            value: ""
+        };
+        this.handleChange = this.handleChange.bind(this);
+    }
+
+    handleChange(event) {    
+        this.setState({value: event.target.value});  
+    }
+  
+    render() {
+        return (
+            <div className="form__group__wrapper">
+                <input type="text" id={this.props.id} name={this.props.id} value={this.state.value} onChange={this.handleChange} required/>
+                <label htmlFor={this.props.id} className="form-group__label">{this.props.label}</label>
+            </div>
+        )
+    }
+}
+
+export {FormGroupSelect,FormGroupInputEmail,FormGroupInputPwd,FormGroupInputText};

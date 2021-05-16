@@ -9,5 +9,5 @@ ReactDOM.render(
 
 ReactDOM.render(
     <Registrazione />,
-    document.getElementById('registrazione')
+    document.getElementById('registrazione-form')
 );

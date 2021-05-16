@@ -29,9 +29,8 @@ var Login = function (_React$Component) {
         key: 'componentDidMount',
         value: function componentDidMount() {
 
-            /*TO DO
-              settare i valori delle statistiche, l'icona utente
-            */
+            console.log("Nome Utente: dario.brambilla@finconsgroup.com");
+            console.log("Password Utente: a7S+R%!(eawX");
 
             var poolData = {
                 UserPoolId: "eu-west-1_BOr6IaBxC", // Your user pool id here
@@ -45,11 +44,11 @@ var Login = function (_React$Component) {
 
             if (cognitoUser == null) {
                 console.log("user not found");
-            } else {
-                cognitoUser.getSession(function (err, session) {
-                    loginOK(session);
-                });
-            }
+            } /*else{
+                 cognitoUser.getSession(function (err, session) {
+                     loginOK(session);
+                 });
+              }*/
         }
     }, {
         key: 'render',
@@ -57,8 +56,8 @@ var Login = function (_React$Component) {
             return React.createElement(
                 'div',
                 { className: 'form__group' },
-                React.createElement(FormGroupInputEmail, { id: 'emailSignIn', label: 'Email' }),
-                React.createElement(FormGroupInputPwd, { id: 'passwordSignIn', label: 'Password' }),
+                React.createElement(FormGroupInputEmail, { id: 'emailLogIn', label: 'Email' }),
+                React.createElement(FormGroupInputPwd, { id: 'passwordLogIn', label: 'Password' }),
                 React.createElement(LoginButton, null)
             );
         }
@@ -75,20 +74,20 @@ var LoginButton = function (_React$Component2) {
 
         var _this2 = _possibleConstructorReturn(this, (LoginButton.__proto__ || Object.getPrototypeOf(LoginButton)).call(this, props));
 
-        _this2.onClick = _this2.signInButton.bind(_this2);
+        _this2.onClick = _this2.logInButton.bind(_this2);
         return _this2;
     }
 
     _createClass(LoginButton, [{
-        key: 'signInButton',
-        value: function signInButton(event) {
+        key: 'logInButton',
+        value: function logInButton(event) {
             event.preventDefault();
 
             var formData = new FormData(event.target.form);
 
             var authenticationData = {
-                Username: formData.get("emailSignIn"),
-                Password: formData.get("passwordSignIn")
+                Username: formData.get("emailLogIn"),
+                Password: formData.get("passwordLogIn")
             };
 
             var authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails(authenticationData);
@@ -103,7 +102,7 @@ var LoginButton = function (_React$Component2) {
             console.log('userpool: ' + JSON.stringify(userPool));
 
             var userData = {
-                Username: formData.get("emailSignIn"),
+                Username: formData.get("emailLogIn"),
                 Pool: userPool,
                 Storage: new AmazonCognitoIdentity.CookieStorage({ domain: location.hostname })
             };
@@ -138,7 +137,7 @@ var LoginButton = function (_React$Component2) {
                 { className: 'button__wrapper' },
                 React.createElement(
                     'button',
-                    { onClick: this.signInButton, className: 'button__content' },
+                    { onClick: this.logInButton, className: 'button__content' },
                     'Accedi'
                 )
             );

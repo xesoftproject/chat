@@ -79,7 +79,7 @@ var FormGroupInputEmail = function (_React$Component2) {
         var _this3 = _possibleConstructorReturn(this, (FormGroupInputEmail.__proto__ || Object.getPrototypeOf(FormGroupInputEmail)).call(this, props));
 
         _this3.state = {
-            value: "dario.brambilla@finconsgroup.com"
+            value: ""
         };
         _this3.handleChange = _this3.handleChange.bind(_this3);
         return _this3;
@@ -118,7 +118,7 @@ var FormGroupInputPwd = function (_React$Component3) {
         var _this4 = _possibleConstructorReturn(this, (FormGroupInputPwd.__proto__ || Object.getPrototypeOf(FormGroupInputPwd)).call(this, props));
 
         _this4.state = {
-            value: "a7S+R%!(eawX"
+            value: ""
         };
         _this4.handleChange = _this4.handleChange.bind(_this4);
         return _this4;
@@ -148,4 +148,43 @@ var FormGroupInputPwd = function (_React$Component3) {
     return FormGroupInputPwd;
 }(React.Component);
 
-export { FormGroupSelect, FormGroupInputEmail, FormGroupInputPwd };
+var FormGroupInputText = function (_React$Component4) {
+    _inherits(FormGroupInputText, _React$Component4);
+
+    function FormGroupInputText(props) {
+        _classCallCheck(this, FormGroupInputText);
+
+        var _this5 = _possibleConstructorReturn(this, (FormGroupInputText.__proto__ || Object.getPrototypeOf(FormGroupInputText)).call(this, props));
+
+        _this5.state = {
+            value: ""
+        };
+        _this5.handleChange = _this5.handleChange.bind(_this5);
+        return _this5;
+    }
+
+    _createClass(FormGroupInputText, [{
+        key: "handleChange",
+        value: function handleChange(event) {
+            this.setState({ value: event.target.value });
+        }
+    }, {
+        key: "render",
+        value: function render() {
+            return React.createElement(
+                "div",
+                { className: "form__group__wrapper" },
+                React.createElement("input", { type: "text", id: this.props.id, name: this.props.id, value: this.state.value, onChange: this.handleChange, required: true }),
+                React.createElement(
+                    "label",
+                    { htmlFor: this.props.id, className: "form-group__label" },
+                    this.props.label
+                )
+            );
+        }
+    }]);
+
+    return FormGroupInputText;
+}(React.Component);
+
+export { FormGroupSelect, FormGroupInputEmail, FormGroupInputPwd, FormGroupInputText };

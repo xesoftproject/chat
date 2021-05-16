@@ -14,12 +14,11 @@ class Login extends React.Component {
 
   componentDidMount() {
     
-    /*TO DO
-      settare i valori delle statistiche, l'icona utente
-    */
+    console.log("Nome Utente: dario.brambilla@finconsgroup.com")
+    console.log("Password Utente: a7S+R%!(eawX")
 
 
-      var poolData = {
+    var poolData = {
         UserPoolId: "eu-west-1_BOr6IaBxC", // Your user pool id here
         ClientId: "6vligtquo88fguj7e5dsr6mlmj", // Your client id here
         Storage: new AmazonCognitoIdentity.CookieStorage({domain: location.hostname})
@@ -32,18 +31,18 @@ class Login extends React.Component {
     if (cognitoUser == null) {
         console.log("user not found");
         
-    }else{
+    }/*else{
         cognitoUser.getSession(function (err, session) {
             loginOK(session);
         });
-    }
+    }*/
   }
 
   render() {
     return (
         <div className="form__group">
-            <FormGroupInputEmail id="emailSignIn" label="Email"/>
-            <FormGroupInputPwd id="passwordSignIn" label="Password"/>
+            <FormGroupInputEmail id="emailLogIn" label="Email"/>
+            <FormGroupInputPwd id="passwordLogIn" label="Password"/>
             <LoginButton />
         </div>
     )
@@ -53,17 +52,17 @@ class Login extends React.Component {
 class LoginButton extends React.Component{
     constructor(props) {
         super(props);
-        this.onClick = this.signInButton.bind(this);
+        this.onClick = this.logInButton.bind(this);
     }
 
-    signInButton(event) {
+    logInButton(event) {
         event.preventDefault();
         
         const formData = new FormData(event.target.form);
 
         var authenticationData = {
-            Username: formData.get("emailSignIn"),
-            Password: formData.get("passwordSignIn")
+            Username: formData.get("emailLogIn"),
+            Password: formData.get("passwordLogIn")
         };
 
         var authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails(authenticationData);
@@ -78,7 +77,7 @@ class LoginButton extends React.Component{
         console.log('userpool: ' + JSON.stringify(userPool))
 
         var userData = {
-            Username: formData.get("emailSignIn"),
+            Username: formData.get("emailLogIn"),
             Pool: userPool,
             Storage: new AmazonCognitoIdentity.CookieStorage({domain: location.hostname})
         };
@@ -111,7 +110,7 @@ class LoginButton extends React.Component{
     render(){
         return (
             <div className="button__wrapper">
-                <button onClick={this.signInButton} className="button__content">Accedi</button>
+                <button onClick={this.logInButton} className="button__content">Accedi</button>
             </div>
         )
     }

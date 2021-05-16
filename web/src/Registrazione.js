@@ -1,127 +1,45 @@
 'use strict';
 
-import { get_username } from './cognitoclient.js';
+import {FormGroupInputText,FormGroupInputEmail,FormGroupInputPwd} from './FormComponent.js';
 
 class Registrazione extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      userId: null,
-      password:null
-    };
   }
 
   componentDidMount() {
-    this.setState({userName: get_username()});
-    /*TO DO
-      settare i valori delle statistiche, l'icona utente
-    */
-
-
+    console.log("Nome Utente: test_01")
+    console.log("Email Utente: ldlipanmeppmiilvoi@kiabws.com")
+    console.log("Password Utente: pippo2021:")
   }
 
   render() {
     return (
         <div className="form__group">
+            <FormGroupInputText id="nicknameSignIn" label="Nickname"/>
             <FormGroupInputEmail id="emailSignIn" label="Email"/>
             <FormGroupInputPwd id="passwordSignIn" label="Password"/>
-            <LoginButton />
+            <SignInButton />
         </div>
     )
   }
 }
 
-class FormGroupInputEmail extends React.Component {
+class SignInButton extends React.Component{
     constructor(props) {
         super(props);
-    }
-  
-    render() {
-        return (
-            <div className="form__group__wrapper">
-                <input type="email" id={this.props.id} name={this.props.id} required/>
-                <label htmlFor={this.props.id} className="form-group__label">{this.props.label}</label>
-            </div>
-        )
-    }
-}
-
-class FormGroupInputPwd extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-  
-    render() {
-        return (
-            <div className="form__group__wrapper">
-                <input type="password" id={this.props.id} name={this.props.id} minLength="8" required/>
-                <label htmlFor={this.props.id} className="form-group__label">{this.props.label}</label>
-            </div>
-        )
-    }
-}
-
-class LoginButton extends React.Component{
-    constructor(props) {
-        super(props);
-        this.onClick = this.registration.bind(this);
+        this.onClick = this.signInButton.bind(this);
     }
 
-    registration(event) {
+    signInButton(event) {
         event.preventDefault();
         
         const formData = new FormData(event.target.form);
 
-        var authenticationData = {
-            Username: formData.get("emailSignIn"),
-            Password: formData.get("passwordSignIn")
-        };
-
-        var authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails(authenticationData);
-
-        var poolData = {
-            UserPoolId: "eu-west-1_BOr6IaBxC", // Your user pool id here
-            ClientId: "6vligtquo88fguj7e5dsr6mlmj", // Your client id here
-        };
-
-        var userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
-
-        console.log('userpool: ' + JSON.stringify(userPool))
-
-        var userData = {
-            Username: formData.get("emailSignIn"),
-            Pool: userPool,
-            Storage: new AmazonCognitoIdentity.CookieStorage({domain: location.hostname})
-        };
-
-        var cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
-
-        cognitoUser.authenticateUser(authenticationDetails, {
-            onSuccess: function (result) {
-                alert("authenticateUser onSuccess");
-                console.log("authenticateUser onSuccess", result);
-                loginOK(result);
-                localStorage.setItem("xejwt", result.idToken.jwtToken);
-                console.log("xejwt: "+localStorage.getItem("xejwt"));
-                
-                AmazonCognitoIdentity.CookieSto
-                
-                
-                window.location = '/home.html';
-            },
-
-            onFailure: function (err) {
-                alert("authenticateUser onFailure" + JSON.stringify(err));
-                console.log("authenticateUser onFailure", err);
-                loginKO(err);
-            },
-
-            newPasswordRequired: function (userAttributes, requiredAttributes) {
-                var newPassword = prompt('Enter new password ', '');
-                console.log("newPasswordRequired", userAttributes, requiredAttributes);
-                cognitoUser.completeNewPasswordChallenge(newPassword, null, this)
-
-            }
+        const data = {'email':formData.get("emailSignIn"),'nickname':formData.get("nicknameSignIn"), 'pass': formData.get("passwordSignIn")}
+        $.post('/user/signup', data, function(response) {
+            alert(response);
+            window.location = '/home.html';
         });
 		
     }
@@ -129,7 +47,7 @@ class LoginButton extends React.Component{
     render(){
         return (
             <div className="button__wrapper">
-                <button onClick={this.registration} className="button__content">Accedi</button>
+                <button onClick={this.signInButton} className="button__content">REGISTRATI</button>
             </div>
         )
     }
