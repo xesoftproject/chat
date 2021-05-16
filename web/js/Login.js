@@ -8,7 +8,7 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-import { get_username } from './cognitoclient.js';
+import { FormGroupInputEmail, FormGroupInputPwd } from './FormComponent.js';
 
 var Login = function (_React$Component) {
     _inherits(Login, _React$Component);
@@ -67,94 +67,16 @@ var Login = function (_React$Component) {
     return Login;
 }(React.Component);
 
-var FormGroupInputEmail = function (_React$Component2) {
-    _inherits(FormGroupInputEmail, _React$Component2);
-
-    function FormGroupInputEmail(props) {
-        _classCallCheck(this, FormGroupInputEmail);
-
-        var _this2 = _possibleConstructorReturn(this, (FormGroupInputEmail.__proto__ || Object.getPrototypeOf(FormGroupInputEmail)).call(this, props));
-
-        _this2.state = {
-            value: "dario.brambilla@finconsgroup.com"
-        };
-        _this2.handleChange = _this2.handleChange.bind(_this2);
-        return _this2;
-    }
-
-    _createClass(FormGroupInputEmail, [{
-        key: 'handleChange',
-        value: function handleChange(event) {
-            this.setState({ value: event.target.value });
-        }
-    }, {
-        key: 'render',
-        value: function render() {
-            return React.createElement(
-                'div',
-                { className: 'form__group__wrapper' },
-                React.createElement('input', { type: 'email', id: this.props.id, name: this.props.id, value: this.state.value, onChange: this.handleChange, required: true }),
-                React.createElement(
-                    'label',
-                    { htmlFor: this.props.id, className: 'form-group__label' },
-                    this.props.label
-                )
-            );
-        }
-    }]);
-
-    return FormGroupInputEmail;
-}(React.Component);
-
-var FormGroupInputPwd = function (_React$Component3) {
-    _inherits(FormGroupInputPwd, _React$Component3);
-
-    function FormGroupInputPwd(props) {
-        _classCallCheck(this, FormGroupInputPwd);
-
-        var _this3 = _possibleConstructorReturn(this, (FormGroupInputPwd.__proto__ || Object.getPrototypeOf(FormGroupInputPwd)).call(this, props));
-
-        _this3.state = {
-            value: "a7S+R%!(eawX"
-        };
-        _this3.handleChange = _this3.handleChange.bind(_this3);
-        return _this3;
-    }
-
-    _createClass(FormGroupInputPwd, [{
-        key: 'handleChange',
-        value: function handleChange(event) {
-            this.setState({ value: event.target.value });
-        }
-    }, {
-        key: 'render',
-        value: function render() {
-            return React.createElement(
-                'div',
-                { className: 'form__group__wrapper' },
-                React.createElement('input', { type: 'password', id: this.props.id, name: this.props.id, minLength: '8', value: this.state.value, onChange: this.handleChange, required: true }),
-                React.createElement(
-                    'label',
-                    { htmlFor: this.props.id, className: 'form-group__label' },
-                    this.props.label
-                )
-            );
-        }
-    }]);
-
-    return FormGroupInputPwd;
-}(React.Component);
-
-var LoginButton = function (_React$Component4) {
-    _inherits(LoginButton, _React$Component4);
+var LoginButton = function (_React$Component2) {
+    _inherits(LoginButton, _React$Component2);
 
     function LoginButton(props) {
         _classCallCheck(this, LoginButton);
 
-        var _this4 = _possibleConstructorReturn(this, (LoginButton.__proto__ || Object.getPrototypeOf(LoginButton)).call(this, props));
+        var _this2 = _possibleConstructorReturn(this, (LoginButton.__proto__ || Object.getPrototypeOf(LoginButton)).call(this, props));
 
-        _this4.onClick = _this4.signInButton.bind(_this4);
-        return _this4;
+        _this2.onClick = _this2.signInButton.bind(_this2);
+        return _this2;
     }
 
     _createClass(LoginButton, [{

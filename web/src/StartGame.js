@@ -4,6 +4,8 @@ import { PATH_GAME, QUERY_PARAMS_GAME_ID } from './constants.js';
 import { start_new_game } from './moves-rest-client.js';
 import { get_username } from './cognitoclient.js';
 
+import {FormGroupSelect} from './FormComponent.js';
+
 class StartGame extends React.Component{
     constructor(props) {
         super(props);
@@ -62,43 +64,6 @@ class StartGame extends React.Component{
                 options={this.state.friendsOptions} label="Amici" needCallback="false"/>
                 
                 <StartGameButton userId={this.state.userId} />
-            </div>
-        )
-    }
-}
-
-class FormGroupSelect extends React.Component{
-    constructor() {
-        super();
-        this.onChange = this.onChange.bind(this);
-    }
-    
-    onChange(event,needCallback,checkValue) {
-        console.log(needCallback)
-        needCallback = (needCallback == 'true')
-        if(needCallback){
-            if(event.target.value === checkValue){
-                this.props.parentCallback(true);
-            }else{
-                this.props.parentCallback(false);
-            }
-        }
-
-        event.preventDefault();
-    }
-    render(){
-        const options = this.props.options;
-        const needCallback = this.props.needCallback;
-        const checkValue = this.props.checkValue;
-
-        return (
-            <div className={"form__group__wrapper " + this.props.className}>
-                <select id={this.props.data} name={this.props.data} onChange={(event) => this.onChange(event,needCallback,checkValue)}>
-                    {options.map((item, index) => {
-                        return <option value={item.value} key={index}>{item.label}</option>;
-                    })}
-                </select>
-                <label htmlFor={this.props.data} className="form-group__label">{this.props.label}</label>
             </div>
         )
     }

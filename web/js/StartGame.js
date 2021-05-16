@@ -12,6 +12,8 @@ import { PATH_GAME, QUERY_PARAMS_GAME_ID } from './constants.js';
 import { start_new_game } from './moves-rest-client.js';
 import { get_username } from './cognitoclient.js';
 
+import { FormGroupSelect } from './FormComponent.js';
+
 var StartGame = function (_React$Component) {
     _inherits(StartGame, _React$Component);
 
@@ -76,80 +78,16 @@ var StartGame = function (_React$Component) {
     return StartGame;
 }(React.Component);
 
-var FormGroupSelect = function (_React$Component2) {
-    _inherits(FormGroupSelect, _React$Component2);
-
-    function FormGroupSelect() {
-        _classCallCheck(this, FormGroupSelect);
-
-        var _this2 = _possibleConstructorReturn(this, (FormGroupSelect.__proto__ || Object.getPrototypeOf(FormGroupSelect)).call(this));
-
-        _this2.onChange = _this2.onChange.bind(_this2);
-        return _this2;
-    }
-
-    _createClass(FormGroupSelect, [{
-        key: 'onChange',
-        value: function onChange(event, needCallback, checkValue) {
-            console.log(needCallback);
-            needCallback = needCallback == 'true';
-            if (needCallback) {
-                if (event.target.value === checkValue) {
-                    this.props.parentCallback(true);
-                } else {
-                    this.props.parentCallback(false);
-                }
-            }
-
-            event.preventDefault();
-        }
-    }, {
-        key: 'render',
-        value: function render() {
-            var _this3 = this;
-
-            var options = this.props.options;
-            var needCallback = this.props.needCallback;
-            var checkValue = this.props.checkValue;
-
-            return React.createElement(
-                'div',
-                { className: "form__group__wrapper " + this.props.className },
-                React.createElement(
-                    'select',
-                    { id: this.props.data, name: this.props.data, onChange: function onChange(event) {
-                            return _this3.onChange(event, needCallback, checkValue);
-                        } },
-                    options.map(function (item, index) {
-                        return React.createElement(
-                            'option',
-                            { value: item.value, key: index },
-                            item.label
-                        );
-                    })
-                ),
-                React.createElement(
-                    'label',
-                    { htmlFor: this.props.data, className: 'form-group__label' },
-                    this.props.label
-                )
-            );
-        }
-    }]);
-
-    return FormGroupSelect;
-}(React.Component);
-
-var StartGameButton = function (_React$Component3) {
-    _inherits(StartGameButton, _React$Component3);
+var StartGameButton = function (_React$Component2) {
+    _inherits(StartGameButton, _React$Component2);
 
     function StartGameButton(props) {
         _classCallCheck(this, StartGameButton);
 
-        var _this4 = _possibleConstructorReturn(this, (StartGameButton.__proto__ || Object.getPrototypeOf(StartGameButton)).call(this, props));
+        var _this2 = _possibleConstructorReturn(this, (StartGameButton.__proto__ || Object.getPrototypeOf(StartGameButton)).call(this, props));
 
-        _this4.onClick = _this4.onClick.bind(_this4);
-        return _this4;
+        _this2.onClick = _this2.onClick.bind(_this2);
+        return _this2;
     }
 
     _createClass(StartGameButton, [{

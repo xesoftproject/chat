@@ -1,6 +1,7 @@
 'use strict';
 
-import { get_username } from './cognitoclient.js';
+import {FormGroupInputEmail,FormGroupInputPwd} from './FormComponent.js';
+
 
 class Login extends React.Component {
   constructor(props) {
@@ -36,9 +37,6 @@ class Login extends React.Component {
             loginOK(session);
         });
     }
-
-    
-
   }
 
   render() {
@@ -50,53 +48,6 @@ class Login extends React.Component {
         </div>
     )
   }
-}
-
-class FormGroupInputEmail extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            value: "dario.brambilla@finconsgroup.com"
-        };
-        this.handleChange = this.handleChange.bind(this);
-    }
-
-    
-    handleChange(event) {    
-        this.setState({value: event.target.value});  
-    }
-  
-    render() {
-        return (
-            <div className="form__group__wrapper">
-                <input type="email" id={this.props.id} name={this.props.id} value={this.state.value} onChange={this.handleChange} required/>
-                <label htmlFor={this.props.id} className="form-group__label">{this.props.label}</label>
-            </div>
-        )
-    }
-}
-
-class FormGroupInputPwd extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            value: "a7S+R%!(eawX"
-        };
-        this.handleChange = this.handleChange.bind(this);
-    }
-
-    handleChange(event) {    
-        this.setState({value: event.target.value});  
-    }
-  
-    render() {
-        return (
-            <div className="form__group__wrapper">
-                <input type="password" id={this.props.id} name={this.props.id} minLength="8" value={this.state.value} onChange={this.handleChange} required/>
-                <label htmlFor={this.props.id} className="form-group__label">{this.props.label}</label>
-            </div>
-        )
-    }
 }
 
 class LoginButton extends React.Component{
