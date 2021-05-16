@@ -60,13 +60,6 @@ var StartGame = function (_React$Component) {
             var colorOptions = [{ value: 'white', label: 'Bianco' }, { value: 'black', label: 'Nero' }];
             var opponentOptions = [{ value: 'cpu', label: 'CPU' }, { value: 'friend', label: 'Amico' }];
 
-            var friendSelect = void 0;
-
-            if (this.state.dataFromChild) {
-                friendSelect = React.createElement(FormGroupSelect, { className: this.state.dataFromChild ? "col-lg-6" : "col-lg-2",
-                    data: 'friend', options: this.state.friendsOptions, label: 'Amici', needCallback: 'false' });
-            }
-
             return React.createElement(
                 'div',
                 { className: 'form__group' },
