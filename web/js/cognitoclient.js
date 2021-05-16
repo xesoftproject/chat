@@ -8,4 +8,4 @@ const get_username = () => {
 	return COGNITO_USER_POOL.getCurrentUser() ? COGNITO_USER_POOL.getCurrentUser().username : null;
 };
 
-export { get_username };
+export { get_username, COGNITO_USER_POOL};

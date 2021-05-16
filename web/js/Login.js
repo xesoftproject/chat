@@ -9,6 +9,7 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 import { FormGroupInputEmail, FormGroupInputPwd } from './FormComponent.js';
+import { COGNITO_USER_POOL } from './cognitoclient.js';
 
 var Login = function (_React$Component) {
     _inherits(Login, _React$Component);
@@ -32,17 +33,15 @@ var Login = function (_React$Component) {
             console.log("Nome Utente: dario.brambilla@finconsgroup.com");
             console.log("Password Utente: a7S+R%!(eawX");
 
-            var poolData = {
+            /*var poolData = {
                 UserPoolId: "eu-west-1_BOr6IaBxC", // Your user pool id here
                 ClientId: "6vligtquo88fguj7e5dsr6mlmj", // Your client id here
-                Storage: new AmazonCognitoIdentity.CookieStorage({ domain: location.hostname })
+                Storage: new AmazonCognitoIdentity.CookieStorage({domain: location.hostname})
             };
-
-            var userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
-
-            var cognitoUser = userPool.getCurrentUser();
-
-            if (cognitoUser == null) {
+              var userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
+              var cognitoUser = userPool.getCurrentUser();
+              if (cognitoUser == null) {*/
+            if (COGNITO_USER_POOL.getCurrentUser() == null) {
                 console.log("user not found");
             } /*else{
                  cognitoUser.getSession(function (err, session) {

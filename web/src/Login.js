@@ -1,7 +1,7 @@
 'use strict';
 
 import {FormGroupInputEmail,FormGroupInputPwd} from './FormComponent.js';
-
+import {COGNITO_USER_POOL} from './cognitoclient.js';
 
 class Login extends React.Component {
   constructor(props) {
@@ -17,8 +17,7 @@ class Login extends React.Component {
     console.log("Nome Utente: dario.brambilla@finconsgroup.com")
     console.log("Password Utente: a7S+R%!(eawX")
 
-
-    var poolData = {
+    /*var poolData = {
         UserPoolId: "eu-west-1_BOr6IaBxC", // Your user pool id here
         ClientId: "6vligtquo88fguj7e5dsr6mlmj", // Your client id here
         Storage: new AmazonCognitoIdentity.CookieStorage({domain: location.hostname})
@@ -28,7 +27,8 @@ class Login extends React.Component {
 
     var cognitoUser = userPool.getCurrentUser();
 
-    if (cognitoUser == null) {
+    if (cognitoUser == null) {*/
+    if (COGNITO_USER_POOL.getCurrentUser() == null) {
         console.log("user not found");
         
     }/*else{
