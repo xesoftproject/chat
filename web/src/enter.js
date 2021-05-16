@@ -4,7 +4,7 @@ import Registrazione from './Registrazione.js';
 
 ReactDOM.render(
     <Login />,
-    document.getElementById('login')
+    document.getElementById('login-form')
 );
 
 ReactDOM.render(

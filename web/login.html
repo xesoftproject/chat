@@ -26,22 +26,10 @@
                 <div class="content-wrapper">
                     <div class="tabs__wrapper">
                         <div class="tabs__element">
-                            <input type="radio" id="login" name="acesso-portale" checked>
+                            <input type="radio" id="login" name="accesso-portale" checked>
                             <label class="tabs__element__label" for="login">Accedi</label>
                             <div class="tabs__content">
-                                <div class="form__group">
-                                    <div class="form__group__wrapper">
-                                        <input type="email" id="emailSignIn" value="dario.brambilla@finconsgroup.com" required>
-                                        <label for="email" class="form-group__label">Email</label>
-                                    </div>
-                                    <div class="form__group__wrapper">
-                                        <input type="password" id="passwordSignIn" name="password" minlength="8" value="a7S+R%!(eawX" required>
-                                        <label for="pass" class="form-group__label">Password</label>
-                                    </div>
-                                </div>
-                                <div class="button__wrapper">
-                                    <button class="button__content" onclick="signInButton()">Accedi</button>
-                                </div>
+                                <form id="login-form"></form>
                             </div>
                         </div>
 
@@ -80,7 +68,7 @@
         <h1>Please sign in</h1>
         <input type="text" id="inputUsername" placeholder="Email address" name="username" value="" required autofocus>
         <input type="password" id="inputPassword" placeholder="Password" name="password" value="a7S+R%!(eawX" required>
-        <button type="button" onclick="signInButton()">Sign in</button>
+
         <br><br>
         <button type="button" onclick="resetPassword()">Reset Password</button>
         <br><br>
@@ -106,34 +94,22 @@
             </div>
         </div>
     </footer>
+    
+    <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+
+    <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>  
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
+
+    <script src="javascripts/lib/amazon-cognito-identity.min.js"></script>
+
+    <script type="module" src="js/enter.js"></script>
 </body>
-<script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
-<script src="javascripts/lib/amazon-cognito-identity.min.js"></script>
+
+
+
 <script>
 
-    $(document).ready(function () {
-        var poolData = {
-            UserPoolId: "eu-west-1_BOr6IaBxC", // Your user pool id here
-            ClientId: "6vligtquo88fguj7e5dsr6mlmj", // Your client id here
-            Storage: new AmazonCognitoIdentity.CookieStorage({domain: location.hostname})
-        };
-
-        var userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
-
-        var cognitoUser = userPool.getCurrentUser();
-
-        if (cognitoUser == null) {
-            console.log("user not found");
-            return;
-        }
-
-        cognitoUser.getSession(function (err, session) {
-            loginOK(session);
-        });
-
-    });
-
-    function refreshToken() {
+   function refreshToken() {
         var poolData = {
             UserPoolId: _config.cognito.userPoolId, // Your user pool id here
             ClientId: _config.cognito.clientId, // Your client id here
@@ -227,69 +203,10 @@
         });
     }
 
-    function logoutButton() {
-        localStorage.removeItem("xejwt");
-    }
-
     function signUp() {
         data = {'email':document.getElementById("email").value,'nickname':document.getElementById("nickname").value, 'pass': document.getElementById("pass").value}
         $.post('/user/signup', data, function(response) {
             alert(response);
-        });
-    }
-
-    function signInButton() {
-
-        var authenticationData = {
-            Username: document.getElementById("emailSignIn").value,
-            Password: document.getElementById("passwordSignIn").value,
-        };
-
-        var authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails(authenticationData);
-
-        var poolData = {
-            UserPoolId: "eu-west-1_BOr6IaBxC", // Your user pool id here
-            ClientId: "6vligtquo88fguj7e5dsr6mlmj", // Your client id here
-        };
-
-        var userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
-
-        console.log('userpool: ' + JSON.stringify(userPool))
-
-        var userData = {
-            Username: document.getElementById("emailSignIn").value,
-            Pool: userPool,
-            Storage: new AmazonCognitoIdentity.CookieStorage({domain: location.hostname})
-        };
-
-        var cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
-
-        cognitoUser.authenticateUser(authenticationDetails, {
-            onSuccess: function (result) {
-                alert("authenticateUser onSuccess");
-                console.log("authenticateUser onSuccess", result);
-                loginOK(result);
-                localStorage.setItem("xejwt", result.idToken.jwtToken);
-                console.log("xejwt: "+localStorage.getItem("xejwt"));
-                
-                AmazonCognitoIdentity.CookieSto
-                
-                
-                window.location = '/home.html';
-            },
-
-            onFailure: function (err) {
-                alert("authenticateUser onFailure" + JSON.stringify(err));
-                console.log("authenticateUser onFailure", err);
-                loginKO(err);
-            },
-
-            newPasswordRequired: function (userAttributes, requiredAttributes) {
-                var newPassword = prompt('Enter new password ', '');
-                console.log("newPasswordRequired", userAttributes, requiredAttributes);
-                cognitoUser.completeNewPasswordChallenge(newPassword, null, this)
-
-            }
         });
     }
 
