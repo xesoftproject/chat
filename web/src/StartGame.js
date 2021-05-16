@@ -51,15 +51,6 @@ class StartGame extends React.Component{
             { value: 'friend', label: 'Amico' }
         ]
 
-        let friendSelect;
-
-        if (this.state.dataFromChild) {      
-            friendSelect = (
-                <FormGroupSelect className={this.state.dataFromChild? "col-lg-6" : "col-lg-2"} 
-                data="friend" options={this.state.friendsOptions} label="Amici" needCallback="false"/>
-            ); 
-        }
-
         return (
             <div className="form__group">
                 <FormGroupSelect data="color" options={colorOptions} label="Colore" needCallback="false" className=""/>
