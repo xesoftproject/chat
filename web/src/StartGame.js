@@ -7,7 +7,7 @@ import { get_username } from './cognitoclient.js';
 import {FormGroupSelect} from './FormComponent.js';
 
 const socket = io(document.location.origin + '/xesoft_chat');
-const room ="lista-amici";
+const room ="chat";
 const jwt = localStorage.getItem("xejwt");
 
 class StartGame extends React.Component{

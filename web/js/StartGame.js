@@ -15,7 +15,7 @@ import { get_username } from './cognitoclient.js';
 import { FormGroupSelect } from './FormComponent.js';
 
 var socket = io(document.location.origin + '/xesoft_chat');
-var room = "lista-amici";
+var room = "chat";
 var jwt = localStorage.getItem("xejwt");
 
 var StartGame = function (_React$Component) {
