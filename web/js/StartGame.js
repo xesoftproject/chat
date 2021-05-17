@@ -14,6 +14,10 @@ import { get_username } from './cognitoclient.js';
 
 import { FormGroupSelect } from './FormComponent.js';
 
+var socket = io(document.location.origin + '/xesoft_chat');
+var room = "lista-amici";
+var jwt = localStorage.getItem("xejwt");
+
 var StartGame = function (_React$Component) {
     _inherits(StartGame, _React$Component);
 
@@ -51,8 +55,8 @@ var StartGame = function (_React$Component) {
             var options = [];
 
             socket.emit('room-users-list', {
-                room: "lista-amici",
-                jwt: localStorage.getItem("xejwt"),
+                room: room,
+                jwt: jwt,
                 msgType: "command"
             });
 
