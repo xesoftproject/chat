@@ -10,11 +10,31 @@ const socket = io(document.location.origin + '/xesoft_chat');
 const room ="chat";
 const jwt = localStorage.getItem("xejwt");
 
+function getFriendsOptions(cb){
+    socket.on('room-users-list', function (message) {
+        var options = [];
+        message.users.forEach(function(items){
+            if(options.indexOf(items) === -1){
+                options.push(
+                    { value: items, label: items }
+                )
+            }
+        })
+        return cb(null, options);
+    });
+
+    socket.emit('room-users-list', {
+        room: room,
+        jwt: jwt,
+        msgType: "command"
+    });      
+}
+
 class StartGame extends React.Component{
     constructor(props) {
         super(props);
 
-        subscribeToTimer(() => this.setState({ 
+        getFriendsOptions((err, friendsOptions) => this.setState({ 
             friendsOptions 
         }));
 
@@ -38,25 +58,7 @@ class StartGame extends React.Component{
         });
     }
 
-    getFriendsOptions(){
-        socket.on('room-users-list', function (message) {
-            var options = [];
-            message.users.forEach(function(items){
-                if(options.indexOf(items) === -1){
-                    options.push(
-                        { value: items, label: items }
-                    )
-                }
-            })
-            return options;
-        });
 
-        socket.emit('room-users-list', {
-			room: room,
-			jwt: jwt,
-			msgType: "command"
-		});      
-    }
 
 
     render(){

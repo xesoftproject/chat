@@ -18,6 +18,24 @@ var socket = io(document.location.origin + '/xesoft_chat');
 var room = "chat";
 var jwt = localStorage.getItem("xejwt");
 
+function getFriendsOptions(cb) {
+    socket.on('room-users-list', function (message) {
+        var options = [];
+        message.users.forEach(function (items) {
+            if (options.indexOf(items) === -1) {
+                options.push({ value: items, label: items });
+            }
+        });
+        return cb(null, options);
+    });
+
+    socket.emit('room-users-list', {
+        room: room,
+        jwt: jwt,
+        msgType: "command"
+    });
+}
+
 var StartGame = function (_React$Component) {
     _inherits(StartGame, _React$Component);
 
@@ -32,7 +50,7 @@ var StartGame = function (_React$Component) {
             });
         };
 
-        subscribeToTimer(function () {
+        getFriendsOptions(function (err, friendsOptions) {
             return _this.setState({
                 friendsOptions: friendsOptions
             });
@@ -52,25 +70,6 @@ var StartGame = function (_React$Component) {
         value: function componentDidMount() {
             this.setState({
                 userId: get_username()
-            });
-        }
-    }, {
-        key: 'getFriendsOptions',
-        value: function getFriendsOptions() {
-            socket.on('room-users-list', function (message) {
-                var options = [];
-                message.users.forEach(function (items) {
-                    if (options.indexOf(items) === -1) {
-                        options.push({ value: items, label: items });
-                    }
-                });
-                return options;
-            });
-
-            socket.emit('room-users-list', {
-                room: room,
-                jwt: jwt,
-                msgType: "command"
             });
         }
     }, {
