@@ -37,12 +37,6 @@ class StartGame extends React.Component{
     getFriendsOptions(){
         var options = [];
 
-        socket.emit('room-users-list', {
-			room: room,
-			jwt: jwt,
-			msgType: "command"
-		});
-
         socket.on('room-users-list', function (message) {
             message.users.forEach(function(items){
                 if(options.indexOf(items) === -1){
@@ -52,6 +46,12 @@ class StartGame extends React.Component{
                 }
             })
         });
+
+        socket.emit('room-users-list', {
+			room: room,
+			jwt: jwt,
+			msgType: "command"
+		});
 
         return options;
     }
