@@ -13,6 +13,11 @@ const jwt = localStorage.getItem("xejwt");
 class StartGame extends React.Component{
     constructor(props) {
         super(props);
+
+        subscribeToTimer(() => this.setState({ 
+            friendsOptions 
+        }));
+
         this.state = {
             friendsOptions: [],
             dataFromChild : null,
@@ -29,15 +34,13 @@ class StartGame extends React.Component{
 
     componentDidMount() {
         this.setState({
-            friendsOptions: this.getFriendsOptions(),
             userId: get_username()
         });
     }
 
     getFriendsOptions(){
-        var options = [];
-
         socket.on('room-users-list', function (message) {
+            var options = [];
             message.users.forEach(function(items){
                 if(options.indexOf(items) === -1){
                     options.push(
@@ -45,15 +48,14 @@ class StartGame extends React.Component{
                     )
                 }
             })
+            return options;
         });
 
         socket.emit('room-users-list', {
 			room: room,
 			jwt: jwt,
 			msgType: "command"
-		});
-
-        return options;
+		});      
     }
 
 

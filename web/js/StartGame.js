@@ -32,6 +32,12 @@ var StartGame = function (_React$Component) {
             });
         };
 
+        subscribeToTimer(function () {
+            return _this.setState({
+                friendsOptions: friendsOptions
+            });
+        });
+
         _this.state = {
             friendsOptions: [],
             dataFromChild: null,
@@ -45,21 +51,20 @@ var StartGame = function (_React$Component) {
         key: 'componentDidMount',
         value: function componentDidMount() {
             this.setState({
-                friendsOptions: this.getFriendsOptions(),
                 userId: get_username()
             });
         }
     }, {
         key: 'getFriendsOptions',
         value: function getFriendsOptions() {
-            var options = [];
-
             socket.on('room-users-list', function (message) {
+                var options = [];
                 message.users.forEach(function (items) {
                     if (options.indexOf(items) === -1) {
                         options.push({ value: items, label: items });
                     }
                 });
+                return options;
             });
 
             socket.emit('room-users-list', {
@@ -67,8 +72,6 @@ var StartGame = function (_React$Component) {
                 jwt: jwt,
                 msgType: "command"
             });
-
-            return options;
         }
     }, {
         key: 'render',
