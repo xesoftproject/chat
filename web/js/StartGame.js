@@ -48,12 +48,22 @@ var StartGame = function (_React$Component) {
     }, {
         key: 'getFriendsOptions',
         value: function getFriendsOptions() {
-            /*TO DO LISTA AMICI*/
-            var friends = ["giovanni", "mario"];
             var options = [];
-            friends.forEach(function (items) {
-                options.push({ value: items, label: items });
+
+            socket.emit('room-users-list', {
+                room: "lista-amici",
+                jwt: localStorage.getItem("xejwt"),
+                msgType: "command"
             });
+
+            socket.on('room-users-list', function (message) {
+                message.users.forEach(function (items) {
+                    if (options.indexOf(items) === -1) {
+                        options.push({ value: items, label: items });
+                    }
+                });
+            });
+
             return options;
         }
     }, {
