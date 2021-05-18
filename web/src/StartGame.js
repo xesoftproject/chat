@@ -6,12 +6,14 @@ import { get_username } from './cognitoclient.js';
 
 import {FormGroupSelect} from './FormComponent.js';
 
-const socket = io(document.location.origin + '/xesoft_chat');
-const room ="chat";
-const jwt = localStorage.getItem("xejwt");
+import  {roomID,jwtStr,socket} from './socket.js'
+
+const socketId = socket;
+const room = roomID;
+const jwt = jwtStr
 
 function getFriendsOptions(cb){
-    socket.on('room-users-list', function (message) {
+    socketId.on('room-users-list', function (message) {
         var options = [];
         message.users.forEach(function(items){
             if(options.indexOf(items) === -1){
@@ -20,10 +22,10 @@ function getFriendsOptions(cb){
                 )
             }
         })
-        return cb(null, options);
+        return cb(options);
     });
 
-    socket.emit('room-users-list', {
+    socketId.emit('room-users-list', {
         room: room,
         jwt: jwt,
         msgType: "command"
@@ -57,9 +59,6 @@ class StartGame extends React.Component{
             userId: get_username()
         });
     }
-
-
-
 
     render(){
         const colorOptions = [

@@ -26,7 +26,7 @@ function getFriendsOptions(cb) {
                 options.push({ value: items, label: items });
             }
         });
-        return cb(null, options);
+        return cb(options);
     });
 
     socket.emit('room-users-list', {
