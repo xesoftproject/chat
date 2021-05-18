@@ -21,12 +21,12 @@ const socket_onload = function socket_onload(){
 
     socket.on('message', function (data) {
         console.log("message: " + data);
-        $('#message-room > ul').append('<li>' + "received msg on room: " + roomID + " - username: " + data.username + " - msg: " + data.message + " - creationDate: " + data.creationDate + " - nickname: " + data.nickname + ' -</li>');
+        //$('#message-room > ul').append('<li>' + "received msg on room: " + roomID + " - username: " + data.username + " - msg: " + data.message + " - creationDate: " + data.creationDate + " - nickname: " + data.nickname + ' -</li>');
     });
 
     socket.on('room-manager', function (message) {
         console.log("room-manager: " + message);
-        $('#message-room > ul').append('<li>' + message + '</li>');
+        //$('#message-room > ul').append('<li>' + message + '</li>');
     });
 
     /*socket.on('room-users-list', function (message) {
@@ -34,7 +34,7 @@ const socket_onload = function socket_onload(){
         // $('#message-room > ul').append('<li>' + message + '</li>');
     });*/
 
-    $('#roomID').click(function () {
+    /*$('#roomID').click(function () {
         var message = $('#message').val();
         console.log("clik submit msg: " + message);
 
@@ -59,7 +59,7 @@ const socket_onload = function socket_onload(){
         // $.get( document.location.origin + "/room/users?room="+roomID, function(data) {
         //     console.log( "success"+data );
         // })
-    });
+    });*/
 
     socket.on('connect_failed', function () {
         document.write("Sorry, there seems to be an issue with the connection!");
