@@ -14,22 +14,24 @@ import { get_username } from './cognitoclient.js';
 
 import { FormGroupSelect } from './FormComponent.js';
 
-var socket = io(document.location.origin + '/xesoft_chat');
-var room = "chat";
-var jwt = localStorage.getItem("xejwt");
+import { roomID, jwtStr, socket } from './socket.js';
+
+var socketId = socket;
+var room = roomID;
+var jwt = jwtStr;
 
 function getFriendsOptions(cb) {
-    socket.on('room-users-list', function (message) {
+    socketId.on('room-users-list', function (message) {
         var options = [];
         message.users.forEach(function (items) {
             if (options.indexOf(items) === -1) {
                 options.push({ value: items, label: items });
             }
         });
-        return cb(options);
+        return cb(null, options);
     });
 
-    socket.emit('room-users-list', {
+    socketId.emit('room-users-list', {
         room: room,
         jwt: jwt,
         msgType: "command"

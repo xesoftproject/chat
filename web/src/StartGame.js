@@ -22,7 +22,7 @@ function getFriendsOptions(cb){
                 )
             }
         })
-        return cb(options);
+        return cb(null,options);
     });
 
     socketId.emit('room-users-list', {
