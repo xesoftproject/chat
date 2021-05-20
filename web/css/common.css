@@ -311,3 +311,18 @@ p{
    }
 }
 /*HIDDEN - END*/
+
+.visibility-visible{
+	visibility: visible;
+}
+
+.visibility-hidden{
+	visibility: hidden;
+}
+
+/*LOGOUT*/
+.logout{
+	float: right;
+	color: #c1e2e5;
+	cursor: pointer;
+}

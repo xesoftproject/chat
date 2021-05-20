@@ -1,6 +1,6 @@
 
 <!doctype html>
-<html>
+<html  lang="it">
     <head>
         <meta charset="utf-8"/>
         <title>Xesoft Chess - Start</title>
@@ -15,68 +15,29 @@
     <body id="home-container" class="background-wrapper">
         <header class="header-wrapper">
             <div class="grid-container">
-                <div class="grid-cl-4-mobile grid-cl-12-tablet grid-cl-12-desktop">
+                <div class="grid-cl-2-mobile grid-cl-6-tablet grid-cl-6-desktop">
                     <div>
                         <img src="img/logo.png" alt="logo">
                     </div>
                 </div>
+                <div class="grid-cl-2-mobile grid-cl-6-tablet grid-cl-6-desktop">
+                    <div id="logout"></div>
+                </div>
             </div>
         </header>
-        <article>
-            <div class="grid-container">
+        <article id="roomID" data-roomID="chat">
+            <div class="grid-container" >
                 <div class="grid-cl-4-mobile grid-cl-3-tablet grid-cl-3-desktop"></div>
                 <div class="grid-cl-4-mobile grid-cl-6-tablet grid-cl-6-desktop grid-cl-container">
                     <div class="content-wrapper content-wrapper__top">
-                        <h2 class="title">UserName</h2>
-                        <div class="grid-container grid-container__nested">
-                            <div class="hidden-xs hidden-sm grid-cl-2-desktop">
-                                <div>
-                                    <img src="" alt="user-icon">
-                                </div>
-                            </div>
-                            <div class="grid-cl-2-mobile grid-cl-6-tablet grid-cl-7-desktop">
-                                <div class="statistiche">
-                                    <p>Vittorie: 0</p>
-                                    <p>Sconfitte: 0</p>
-                                    <p>Pareggi: 0</p>
-                                </div>
-                            </div>
-                            <div class="grid-cl-2-mobile grid-cl-6-tablet grid-cl-3-desktop statistiche__container-link">
-                                <a href="#">Storico partite</a>
-                            </div>
-                        </div>
+                        <div id="info-utente"></div>
                     </div>
 
                     <div class="content-wrapper">
                         <h2 class="title">Start New Game</h2>
                         <div class="grid-container grid-container__nested">
                             <div class="grid-cl-4-mobile grid-cl-12-tablet grid-cl-12-desktop">
-                                <form action="#" id="newgame">
-                                    <div class="form__group">
-                                        <div class="form__group__wrapper">
-                                            <select name="colori" id="colori">
-                                                <option value="white" selected>Bianco</option>
-                                                <option value="black">Nero</option>
-                                            </select>
-                                            <label for="colors" class="form-group__label">Colore</label>
-                                        </div>
-                                        <div class="form__group__wrapper">
-                                            <select name="opponent" id="opponent">
-                                                <option value="cpu" selected>CPU</option>
-                                                <option value="friend">Amico</option>
-                                            </select>
-                                            <label for="opponent" class="form-group__label">Sfidante</label>
-                                        </div>
-                                        <div class="form__group__wrapper">
-                                            <select id="friend" name="friend" disabled>
-                                            </select>
-                                            <label for="email" class="form-group__label">Amici</label>
-                                        </div>
-                                        <div class="button__wrapper">
-                                            <button type="submit" class="button__content">Inizia partita</button>
-                                        </div>
-                                    </div>
-                                </form>
+                                <form id="start-game"></form>
                             </div>
                         </div>
                     </div>
@@ -94,7 +55,12 @@
             </div>
         </footer>
 
+        <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>  
+        <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
+
         <script src="javascripts/lib/amazon-cognito-identity.min.js"></script>
-        <script type="module" src="js/temp-create-game.js"></script>
+        <script src="/socket.io/socket.io.js"></script>
+      
+        <script type="module" src="js/home.js"></script>
     </body>
 </html>
