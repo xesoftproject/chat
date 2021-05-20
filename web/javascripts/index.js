@@ -21,7 +21,7 @@
 
 	socket.on('message', function (data) {
 		console.log("message: " + data);
-		$('#message-room > ul').append('<li>' + "received msg on room: " + roomID + " - username: " + data.username + " - msg: " + data.message + " - creationDate: " + data.creationDate + " - nickname: " + data.nickname + ' -</li>');
+		$('#message-room > ul').append('<li>' + "received msg,  username: " + data.username + " - msg: " + data.message + " - creationDate: " + data.creationDate + " - nickname: " + data.nickname + ' -</li>');
 	});
 
 	socket.on('room-manager', function (message) {
@@ -61,6 +61,21 @@
 		// })
 	});
 
+	$('#play_with_me_room').click(function () {
+		var player = $('#player').val();
+		console.log("click play_with_me_room");
+		socket.emit('play_with_me_room', {
+			room: roomID,
+			jwt: jwtStr,
+			msgType: "command",
+			nickname: player,
+			link: "www.ilmeteo.it"
+		});
+		// $.get( document.location.origin + "/room/users?room="+roomID, function(data) {
+		//     console.log( "success"+data );
+		// })
+	});
+
 	socket.on('connect_failed', function () {
 		document.write("Sorry, there seems to be an issue with the connection!");
 	})
@@ -75,7 +90,7 @@
 
 	socket.on('errorMsg', function (data) {
 		$('#message-room > ul').append('<li>' + "received ERROR msg on room: " + roomID + " - descriptipn: " + data.description + ' -</li>');
-		console.log("Error: " + data);
+		console.log("Error: " + data.TypeError);
 	})
 
 	// socket.leave(roomID);

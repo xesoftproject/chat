@@ -60,7 +60,6 @@ app.get('/js/configuration.js', (_, res) => {
 
 app.use('/', express.static('web'));
 
-
 app.get('/user/delete', (req, res) => {
 	var password = req.body.password;
 	//todo
@@ -81,18 +80,24 @@ app.post('/user/signup', (req, res) => {
 const io = socket_io(https.createServer(CREDENTIALS, app).listen(443)).of('/' + CONFIG.chatNamespace);
 
 
-app.get('/room/users', (req, res) => {
-	var room = req.body.room;
-	var roomMembers = [];
-	var nsp = (typeof _nsp !== 'string') ? '/' : _nsp;
-
-	for (var member in io.nsps[nsp].adapter.rooms[room]) {
-		roomMembers.push(member);
-	}
-	res.send(roomMembers);
-});
+// app.get('/room/users', (req, res) => {
+// 	var room = req.body.room;
+// 	var roomMembers = [];
+// 	var nsp = (typeof _nsp !== 'string') ? '/' : _nsp;
+//
+// 	for (var member in io.nsps[nsp].adapter.rooms[room]) {
+// 		roomMembers.push(member);
+// 	}
+// 	res.send(roomMembers);
+// });
 
 io.on('connection', (socket) => {
+
+	socket.on("disconnect", (socket) => {
+		// socketUsers.delete(socket.id);
+		// console.info(`Client gone [id=${socket.id}]`);
+	});
+
 	socket.on('join', (data) => {
 		try {
 			const roomId = data.room;
@@ -191,6 +196,58 @@ io.on('connection', (socket) => {
 		logger.error(reason);
 	});
 
+	socket.on('play_with_me_room', (data) => {
+		const jwtToken = data.jwt;
+		const roomId = data.room;
+		const msgType = data.msgType;
+		const message = data.message;
+		const theLink = data.link;
+		const receiverNickname = data.nickname;
+		logger.info(
+			`play_with_me_room room id: ${roomId}, socket id: ${socket.id}, msg type: ${msgType}`
+		);
+		try {
+			if (msgType != 'command') {
+				throw 'INVALID Message type "' + msgType + '"';
+			}
+			// if (message.length > CONFIG.chatMaxLengthMsg) {
+			// 	throw (
+			// 		'Exceeded the maximum length of the message (' +
+			// 		CONFIG.chatMaxLengthMsg +
+			// 		' characters)'
+			// 	);
+			// }
+			var decodedJwt = validateJWT(
+				jwtToken,
+				CONFIG.awsUserPoolId,
+				CONFIG.awsServiceRegion,
+				CONFIG.awsJwks,
+				roomId
+			);
+
+			var clients = io.adapter.rooms[roomId].sockets;
+			var receiverSocketID = null;
+			for (const [key, value] of Object.entries(clients)) {
+				if (socketUsers[key]==receiverNickname) {
+					receiverSocketID = key;
+					break;
+				}
+			}
+
+			if (receiverSocketID == null){
+				socket.emit('play_with_me_room', {
+					error: "User NOT FOUND",
+					creationDate: Date.now()
+				});
+			}else{
+				io.sockets[receiverSocketID].emit('message', theLink);
+			}
+        } catch (err) {
+            logger.error(`play_with_me_room error: ${err}`);
+            socket.emit('errorMsg', {description: err});
+        }
+	});
+
 	socket.on('room-users-list', (data) => {
 		const jwtToken = data.jwt;
 		const roomId = data.room;
@@ -221,6 +278,7 @@ io.on('connection', (socket) => {
 				usersListInReturn.push(socketUsers[key]);
 			}
 
+			//send a message containing the users's nickname list to the sender
 			socket.emit('room-users-list', {
 				users: usersListInReturn,
 				nickname: decodedJwt.payload['nickname'],

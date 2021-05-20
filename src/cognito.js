@@ -42,7 +42,7 @@ class CognitoManager {
 		console.log('creating user with params: %o', params);
 
 		this.provider.adminCreateUser(params, (err) => {
-			if (err) {
+			if (err!=null) {
 				console.error('❌\t%o - %o - %o', email, err.code, err.message);
 				return;
 			}
