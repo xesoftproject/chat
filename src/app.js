@@ -275,8 +275,10 @@ io.on('connection', (socket) => {
 			let i = 0
 
 			for (const [key, value] of Object.entries(clients)) {
-				usersListInReturn.push(socketUsers[key]);
+				if (socketUsers[key]!=decodedJwt.payload.nickname)
+					usersListInReturn.push(socketUsers[key]);
 			}
+
 
 			//send a message containing the users's nickname list to the sender
 			socket.emit('room-users-list', {
