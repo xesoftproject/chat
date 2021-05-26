@@ -4,13 +4,43 @@ import { get_username } from './cognitoclient.js';
 import { PATH_GAME, QUERY_PARAMS_GAME_ID } from './constants.js';
 import { start_new_game } from './moves-rest-client.js';
 
+// io is imported from external script
+
 const onload = async () => {
 	const user_id = get_username();
 	console.log('[user_id: %o]', user_id);
 
+	if (!user_id) {
+		alert('devi loggarti');
+		return;
+	}
+
+	const jwtStr = localStorage.getItem('xejwt');
+
 	document.querySelector('#username').textContent = user_id;
 
-	// TODO: populate select#friend with an <option>friend</option>
+	const socket = io(document.location.origin + '/xesoft_chat')
+
+	// each socket message contains ALL users (?)
+	socket.on('room-users-list', (message) => {
+		if (message.username !== user_id)
+			return;
+
+		const select = document.querySelector('select#friend');
+		select.setAttribute('disabled', null);
+		for (const nickname of message.users) {
+			const option = document.createElement('option');
+			option.setAttribute('value', nickname);
+			option.textContent = nickname;
+			select.appendChild(option);
+		}
+	});
+	socket.emit('room-users-list', {
+		room: 'partita_TODO',
+		jwt: jwtStr,
+		msgType: "command"
+	});
+
 
 	document.querySelector('#newgame').addEventListener('submit', async (e) => {
 		e.preventDefault();
@@ -28,8 +58,30 @@ const onload = async () => {
 		const game_id = await start_new_game(user_id, white, black)
 		console.log('[game_id: %o]', game_id);
 
-		window.location.assign(`${PATH_GAME}?${QUERY_PARAMS_GAME_ID}=${game_id}`);
+		const game_url = `${PATH_GAME}?${QUERY_PARAMS_GAME_ID}=${game_id}`;
+		console.log('[game_url: %o]', game_url);
+
+		socket.emit('play_with_me_room', {
+			room: 'partita_TODO',
+			jwt: jwtStr,
+			msgType: 'command',
+			nickname: friend,
+			link: game_url
+		});
+
+		// window.location.assign(game_url);
 	});
+
+	socket.on('message', (data) => {
+		const li = document.createElement('li');
+		const a = document.createElement('a');
+		a.setAttribute('href', data.message);
+		li.appendChild(document.createTextNode(`${data.nickname} ti ha invitato: `))
+		li.appendChild(a);
+		document.querySelector('ul#invitations').appendChild(li);
+	});
+	
+	socket.on('play_with_me_room', console.error);
 };
 
 const main = () => {

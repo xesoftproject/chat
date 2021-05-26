@@ -224,6 +224,7 @@ io.on('connection', (socket) => {
 				CONFIG.awsJwks,
 				roomId
 			);
+			logger.info(`decodedJwt: ${decodedJwt}`);
 
 			var clients = io.adapter.rooms[roomId].sockets;
 			var receiverSocketID = null;
@@ -235,11 +236,13 @@ io.on('connection', (socket) => {
 			}
 
 			if (receiverSocketID == null){
+				logger.error(`play_with_me_room User NOT FOUND`);
 				socket.emit('play_with_me_room', {
 					error: "User NOT FOUND",
 					creationDate: Date.now()
 				});
 			}else{
+				logger.info(`receiverSocketID: ${receiverSocketID} message with theLink = ${theLink}`);
 				io.sockets[receiverSocketID].emit('message', theLink);
 			}
         } catch (err) {

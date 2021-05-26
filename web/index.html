@@ -5,8 +5,9 @@
 	<meta charset="utf-8" />
 	<title>TEMP create a game and join in it</title>
 	<link rel="icon" type="image/png" href="img/xesoft.png">
-	<script src="javascripts/lib/amazon-cognito-identity.min.js"></script>
-	<script type="module" src="js/temp-create-game.js"></script>
+	<script src="/javascripts/lib/amazon-cognito-identity.min.js"></script>
+	<script src="/socket.io/socket.io.js"></script>
+	<script type="module" src="/js/temp-create-game.js"></script>
 </head>
 
 <body>
@@ -30,6 +31,7 @@
 
 		<input type="submit" />
 	</form>
+	<ul id="invitations"></ul>
 </body>
 
 </html>

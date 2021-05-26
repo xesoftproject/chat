@@ -38,7 +38,9 @@
     "node-fetch": "^2.6.0",
     "query-string": "^6.12.1",
     "socket.io": "^2.4.0",
-    "yaml-js": "^0.2.3"
+    "yaml-js": "^0.2.3",
+    "socket.io-client": "*",
+    "@types/socket.io-client": "*"
   },
   "devDependencies": {
     "@babel/core": "^7.10.2",
