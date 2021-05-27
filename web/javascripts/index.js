@@ -5,9 +5,7 @@
 	var start = new Date();
 	var jwtStr = localStorage.getItem("xejwt");
 	var roomID = document.getElementById("roomID").getAttribute("data-roomID");
-	if (roomID == "chat") {
-		roomID = "partita_TODO";
-	}
+
 	console.log("xejwt: " + jwtStr);
 
 	socket.on('connect', function () {
