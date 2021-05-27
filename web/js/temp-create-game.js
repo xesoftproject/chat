@@ -19,65 +19,35 @@ const onload = async () => {
 
 	document.querySelector('#username').textContent = user_id;
 
-	const socket = io(document.location.origin + '/xesoft_chat')
+	const socket = io(document.location.origin + '/xesoft_chat');
 
-	// // each socket message contains ALL users (?)
-	// socket.on('room-users-list', (message) => {
-	// 	if (message.username !== user_id)
-	// 		return;
-	//
-	// 	const select = document.querySelector('select#friend');
-	// 	select.setAttribute('disabled', null);
-	// 	for (const nickname of message.users) {
-	// 		const option = document.createElement('option');
-	// 		option.setAttribute('value', nickname);
-	// 		option.textContent = nickname;
-	// 		select.appendChild(option);
-	// 	}
-	// });
+	// autojoin room
+	socket.on('connect', () => {
+		console.log('connected');
+		socket.emit('join', { room: 'partita_TODO', jwt: jwtStr });
 
-	// DARIO START
-	var start = new Date();
-	const roomID = "partita_TODO";
-	socket.on('connect', function () {
-		console.log("connecting");
-		var index = socket.io.engine.upgrade ? 1 : 0;
-		console.log('Connection established in ' + (new Date() - start) + 'msec. ' + 'SocketID: ' + socket.id + '. ' + 'You are using ' + socket.io.engine.transports[index] + '.');
-		socket.emit('join', {room: roomID, jwt: jwtStr});
-	});
-	socket.emit('room-users-list', {
-		room: 'partita_TODO',
-		jwt: jwtStr,
-		msgType: "command"
-	});
-	$('#room-users-list').click(function () {
-		console.log("click room-users-list");
 		socket.emit('room-users-list', {
-			room: roomID,
+			room: 'partita_TODO',
 			jwt: jwtStr,
 			msgType: "command"
 		});
+
 	});
-	$('#play_with_me_room').click(function () {
-		var player = $('#player').val();
-		console.log("click play_with_me_room");
-		socket.emit('play_with_me_room', {
-			room: roomID,
-			jwt: jwtStr,
-			msgType: "command",
-			nickname: player,
-			link: "www.ilmeteo.it"
-		});
+
+	// each socket message contains ALL users (?)
+	socket.on('room-users-list', (message) => {
+		if (message.username !== user_id)
+			return;
+
+		const select = document.querySelector('select#friend');
+		select.removeAttribute('disabled');
+		for (const nickname of message.users) {
+			const option = document.createElement('option');
+			option.setAttribute('value', nickname);
+			option.textContent = nickname;
+			select.appendChild(option);
+		}
 	});
-	socket.on('room-users-list', function (message) {
-		console.log("room-users-list: " + message.users);
-		// $('#message-room > ul').append('<li>' + message + '</li>');
-	});
-	socket.on('message', function (data) {
-		console.log("message: " + data);
-		$('#message-room > ul').append('<li>' + "received msg,  username: " + data.username + " - msg: " + data.message + " - creationDate: " + data.creationDate + " - nickname: " + data.nickname + ' -</li>');
-	});
-	// DARIO END
 
 	document.querySelector('#newgame').addEventListener('submit', async (e) => {
 		e.preventDefault();
@@ -109,15 +79,16 @@ const onload = async () => {
 		// window.location.assign(game_url);
 	});
 
-	// socket.on('message', (data) => {
-	// 	const li = document.createElement('li');
-	// 	const a = document.createElement('a');
-	// 	a.setAttribute('href', data.message);
-	// 	li.appendChild(document.createTextNode(`${data.nickname} ti ha invitato: `))
-	// 	li.appendChild(a);
-	// 	document.querySelector('ul#invitations').appendChild(li);
-	// });
-	
+	socket.on('message', (data) => {
+		const li = document.createElement('li');
+		const a = document.createElement('a');
+		a.setAttribute('href', data.message);
+		li.appendChild(document.createTextNode(`${data.nickname} ti ha invitato: `));
+		li.appendChild(document.createTextNode(data));
+		li.appendChild(a);
+		document.querySelector('ul#invitations').appendChild(li);
+	});
+
 	socket.on('play_with_me_room', console.error);
 };
 
