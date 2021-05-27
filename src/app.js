@@ -93,10 +93,15 @@ const io = socket_io(https.createServer(CREDENTIALS, app).listen(443)).of('/' + 
 
 io.on('connection', (socket) => {
 
-	socket.on("disconnect", (socket) => {
-		// socketUsers.delete(socket.id);
-		// console.info(`Client gone [id=${socket.id}]`);
-	});
+	// socket.on("disconnect", function()  {
+	// 	// socketUsers.delete(socket.id);
+	// 	// console.info(`Client gone [id=${socket.id}]`);
+	// 	if (socket==undefined || socket=="transport close" || socket == "ping timeout")
+	// 		return;
+	// 	console.log('Got disconnect!');
+	// 	var i = socketUsers.indexOf(socket);
+	// 	socketUsers.splice(i, 1);
+	// });
 
 	socket.on('join', (data) => {
 		try {
@@ -224,7 +229,6 @@ io.on('connection', (socket) => {
 				CONFIG.awsJwks,
 				roomId
 			);
-			logger.info(`decodedJwt: ${decodedJwt}`);
 
 			var clients = io.adapter.rooms[roomId].sockets;
 			var receiverSocketID = null;
@@ -236,7 +240,6 @@ io.on('connection', (socket) => {
 			}
 
 			if (receiverSocketID == null){
-				logger.error(`play_with_me_room User NOT FOUND`);
 				socket.emit('play_with_me_room', {
 					error: "User NOT FOUND",
 					creationDate: Date.now()
