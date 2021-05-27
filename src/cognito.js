@@ -1,11 +1,12 @@
 'use strict';
 
 const {config, CognitoIdentityServiceProvider} = require('aws-sdk');
+const {CONFIG} = require('./configurations/configurations');
 
 config.update({
 	region: 'eu-west-1',
-	accessKeyId: process.env.COGNITO_ACCESS_KEY_ID,
-	secretAccessKey: process.env.COGNITO_SECRET_ACCESS_KEY
+	accessKeyId: process.env.COGNITO_ACCESS_KEY_ID || CONFIG.COGNITO_ACCESS_KEY_ID,
+	secretAccessKey: process.env.COGNITO_SECRET_ACCESS_KEY || CONFIG.COGNITO_SECRET_ACCESS_KEY
 });
 
 class CognitoManager {
