@@ -73,6 +73,20 @@ var StartGame = function (_React$Component) {
             this.setState({
                 userId: get_username()
             });
+
+            socketId.on('invitation', function (data) {
+                console.log('on message vito %o', data);
+
+                window.alert(data.from + ' ha mandato un link verso ' + data.link);
+
+                /*			const li = document.createElement('li');
+                			const a = document.createElement('a');
+                			a.setAttribute('href', data.link);
+                			a.appendChild(document.createTextNode(`${data.from} verso ${data.link}`))
+                			li.appendChild(a);
+                			document.querySelector('ul#invitations').appendChild(li);
+                */
+            });
         }
     }, {
         key: 'render',
@@ -127,7 +141,19 @@ var StartGameButton = function (_React$Component2) {
 
             start_new_game(this.props.userId, white, black).then(function (game_id) {
                 console.log('[game_id: %o]', game_id);
-                window.location.assign(PATH_GAME + '?' + QUERY_PARAMS_GAME_ID + '=' + game_id);
+
+                var game_url = PATH_GAME + '?' + QUERY_PARAMS_GAME_ID + '=' + game_id;
+                console.log('[game_url: %o]', game_url);
+
+                if (opponent === 'friend') socketId.emit('play_with_me_room', {
+                    room: 'partita_TODO',
+                    jwt: jwt,
+                    msgType: 'command',
+                    nickname: friend,
+                    link: game_url
+                });
+
+                window.location.assign(game_url);
             });
         }
     }, {

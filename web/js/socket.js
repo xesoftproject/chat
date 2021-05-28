@@ -62,19 +62,18 @@ const socket_onload = function socket_onload(){
     });*/
 
     socket.on('connect_failed', function () {
-        document.write("Sorry, there seems to be an issue with the connection!");
+        console.log("Sorry, there seems to be an issue with the connection!");
     })
 
     socket.on('reconnecting', function () {
-        document.write("Trying to reconnecting.....");
+        console.log("Trying to reconnecting.....");
     })
 
     socket.on('reconnected', function () {
-        document.write("Now you are connected again.");
+        console.log("Now you are connected again.");
     })
 
     socket.on('errorMsg', function (data) {
-        $('#message-room > ul').append('<li>' + "received ERROR msg on room: " + roomID + " - descriptipn: " + data.description + ' -</li>');
         console.log("Error: " + data);
     })
 }
