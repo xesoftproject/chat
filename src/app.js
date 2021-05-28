@@ -246,7 +246,10 @@ io.on('connection', (socket) => {
 				});
 			}else{
 				logger.info(`receiverSocketID: ${receiverSocketID} message with theLink = ${theLink}`);
-				io.sockets[receiverSocketID].emit('message', theLink);
+				io.sockets[receiverSocketID].emit('invitation', {
+					from: decodedJwt.payload.nickname,
+					link: theLink
+				});
 			}
         } catch (err) {
             logger.error(`play_with_me_room error: ${err}`);

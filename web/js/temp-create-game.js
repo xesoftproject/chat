@@ -79,12 +79,12 @@ const onload = async () => {
 		// window.location.assign(game_url);
 	});
 
-	socket.on('message', (data) => {
+	socket.on('invitation', (data) => {
+		console.log('on message vito %o', data);
 		const li = document.createElement('li');
 		const a = document.createElement('a');
-		a.setAttribute('href', data.message);
-		li.appendChild(document.createTextNode(`${data.nickname} ti ha invitato: `));
-		li.appendChild(document.createTextNode(data));
+		a.setAttribute('href', data.link);
+		a.appendChild(document.createTextNode(`${data.from} verso ${data.link}`))
 		li.appendChild(a);
 		document.querySelector('ul#invitations').appendChild(li);
 	});
