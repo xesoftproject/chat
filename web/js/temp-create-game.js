@@ -40,13 +40,20 @@ const onload = async () => {
 			return;
 
 		const select = document.querySelector('select#friend');
-		select.removeAttribute('disabled');
 		for (const nickname of message.users) {
 			const option = document.createElement('option');
 			option.setAttribute('value', nickname);
 			option.textContent = nickname;
 			select.appendChild(option);
 		}
+	});
+
+	document.querySelector('[name=opponent]').addEventListener('change', (e) => {
+		const select = document.querySelector('select#friend');
+		if (e.target.value === 'friend')
+			select.removeAttribute('disabled');
+		else
+			select.setAttribute('disabled', 'disabled');
 	});
 
 	document.querySelector('#newgame').addEventListener('submit', async (e) => {
@@ -68,15 +75,16 @@ const onload = async () => {
 		const game_url = `${PATH_GAME}?${QUERY_PARAMS_GAME_ID}=${game_id}`;
 		console.log('[game_url: %o]', game_url);
 
-		socket.emit('play_with_me_room', {
-			room: 'partita_TODO',
-			jwt: jwtStr,
-			msgType: 'command',
-			nickname: friend,
-			link: game_url
-		});
+		if (opponent === 'friend')
+			socket.emit('play_with_me_room', {
+				room: 'partita_TODO',
+				jwt: jwtStr,
+				msgType: 'command',
+				nickname: friend,
+				link: game_url
+			});
 
-		// window.location.assign(game_url);
+		window.location.assign(game_url);
 	});
 
 	socket.on('invitation', (data) => {
