@@ -11,6 +11,9 @@
     margin-top: 15px;
     border-radius: 4px;
 }
+#info-utente img{
+    width: 100px;
+}
 .title{
     margin: 0;
     text-align: center;

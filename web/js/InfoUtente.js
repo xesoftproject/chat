@@ -11,7 +11,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 import { get_username } from './cognitoclient.js';
 
 var url_link = "#";
-var label_link = "Storico partite";
+var label_link = "Guida al gioco";
 
 var InfoUtente = function (_React$Component) {
   _inherits(InfoUtente, _React$Component);
@@ -23,7 +23,7 @@ var InfoUtente = function (_React$Component) {
 
     _this.state = {
       userName: null,
-      userIcon: null,
+      userIcon: "../img/avatar.png",
       statistiche: {
         victories: 0,
         defeats: 0,
@@ -53,7 +53,7 @@ var InfoUtente = function (_React$Component) {
           { className: 'grid-container grid-container__nested' },
           React.createElement(
             'div',
-            { className: 'hidden-xs hidden-sm grid-cl-2-desktop' },
+            { className: 'hidden-xs hidden-sm grid-cl-4-desktop' },
             React.createElement(
               'div',
               null,
@@ -67,7 +67,7 @@ var InfoUtente = function (_React$Component) {
           ),
           React.createElement(
             'div',
-            { className: 'grid-cl-2-mobile grid-cl-6-tablet grid-cl-3-desktop statistiche__container-link' },
+            { className: 'grid-cl-2-mobile grid-cl-6-tablet grid-cl-1-desktop statistiche__container-link' },
             React.createElement(
               'a',
               { href: url_link },
