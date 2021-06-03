@@ -3,14 +3,14 @@
 import { get_username } from './cognitoclient.js';
 
 const url_link = "#";
-const label_link = "Storico partite";
+const label_link = "Guida al gioco";
 
 class InfoUtente extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       userName: null,
-      userIcon:null,
+      userIcon:"../img/avatar.png",
       statistiche:{
         victories: 0,
         defeats:0,
@@ -30,7 +30,7 @@ class InfoUtente extends React.Component {
       <div>
         <UseraName userName={this.state.userName}/>
         <div className="grid-container grid-container__nested">
-            <div className="hidden-xs hidden-sm grid-cl-2-desktop">
+            <div className="hidden-xs hidden-sm grid-cl-4-desktop">
                 <div>
                     <img src={this.state.userIcon} alt="user-icon"/>
                 </div>
@@ -38,7 +38,7 @@ class InfoUtente extends React.Component {
             <div className="grid-cl-2-mobile grid-cl-6-tablet grid-cl-7-desktop">
               <Statistiche statistiche={this.state.statistiche}/>
             </div>
-            <div className="grid-cl-2-mobile grid-cl-6-tablet grid-cl-3-desktop statistiche__container-link">
+            <div className="grid-cl-2-mobile grid-cl-6-tablet grid-cl-1-desktop statistiche__container-link">
                 <a href={url_link}>{label_link}</a>
             </div>
         </div>
