@@ -1,0 +1,107 @@
+'use strict';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+import { socket } from './socket.js';
+
+var socketId = socket;
+
+var Chat = function (_React$Component) {
+    _inherits(Chat, _React$Component);
+
+    function Chat(props) {
+        _classCallCheck(this, Chat);
+
+        var _this = _possibleConstructorReturn(this, (Chat.__proto__ || Object.getPrototypeOf(Chat)).call(this, props));
+
+        _this.state = {};
+        return _this;
+    }
+
+    _createClass(Chat, [{
+        key: 'toggleChat',
+        value: function toggleChat(event) {
+            event.preventDefault();
+            var chat_content = document.getElementById("chat-content");
+
+            if (chat_content.classList.contains("hide")) {
+                chat_content.classList.remove("hide");
+            } else {
+                chat_content.classList.add("hide");
+            }
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            return React.createElement(
+                'div',
+                null,
+                React.createElement(
+                    'div',
+                    { id: 'chat-content', className: 'hide' },
+                    React.createElement(
+                        'h4',
+                        null,
+                        'CHAT GLOBALE'
+                    ),
+                    React.createElement(
+                        'div',
+                        { className: 'chat_text-wrapper' },
+                        React.createElement(
+                            'div',
+                            { className: 'chat_text-area' },
+                            React.createElement(
+                                'div',
+                                { id: 'message-room' },
+                                React.createElement(
+                                    'ul',
+                                    null,
+                                    React.createElement(
+                                        'li',
+                                        null,
+                                        'ciaooo'
+                                    ),
+                                    React.createElement(
+                                        'li',
+                                        null,
+                                        'cooome'
+                                    ),
+                                    React.createElement(
+                                        'li',
+                                        null,
+                                        'vaaaaa'
+                                    )
+                                )
+                            )
+                        ),
+                        React.createElement(
+                            'div',
+                            { className: 'chat_send-msg-wrapper' },
+                            React.createElement('input', { id: 'message', type: 'text', placeholder: 'Scrivi messaggio...' }),
+                            React.createElement(
+                                'div',
+                                { className: 'button__send-msg' },
+                                React.createElement('img', { id: 'roomID', 'data-roomid': 'dating', src: '../img/send-msg.svg', alt: 'invia msg' })
+                            )
+                        )
+                    )
+                ),
+                React.createElement(
+                    'div',
+                    { id: 'chat-btn', onClick: this.toggleChat, className: 'chat_button-wrapper' },
+                    React.createElement('img', { src: '../img/chat.png', alt: 'chat' })
+                )
+            );
+        }
+    }]);
+
+    return Chat;
+}(React.Component);
+
+export default Chat;

@@ -336,9 +336,8 @@ a.button__content{
 	cursor: pointer;
 }
 
-/*MODALE*/
+/*MODALE INVITATION - BEGIN*/
 .modal{
-	/* Hidden by default */
 	position: fixed; /* Stay in place */
 	z-index: 1; /* Sit on top */
 	padding-top: 100px; /* Location of the box */
@@ -378,3 +377,80 @@ a.button__content{
 	text-decoration: none;
 	cursor: pointer;
   }
+/*MODALE INVITATION - END*/
+
+/*CHAT - BEGIN*/
+.chat_wrapper{
+    position: fixed;
+    bottom: 15px;
+    right: 15px;
+	width: 90%;
+    z-index: 999;
+}
+.chat_wrapper h4{
+    margin: 0;
+    text-align: center;
+    background: #918ef4;
+    padding-top: 15px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+	color: #c1e2e5;
+	padding-bottom: 15px;
+	font-weight: normal;
+}
+.chat_button-wrapper{
+	background-color: #918ef4;
+    width: 80px;
+    height: 80px;
+    border-radius: 40px;
+    float: right;
+	text-align: center;
+}
+.chat_button-wrapper img{
+	width: 60px;
+    height: 60px;
+    vertical-align: middle;
+    top: 8px;
+    position: relative;
+}
+.chat_text-wrapper{
+    margin-bottom: 5px;
+	padding: 0 15px 15px;
+    background: #c1e2e5;
+    border-bottom-left-radius: 5px;
+	border-bottom-right-radius: 5px;
+    border: 1px #918ef4 solid;
+}
+.chat_send-msg-wrapper input{
+	width: 82%;
+    height: 30px;
+    padding: 5px;
+    border: 1px solid #918ef4;
+    border-radius: 10px;
+}
+.button__send-msg{
+	display: inline-block;
+    margin-left: 5px;
+}
+.button__send-msg img{
+	width: 30px;
+    height: 30px;
+    vertical-align: middle;
+}
+.chat_text-area{
+	height: 250px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    margin-bottom: 15px;
+}
+@media (min-width: 768px) {
+	.chat_wrapper{
+		width: 45%;
+   }
+}
+@media (min-width: 1024px) {
+	.chat_wrapper{
+		width: 35%;
+   }
+}
+/*CHAT - END*/
