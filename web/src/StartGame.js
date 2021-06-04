@@ -52,7 +52,7 @@ class StartGame extends React.Component{
 
     handleCallback = (childData) =>{
         this.setState({
-            dataFromChild: childData, 
+            dataFromChild: childData
         })
     }
 

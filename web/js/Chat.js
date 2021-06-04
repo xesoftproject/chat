@@ -18,12 +18,33 @@ var Chat = function (_React$Component) {
 
         var _this = _possibleConstructorReturn(this, (Chat.__proto__ || Object.getPrototypeOf(Chat)).call(this, props));
 
-        _this.state = {};
-        //this.sendMsg = this.sendMsg.bind(this);
+        _this.state = {
+            messages: []
+        };
         return _this;
     }
 
     _createClass(Chat, [{
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            var _this2 = this;
+
+            var temp_messages = this.state.messages;
+
+            socket.on('message', function (data) {
+                console.log("message: " + data.message + " nickname: " + data.nickname);
+
+                temp_messages.push({
+                    "message": data.message,
+                    "nickname": data.nickname
+                });
+
+                _this2.setState({
+                    messages: temp_messages
+                });
+            });
+        }
+    }, {
         key: 'toggleChat',
         value: function toggleChat(event) {
             event.preventDefault();
@@ -63,7 +84,7 @@ var Chat = function (_React$Component) {
                     { id: 'chat-content', className: 'hide' },
                     React.createElement(
                         'h4',
-                        null,
+                        { className: 'chat-title' },
                         'CHAT GLOBALE ',
                         React.createElement(
                             'span',
@@ -80,25 +101,22 @@ var Chat = function (_React$Component) {
                             React.createElement(
                                 'div',
                                 { id: 'message-room' },
-                                React.createElement(
-                                    'ul',
-                                    null,
-                                    React.createElement(
-                                        'li',
-                                        null,
-                                        'ciaooo'
-                                    ),
-                                    React.createElement(
-                                        'li',
-                                        null,
-                                        'cooome'
-                                    ),
-                                    React.createElement(
-                                        'li',
-                                        null,
-                                        'vaaaaa'
-                                    )
-                                )
+                                this.state.messages.map(function (value, index) {
+                                    return React.createElement(
+                                        'div',
+                                        { key: index, className: '' },
+                                        React.createElement(
+                                            'h4',
+                                            null,
+                                            value.nickname
+                                        ),
+                                        React.createElement(
+                                            'p',
+                                            null,
+                                            value.message
+                                        )
+                                    );
+                                })
                             )
                         ),
                         React.createElement(

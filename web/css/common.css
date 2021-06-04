@@ -383,7 +383,7 @@ a.button__content{
 	width: 90%;
     z-index: 999;
 }
-.chat_wrapper h4{
+.chat_wrapper .chat-title{
     margin: 0;
     text-align: center;
     background: #918ef4;

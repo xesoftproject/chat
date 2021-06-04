@@ -5,11 +5,28 @@ class Chat extends React.Component{
     constructor(props) {
         super(props);
         this.state = {
-
+            messages : []
         };
-        //this.sendMsg = this.sendMsg.bind(this);
     }
     
+    componentDidMount() {
+        let temp_messages = this.state.messages;
+        
+        socket.on('message', (data) => {
+			console.log("message: " + data.message+" nickname: "+data.nickname);
+
+            temp_messages.push(
+                {
+                    "message":data.message,
+                    "nickname":data.nickname
+                }
+            )
+
+            this.setState({
+                messages : temp_messages
+            });
+        });
+    }
 
     toggleChat(event) {
         event.preventDefault();
@@ -42,15 +59,18 @@ class Chat extends React.Component{
         return (
             <div>
                 <div id="chat-content" className="hide">
-                    <h4>CHAT GLOBALE <span onClick={this.toggleChat} className="close">&times;</span></h4>
+                    <h4 className="chat-title">CHAT GLOBALE <span onClick={this.toggleChat} className="close">&times;</span></h4>
                     <div className="chat_text-wrapper">
                         <div className="chat_text-area">
                             <div id="message-room">
-                                <ul>
-                                    <li>ciaooo</li>
-                                    <li>cooome</li>
-                                    <li>vaaaaa</li>
-                                </ul>
+                                    {this.state.messages.map((value, index) => {
+                                        return (
+                                            <div key={index} className="">
+                                                <h4>{value.nickname}</h4>
+                                                <p>{value.message}</p>
+                                            </div>
+                                        )
+                                    })}
                             </div>
                         </div>
                         <div className="chat_send-msg-wrapper">
