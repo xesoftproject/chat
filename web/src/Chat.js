@@ -52,6 +52,7 @@ class Chat extends React.Component{
                 jwt: jwtStr,
                 msgType: "chat"
             });
+            document.getElementById("message").value = "";
         }
     }
 

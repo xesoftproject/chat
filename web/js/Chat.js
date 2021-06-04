@@ -71,6 +71,7 @@ var Chat = function (_React$Component) {
                     jwt: jwtStr,
                     msgType: "chat"
                 });
+                document.getElementById("message").value = "";
             }
         }
     }, {
