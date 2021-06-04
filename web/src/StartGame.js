@@ -44,6 +44,8 @@ class StartGame extends React.Component{
             friendsOptions: [],
             dataFromChild : null,
             userId: null,
+            friendGameLink:null,
+            friendInvitationGame:null
         };
         this.handleCallback = this.handleCallback.bind(this);
     }
@@ -62,15 +64,11 @@ class StartGame extends React.Component{
 		socketId.on('invitation', (data) => {
 			console.log('on message vito %o', data);
 
-			window.alert(`${data.from} ha mandato un link verso ${data.link}`);
-
-/*			const li = document.createElement('li');
-			const a = document.createElement('a');
-			a.setAttribute('href', data.link);
-			a.appendChild(document.createTextNode(`${data.from} verso ${data.link}`))
-			li.appendChild(a);
-			document.querySelector('ul#invitations').appendChild(li);
-*/	});
+            this.setState({
+                friendGameLink:data.link,
+                friendInvitationGame:data.from
+            });
+        });
     }
 
     render(){

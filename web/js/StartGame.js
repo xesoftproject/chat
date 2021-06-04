@@ -61,7 +61,9 @@ var StartGame = function (_React$Component) {
         _this.state = {
             friendsOptions: [],
             dataFromChild: null,
-            userId: null
+            userId: null,
+            friendGameLink: null,
+            friendInvitationGame: null
         };
         _this.handleCallback = _this.handleCallback.bind(_this);
         return _this;
@@ -70,6 +72,8 @@ var StartGame = function (_React$Component) {
     _createClass(StartGame, [{
         key: 'componentDidMount',
         value: function componentDidMount() {
+            var _this2 = this;
+
             this.setState({
                 userId: get_username()
             });
@@ -77,15 +81,10 @@ var StartGame = function (_React$Component) {
             socketId.on('invitation', function (data) {
                 console.log('on message vito %o', data);
 
-                window.alert(data.from + ' ha mandato un link verso ' + data.link);
-
-                /*			const li = document.createElement('li');
-                			const a = document.createElement('a');
-                			a.setAttribute('href', data.link);
-                			a.appendChild(document.createTextNode(`${data.from} verso ${data.link}`))
-                			li.appendChild(a);
-                			document.querySelector('ul#invitations').appendChild(li);
-                */
+                _this2.setState({
+                    friendGameLink: data.link,
+                    friendInvitationGame: data.from
+                });
             });
         }
     }, {
@@ -116,10 +115,10 @@ var StartGameButton = function (_React$Component2) {
     function StartGameButton(props) {
         _classCallCheck(this, StartGameButton);
 
-        var _this2 = _possibleConstructorReturn(this, (StartGameButton.__proto__ || Object.getPrototypeOf(StartGameButton)).call(this, props));
+        var _this3 = _possibleConstructorReturn(this, (StartGameButton.__proto__ || Object.getPrototypeOf(StartGameButton)).call(this, props));
 
-        _this2.onClick = _this2.onClick.bind(_this2);
-        return _this2;
+        _this3.onClick = _this3.onClick.bind(_this3);
+        return _this3;
     }
 
     _createClass(StartGameButton, [{

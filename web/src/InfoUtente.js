@@ -1,6 +1,7 @@
 'use strict';
 
 import { get_username } from './cognitoclient.js';
+import { player_games_history } from '../js/moves-rest-client.js';
 
 const url_link = "#";
 const label_link = "Guida al gioco";
@@ -21,9 +22,10 @@ class InfoUtente extends React.Component {
 
   componentDidMount() {
     this.setState({userName: get_username()});
-    /*TO DO
-      settare i valori delle statistiche, l'icona utente
-    */
+    /*TO DO settare l'icona utente*/
+      player_games_history(this.state.userName).then(statistiche => {
+        this.setState({ statistiche });
+    });
   }
   render() {
     return (

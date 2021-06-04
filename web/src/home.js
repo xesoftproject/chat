@@ -1,6 +1,7 @@
 import LogOut from './LogOut.js';
 import InfoUtente from './InfoUtente.js';
 import StartGame from './StartGame.js';
+import InvitationModal from './InvitationModal.js';
 import {socket_onload} from './socket.js';
 
 socket_onload();
@@ -18,4 +19,9 @@ ReactDOM.render(
 ReactDOM.render(
     <StartGame />,
     document.getElementById('start-game')
+);
+
+ReactDOM.render(
+    <InvitationModal />,
+    document.getElementById('invitation-modal')
 );

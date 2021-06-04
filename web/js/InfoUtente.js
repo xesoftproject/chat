@@ -37,11 +37,12 @@ var InfoUtente = function (_React$Component) {
   _createClass(InfoUtente, [{
     key: 'componentDidMount',
     value: function componentDidMount() {
-      const userName = get_username();
-      this.setState({ userName });
-      // TODO settare l'icona utente
-      player_games_history(userName).then(statistiche => {
-          this.setState({ statistiche });
+      var _this2 = this;
+
+      this.setState({ userName: get_username() });
+      /*TO DO settare l'icona utente*/
+      player_games_history(this.state.userName).then(function (statistiche) {
+        _this2.setState({ statistiche: statistiche });
       });
     }
   }, {
