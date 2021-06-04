@@ -445,6 +445,21 @@ a.button__content{
     overflow-x: hidden;
     margin-bottom: 15px;
 }
+.chat-nickname{
+	margin: 5px 0;
+}
+.chat-msg-box{
+	border: 1px solid #918ef4;
+    padding: 5px;
+    border-radius: 5px;
+    background: rgb(255, 255, 255, 0.5);
+	color: #533987;
+	margin: 5px 0;
+}
+#message-room{
+	height: 100%;
+	overflow-y: inherit;
+}
 @media (min-width: 768px) {
 	.chat_wrapper{
 		width: 45%;

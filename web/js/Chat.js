@@ -34,13 +34,18 @@ var Chat = function (_React$Component) {
             socket.on('message', function (data) {
                 console.log("message: " + data.message + " nickname: " + data.nickname);
 
-                temp_messages.push({
-                    "message": data.message,
-                    "nickname": data.nickname
-                });
+                if (data.message != undefined && data.nickname != undefined) {
+                    temp_messages.push({
+                        "message": data.message,
+                        "nickname": data.nickname
+                    });
+                }
 
                 _this2.setState({
                     messages: temp_messages
+                }, function () {
+                    var chat_text_area = document.getElementById("message-room");
+                    chat_text_area.scrollTop = chat_text_area.scrollHeight;
                 });
             });
         }
@@ -105,10 +110,10 @@ var Chat = function (_React$Component) {
                                 this.state.messages.map(function (value, index) {
                                     return React.createElement(
                                         'div',
-                                        { key: index, className: '' },
+                                        { key: index, className: 'chat-msg-box' },
                                         React.createElement(
                                             'h4',
-                                            null,
+                                            { className: 'chat-nickname' },
                                             value.nickname
                                         ),
                                         React.createElement(

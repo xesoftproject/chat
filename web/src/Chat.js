@@ -15,16 +15,26 @@ class Chat extends React.Component{
         socket.on('message', (data) => {
 			console.log("message: " + data.message+" nickname: "+data.nickname);
 
-            temp_messages.push(
-                {
-                    "message":data.message,
-                    "nickname":data.nickname
-                }
-            )
+            if(data.message != undefined && data.nickname != undefined){
+                temp_messages.push(
+                    {
+                        "message":data.message,
+                        "nickname":data.nickname
+                    }
+                )
+            }
 
-            this.setState({
-                messages : temp_messages
-            });
+            this.setState(
+                {
+                    messages : temp_messages
+                },
+                function() { 
+                    const chat_text_area = document.getElementById("message-room");
+                    chat_text_area.scrollTop = chat_text_area.scrollHeight;
+                }
+            );
+
+            
         });
     }
 
@@ -66,8 +76,8 @@ class Chat extends React.Component{
                             <div id="message-room">
                                     {this.state.messages.map((value, index) => {
                                         return (
-                                            <div key={index} className="">
-                                                <h4>{value.nickname}</h4>
+                                            <div key={index} className="chat-msg-box">
+                                                <h4 className="chat-nickname">{value.nickname}</h4>
                                                 <p>{value.message}</p>
                                             </div>
                                         )
