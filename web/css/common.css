@@ -369,14 +369,10 @@ a.button__content{
     top: -20px;
     position: relative;
     left: 7px;
-  }
-  
-.modal-wrapper .close:hover,
-.modal-wrapper .close:focus {
-	color: #000;
-	text-decoration: none;
 	cursor: pointer;
-  }
+	text-decoration: none;
+}
+
 /*MODALE INVITATION - END*/
 
 /*CHAT - BEGIN*/
@@ -397,6 +393,12 @@ a.button__content{
 	color: #c1e2e5;
 	padding-bottom: 15px;
 	font-weight: normal;
+}
+.chat_wrapper .close{
+    position: absolute;
+    left: 92%;
+    top: 1%;
+	cursor: pointer;
 }
 .chat_button-wrapper{
 	background-color: #918ef4;

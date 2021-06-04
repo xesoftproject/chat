@@ -42,7 +42,7 @@ class Chat extends React.Component{
         return (
             <div>
                 <div id="chat-content" className="hide">
-                    <h4>CHAT GLOBALE</h4>
+                    <h4>CHAT GLOBALE <span onClick={this.toggleChat} className="close">&times;</span></h4>
                     <div className="chat_text-wrapper">
                         <div className="chat_text-area">
                             <div id="message-room">

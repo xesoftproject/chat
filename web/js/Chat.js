@@ -64,7 +64,12 @@ var Chat = function (_React$Component) {
                     React.createElement(
                         'h4',
                         null,
-                        'CHAT GLOBALE'
+                        'CHAT GLOBALE ',
+                        React.createElement(
+                            'span',
+                            { onClick: this.toggleChat, className: 'close' },
+                            '\xD7'
+                        )
                     ),
                     React.createElement(
                         'div',
