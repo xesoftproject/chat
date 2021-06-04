@@ -9,6 +9,7 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 import { get_username } from './cognitoclient.js';
+import { player_games_history } from '../js/moves-rest-client.js';
 
 var url_link = "#";
 var label_link = "Guida al gioco";
@@ -36,10 +37,12 @@ var InfoUtente = function (_React$Component) {
   _createClass(InfoUtente, [{
     key: 'componentDidMount',
     value: function componentDidMount() {
-      this.setState({ userName: get_username() });
-      /*TO DO
-        settare i valori delle statistiche, l'icona utente
-      */
+      const userName = get_username();
+      this.setState({ userName });
+      // TODO settare l'icona utente
+      player_games_history(userName).then(statistiche => {
+          this.setState({ statistiche });
+      });
     }
   }, {
     key: 'render',

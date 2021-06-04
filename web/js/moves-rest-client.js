@@ -74,13 +74,13 @@ const register = (game_id) => {
 /**
  *
  */
-const player_games_history = (user_id) => {
+const player_games_history = async (user_id) => {
 	const response = await fetch(`${HTTP_BASENAME}/player_games_history/${user_id}`, {});
 
 	if (!response.ok)
 		throw new Error(await response.text());
 
-	return await response.text();
+	return await response.json();
 };
 
 export { update, start_new_game, games, register, player_games_history };
