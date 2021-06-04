@@ -1,7 +1,5 @@
 'use strict';
-import  {socket} from './socket.js'
-
-const socketId = socket;
+import  {socket,jwtStr,roomID} from './socket.js'
 
 class Chat extends React.Component{
     constructor(props) {
@@ -9,7 +7,9 @@ class Chat extends React.Component{
         this.state = {
 
         };
+        //this.sendMsg = this.sendMsg.bind(this);
     }
+    
 
     toggleChat(event) {
         event.preventDefault();
@@ -20,7 +20,22 @@ class Chat extends React.Component{
         }else{
             chat_content.classList.add("hide");	
         }
+    }
 
+    sendMsg(event) {
+        event.preventDefault();
+        var message = document.getElementById("message").value;
+        console.log("clik submit msg: " + message);
+
+        if (message.length > 0) {
+            console.log("emitting roomID: " + roomID);
+            socket.emit('room-manager', {
+                room: roomID,
+                message: message,
+                jwt: jwtStr,
+                msgType: "chat"
+            });
+        }
     }
 
     render(){
@@ -40,7 +55,7 @@ class Chat extends React.Component{
                         </div>
                         <div className="chat_send-msg-wrapper">
                             <input id="message" type="text" placeholder="Scrivi messaggio..."/>
-                            <div className="button__send-msg">
+                            <div className="button__send-msg" onClick={this.sendMsg}>
                                 <img id="roomID" data-roomid="dating" src="../img/send-msg.svg" alt="invia msg"/>
                             </div>
                         </div>

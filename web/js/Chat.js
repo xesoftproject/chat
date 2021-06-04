@@ -8,9 +8,7 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-import { socket } from './socket.js';
-
-var socketId = socket;
+import { socket, jwtStr, roomID } from './socket.js';
 
 var Chat = function (_React$Component) {
     _inherits(Chat, _React$Component);
@@ -21,6 +19,7 @@ var Chat = function (_React$Component) {
         var _this = _possibleConstructorReturn(this, (Chat.__proto__ || Object.getPrototypeOf(Chat)).call(this, props));
 
         _this.state = {};
+        //this.sendMsg = this.sendMsg.bind(this);
         return _this;
     }
 
@@ -34,6 +33,23 @@ var Chat = function (_React$Component) {
                 chat_content.classList.remove("hide");
             } else {
                 chat_content.classList.add("hide");
+            }
+        }
+    }, {
+        key: 'sendMsg',
+        value: function sendMsg(event) {
+            event.preventDefault();
+            var message = document.getElementById("message").value;
+            console.log("clik submit msg: " + message);
+
+            if (message.length > 0) {
+                console.log("emitting roomID: " + roomID);
+                socket.emit('room-manager', {
+                    room: roomID,
+                    message: message,
+                    jwt: jwtStr,
+                    msgType: "chat"
+                });
             }
         }
     }, {
@@ -86,7 +102,7 @@ var Chat = function (_React$Component) {
                             React.createElement('input', { id: 'message', type: 'text', placeholder: 'Scrivi messaggio...' }),
                             React.createElement(
                                 'div',
-                                { className: 'button__send-msg' },
+                                { className: 'button__send-msg', onClick: this.sendMsg },
                                 React.createElement('img', { id: 'roomID', 'data-roomid': 'dating', src: '../img/send-msg.svg', alt: 'invia msg' })
                             )
                         )

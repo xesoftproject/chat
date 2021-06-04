@@ -41,7 +41,7 @@ var InfoUtente = function (_React$Component) {
 
       this.setState({ userName: get_username() });
       /*TO DO settare l'icona utente*/
-      player_games_history(this.state.userName).then(function (statistiche) {
+      player_games_history(get_username()).then(function (statistiche) {
         _this2.setState({ statistiche: statistiche });
       });
     }

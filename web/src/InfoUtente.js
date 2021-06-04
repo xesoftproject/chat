@@ -23,7 +23,7 @@ class InfoUtente extends React.Component {
   componentDidMount() {
     this.setState({userName: get_username()});
     /*TO DO settare l'icona utente*/
-      player_games_history(this.state.userName).then(statistiche => {
+      player_games_history(get_username()).then(statistiche => {
         this.setState({ statistiche });
     });
   }
