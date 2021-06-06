@@ -62,10 +62,10 @@ const apply_move = async (piece, delta_x, delta_y, to) => {
 		return;
 	}
 
-	// the table is rotated of 90°
-	const x = piece.object3D.position.x + (delta_y * STEP);
+	// the table is rotated of -90°
+	const x = piece.object3D.position.x - (delta_y * STEP);
 	const y = piece.object3D.position.y
-	const z = piece.object3D.position.z + (delta_x * STEP);
+	const z = piece.object3D.position.z - (delta_x * STEP);
 
 	piece.setAttribute('animation',
 		`property: position; dur: ${STEP_DURATION}; to: ${x} ${y} ${z}`);
