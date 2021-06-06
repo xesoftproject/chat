@@ -184,7 +184,7 @@ const onload = async () => {
 			const status = JSON.parse(event.data);
 			console.log(status);
 			const msg = status.error ? status.error : status.success ? status.success : '';
-			document.querySelector('#overlay pre').textContent += msg + '\n';
+			document.querySelector('#overlay .debug').textContent += msg + '\n';
 		};
 
 		ws.onerror = console.error.bind(console)
@@ -218,7 +218,17 @@ const onload = async () => {
 		for await (const { move, table, winner } of register(GAME_ID)) {
 			console.info('move: %o, winner: %o', move, winner);
 
-			document.querySelector('pre').textContent = table;
+			{
+				const rows = table.split('\n');
+				// decorate rows with numbers
+				for (let i=8; i>=1; i-=1) {
+					rows[8-i] = `${i} ${rows[8-i]}`;
+				}
+				// append letters
+				rows.push('  A B C D E F G H');
+
+				document.querySelector('#overlay .table').textContent = rows.join('\n');
+			}
 
 			if (!move)
 				continue;
