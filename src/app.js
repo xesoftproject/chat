@@ -124,6 +124,8 @@ io.on('connection', (socket) => {
 				`Socket ${socket.id} joined to room ${roomId}`
 			);
 
+
+
 		} catch (err) {
 			logger.error(`Error joining: ${err}`);
 			socket.emit('errorMsg', {description: err});
@@ -164,8 +166,8 @@ io.on('connection', (socket) => {
 
 			var params = {
 				TableName:
-					CONFIG.awsDynamoEnv +
-					'-' +
+					// CONFIG.awsDynamoEnv +
+					// '-' +
 					CONFIG.awsDynamoChatHistoryTableName,
 				Item: {
 					creationDate: {S: '' + creationDate},
@@ -184,7 +186,7 @@ io.on('connection', (socket) => {
 					senderNickname: {S: decodedJwt.payload['nickname']}
 				}
 			};
-			// dm.put(params);
+			dm.put(params);
 			io.in(roomId).emit('message', {
 				message: data.message,
 				nickname: decodedJwt.payload['nickname'],

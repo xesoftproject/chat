@@ -39,6 +39,22 @@ class DynamoManager {
             }
         });
     }
+
+    get(params) {
+        logger.info(`getting chat history on room...  ${JSON.stringify(params)}`);
+        this.ddb.putItem(params, function (err, data) {
+            if (err) {
+                throw `Unable to get history: ${JSON.stringify(
+                    err,
+                    null,
+                    2
+                )}`;
+            } else {
+                logger.debug('Chat history retrieved:', JSON.stringify(data, null, 2));
+                return data;
+            }
+        });
+    }
 }
 
 module.exports = DynamoManager;

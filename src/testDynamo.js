@@ -31,6 +31,23 @@ class DynamoManager {
         });
     }
 
+    getHistory(params) {
+        console.log(`getting chat history on room...  ${JSON.stringify(params)}`);
+
+        this.ddb.getItem(params, function (err, data) {
+            if (err) {
+                throw `Unable to get history: ${JSON.stringify(
+                    err,
+                    null,
+                    2
+                )}`;
+            } else {
+                console.log('Chat history retieved:', JSON.stringify(data, null, 2));
+                return data;
+            }
+        });
+    };
+
     // listTables() {
     //     var param = {}
     //     this.ddb.ListTables(param, function (err, data) {
@@ -46,8 +63,8 @@ var params = {
     TableName: 'chat-history',
     Item: {
         creationDate: {S: '1608879543'},
-        expDate: {S: '1608889543'},
-        msg: {S: 'test message 2'},
+        expDate: {S: '1908889543'},
+        msg: {S: 'test 666'},
         msgId: {S: '1608879543-testSender'},
         msgType: {S: 'chat'},
         ownerId: {S: 'testOwner'},
@@ -57,5 +74,19 @@ var params = {
     }
 };
 
+var getParams = {
+    AttributesToGet: [
+        "msg"
+    ],
+    TableName : 'chat-history',
+    Key : {
+        "roomId" : {
+            "S" : "666"
+        }
+    }
+};
+
 // dm.listTables();
-dm.put(params);
+// dm.put(params);
+let pippo = dm.getHistory(getParams);
+let fine = 0;
