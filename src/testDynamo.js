@@ -31,22 +31,36 @@ class DynamoManager {
         });
     }
 
-    getHistory(params) {
-        console.log(`getting chat history on room...  ${JSON.stringify(params)}`);
+    // getHistory(params) {
+    //     console.log(`getting chat history on room...  ${JSON.stringify(params)}`);
+    //
+    //     this.ddb.getItem(params, function (err, data) {
+    //         if (err) {
+    //             throw `Unable to get history: ${JSON.stringify(
+    //                 err,
+    //                 null,
+    //                 2
+    //             )}`;
+    //         } else {
+    //             console.log('Chat history retieved:', JSON.stringify(data, null, 2));
+    //             return data;
+    //         }
+    //     });
+    // };
 
-        this.ddb.getItem(params, function (err, data) {
-            if (err) {
-                throw `Unable to get history: ${JSON.stringify(
-                    err,
-                    null,
-                    2
-                )}`;
-            } else {
-                console.log('Chat history retieved:', JSON.stringify(data, null, 2));
-                return data;
-            }
+    get(params) {
+        return new Promise((resolve, reject) => {
+            setTimeout(() => {
+                this.ddb.query(params, function (err, data) {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        resolve(data);
+                    }
+                });
+            }, 5000);
         });
-    };
+    }
 
     // listTables() {
     //     var param = {}
@@ -58,35 +72,44 @@ class DynamoManager {
 }
 
 let dm = new DynamoManager('eu-west-1');
+
+
+// var params = {
+//     // TableName: "test2",
+//     TableName: 'chat-history',
+//     Item: {
+//         creationDate: {S: '1608879543'},
+//         expDate: {S: '1908889543'},
+//         msg: {S: 'test 666'},
+//         msgId: {S: '1608879543-testSender'},
+//         msgType: {S: 'chat'},
+//         ownerId: {S: 'testOwner'},
+//         roomId: {S: 'roomTest'},
+//         sender: {S: 'testSender'},
+//         senderNickname: {S: 'testNickname'}
+//     }
+// };
+
+
 var params = {
-    // TableName: "test2",
-    TableName: 'chat-history',
-    Item: {
-        creationDate: {S: '1608879543'},
-        expDate: {S: '1908889543'},
-        msg: {S: 'test 666'},
-        msgId: {S: '1608879543-testSender'},
-        msgType: {S: 'chat'},
-        ownerId: {S: 'testOwner'},
-        roomId: {S: 'roomTest'},
-        sender: {S: 'testSender'},
-        senderNickname: {S: 'testNickname'}
-    }
+    ExpressionAttributeValues: {
+        ':r': {S: '666'}
+    },
+    KeyConditionExpression: 'roomId = :r ',
+    ProjectionExpression: 'msg, senderNickname, creationDate',
+    TableName: 'chat-history'
 };
 
-var getParams = {
-    AttributesToGet: [
-        "msg"
-    ],
-    TableName : 'chat-history',
-    Key : {
-        "roomId" : {
-            "S" : "666"
-        }
-    }
-};
 
 // dm.listTables();
 // dm.put(params);
-let pippo = dm.getHistory(getParams);
+
+dm.get(params)
+.then(data => { data.Items.forEach(function (element, index, array) {
+        console.log(element);
+    })
+})
+.catch(err => console.log("Error", err));
+
+
 let fine = 0;

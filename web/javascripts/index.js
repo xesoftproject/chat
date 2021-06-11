@@ -17,6 +17,13 @@
 		socket.emit('join', {room: roomID, jwt: jwtStr});
 	});
 
+	socket.on('history', function (data) {
+		console.log("history: ");
+		data.Items.forEach(function (element, index, array) {
+			console.log(element);
+		});
+	});
+
 	socket.on('message', function (data) {
 		console.log("message: " + data);
 		$('#message-room > ul').append('<li>' + "received msg,  username: " + data.username + " - msg: " + data.message + " - creationDate: " + data.creationDate + " - nickname: " + data.nickname + ' -</li>');
