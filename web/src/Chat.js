@@ -11,6 +11,29 @@ class Chat extends React.Component{
     
     componentDidMount() {
         let temp_messages = this.state.messages;
+
+        socket.on('history', (data) => {
+            console.log("history: ");
+            data.Items.forEach(function (element) {
+                console.log(element);
+                temp_messages.push(
+                    {
+                        "message":element.msg.S,
+                        "nickname": element.senderNickname.S
+                    }
+                )
+            });
+
+            this.setState(
+                {
+                    messages : temp_messages
+                },
+                function() { 
+                    const chat_text_area = document.getElementById("message-room");
+                    chat_text_area.scrollTop = chat_text_area.scrollHeight;
+                }
+            );
+        });
         
         socket.on('message', (data) => {
 			console.log("message: " + data.message+" nickname: "+data.nickname);

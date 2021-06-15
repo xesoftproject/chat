@@ -31,6 +31,24 @@ var Chat = function (_React$Component) {
 
             var temp_messages = this.state.messages;
 
+            socket.on('history', function (data) {
+                console.log("history: ");
+                data.Items.forEach(function (element) {
+                    console.log(element);
+                    temp_messages.push({
+                        "message": element.msg.S,
+                        "nickname": element.senderNickname.S
+                    });
+                });
+
+                _this2.setState({
+                    messages: temp_messages
+                }, function () {
+                    var chat_text_area = document.getElementById("message-room");
+                    chat_text_area.scrollTop = chat_text_area.scrollHeight;
+                });
+            });
+
             socket.on('message', function (data) {
                 console.log("message: " + data.message + " nickname: " + data.nickname);
 
