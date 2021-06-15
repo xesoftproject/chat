@@ -3,7 +3,7 @@
 import { get_username } from './cognitoclient.js';
 import { player_games_history } from '../js/moves-rest-client.js';
 
-const url_link = "#";
+const url_link = "../doc/xesoft-guida-al-gioco.pdf";
 const label_link = "Guida al gioco";
 
 class InfoUtente extends React.Component {
@@ -41,7 +41,7 @@ class InfoUtente extends React.Component {
               <Statistiche statistiche={this.state.statistiche}/>
             </div>
             <div className="grid-cl-2-mobile grid-cl-6-tablet grid-cl-1-desktop statistiche__container-link">
-                <a href={url_link}>{label_link}</a>
+                <a href={url_link} target="_blank">{label_link}</a>
             </div>
         </div>
       </div>

@@ -11,7 +11,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 import { get_username } from './cognitoclient.js';
 import { player_games_history } from '../js/moves-rest-client.js';
 
-var url_link = "#";
+var url_link = "../doc/xesoft-guida-al-gioco.pdf";
 var label_link = "Guida al gioco";
 
 var InfoUtente = function (_React$Component) {
@@ -74,7 +74,7 @@ var InfoUtente = function (_React$Component) {
             { className: 'grid-cl-2-mobile grid-cl-6-tablet grid-cl-1-desktop statistiche__container-link' },
             React.createElement(
               'a',
-              { href: url_link },
+              { href: url_link, target: '_blank' },
               label_link
             )
           )
