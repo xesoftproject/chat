@@ -11,15 +11,23 @@ const logger = new lgg({
  */
 
 class DynamoManager {
-    constructor(region) {
+    constructor(region, accessKey, secretKey) {
+    // constructor(region) {
         this.AWS = require('aws-sdk');
 
         // Set the region
         this.AWS.config.update({
-            region: 'eu-west-1',
-            accessKeyId: process.env.ACCESS_KEY_ID,
-            secretAccessKey: process.env.SECRET_ACCESS_KEY
+            region: region,
+            accessKeyId: accessKey,
+            secretAccessKey: secretKey
         });
+
+        // Set the region
+        // this.AWS.config.update({
+        //     region: region,
+        //     accessKeyId: process.env.ACCESS_KEY_ID,
+        //     secretAccessKey: process.env.SECRET_ACCESS_KEY
+        // });
 
         // Create the DynamoDB service object
         this.ddb = new this.AWS.DynamoDB({apiVersion: '2012-08-10'});
