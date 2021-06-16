@@ -1,7 +1,7 @@
 'use strict';
 
 import { HOSTNAME } from './configuration.js';
-import { messages, json_parse } from './commons.js';
+import { messages, json_parse, force_next_message } from './commons.js';
 
 const HTTP_BASENAME = `https://${HOSTNAME}:8443`;
 const WS_BASENAME = `wss://${HOSTNAME}:8443`;
@@ -71,11 +71,11 @@ const register = (game_id) => {
 	return json_parse(messages(new WebSocket(`${WS_BASENAME}/register/${game_id}`)));
 };
 
-register.force_winner = (winner) => {
+const force_winner = (winner) => {
 	console.log('[winner: %o]', winner);
 
 	const game_ended = true;
-	messages.force_next_message(JSON.stringify({ game_ended, winner }));
+	force_next_message(JSON.stringify({ game_ended, winner }));
 };
 
 /**
@@ -90,4 +90,4 @@ const player_games_history = async (user_id) => {
 	return await response.json();
 };
 
-export { update, start_new_game, games, register, player_games_history };
+export { update, start_new_game, games, register, player_games_history, force_winner };

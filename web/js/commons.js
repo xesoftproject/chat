@@ -84,7 +84,7 @@ const messages = async function*(ws) {
 		yield await receive();
 	}
 };
-messages.force_next_message = (data) => {
+const force_next_message = (data) => {
 	const event = { data };
 	_messages_on_message(event);
 };
@@ -97,4 +97,4 @@ const json_parse = async function*(agen) {
 };
 
 
-export { queryparams, get_query_param, sleep, messages, json_parse };
+export { queryparams, get_query_param, sleep, messages, json_parse, force_next_message };

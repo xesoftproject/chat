@@ -5,23 +5,22 @@ const socket = io(document.location.origin + '/xesoft_chat');
 const socket_onload = function socket_onload(){
     console.log("index started")
     
-    console.log('document.location.origin: %o', document.location.origin)
+    console.log(`document.location.origin: ${document.location.origin}`)
     var start = new Date();
 
-    console.log("xejwt: %o", jwtStr);
+    console.log("xejwt: " + jwtStr);
 
     socket.on('connect', function () {
         console.log("connecting")
         var index = socket.io.engine.upgrade ? 1 : 0;
-        console.log('Connection established in %o msec. SocketID: %o . You are using %o .',
-                    new Date() - start,
-                    socket.id,
-                    socket.io.engine.transports[index]);
+        console.log('Connection established in ' + (new Date() - start) + 'msec. ' +
+            'SocketID: ' + socket.id + '. ' +
+            'You are using ' + socket.io.engine.transports[index] + '.');
         socket.emit('join', {room: roomID, jwt: jwtStr});
     });
 
     socket.on('room-manager', function (message) {
-        console.log("room-manager: %o", message);
+        console.log("room-manager: " + message);
     });
 
     socket.on('connect_failed', function () {
@@ -37,7 +36,7 @@ const socket_onload = function socket_onload(){
     })
 
     socket.on('errorMsg', function (data) {
-        console.error("Error: %o", data);
+        console.error("Error:", data);
     })
 }
 

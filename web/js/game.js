@@ -3,7 +3,7 @@
 const STEP = .06;
 const STEP_DURATION = 1000;
 
-import { register } from './moves-rest-client.js';
+import { register, force_winner } from './moves-rest-client.js';
 import { get_query_param } from './commons.js'
 import { QUERY_PARAMS_GAME_ID } from './constants.js';
 import { get_username } from './cognitoclient.js';
@@ -231,27 +231,25 @@ const onload = async () => {
 
 		console.log('output loop');
 
-		/*
 		for (const a of document.querySelectorAll('[href="#win"]'))
 			a.addEventListener('click', e => {
 				e.preventDefault();
-				register.force_winner(user_id);
+				force_winner(user_id);
 			});
 
 		for (const a of document.querySelectorAll('[href="#lose"]'))
 			a.addEventListener('click', e => {
 				e.preventDefault();
 
-				register.force_winner('not user_id');
+				force_winner('not user_id');
 			});
 
 		for (const a of document.querySelectorAll('[href="#draw"]'))
 			a.addEventListener('click', e => {
 				e.preventDefault();
 
-				register.force_winner(null);
+				force_winner(null);
 			});
-		*/
 
 		try {
 			for await (const { move, table, game_ended, winner } of register(GAME_ID)) {
