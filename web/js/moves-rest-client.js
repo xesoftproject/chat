@@ -74,7 +74,7 @@ const register = (game_id) => {
 register.force_winner = (winner) => {
 	console.log('[winner: %o]', winner);
 
-	messages.force_next_message(JSON.stringify({ winner }));
+	messages.force_next_message(JSON.stringify({ game_ended: true, winner }));
 };
 
 /**

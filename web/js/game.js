@@ -174,7 +174,19 @@ const b64encode = (blob) => {
 };
 
 const endgame = (you_win) => {
-	document.querySelector(you_win ? '.you-win' : '.you-lose').className += ' show-banner';
+	console.info(you_win);
+
+	let selector = null;
+	if (you_win === true)
+		selector = '.you-win' ;
+	else if (you_win === null)
+		selector = '.draw';
+	else if (you_win === false)
+		selector = '.you-lose';
+	else
+		throw new Exception(f`unsupported you_win (${you_win})`);
+
+	document.querySelector(selector).className += ' show-banner';
 };
 
 const onload = async () => {
@@ -232,45 +244,62 @@ const onload = async () => {
 				register.force_winner('not user_id');
 			});
 
-		for await (const { move, table, winner } of register(GAME_ID)) {
-			console.info('move: %o, winner: %o', move, winner);
+		for (const a of document.querySelectorAll('[href="#draw"]'))
+			a.addEventListener('click', e => {
+				e.preventDefault();
 
-			if (winner) {
-				const you_win = winner === user_id;
-				console.info(you_win ? 'you win!' : 'you lose!');
-				endgame(you_win);
-				break
-			}
+				register.force_winner(null);
+			});
 
-			{
-				const rows = table.split('\n');
-				// decorate rows with numbers
-				for (let i = 8; i >= 1; i -= 1) {
-					rows[8 - i] = `${i} ${rows[8 - i]}`;
+		try {
+			for await (const { move, table, game_ended, winner } of register(GAME_ID)) {
+				console.info('move: %o, game_ended: %o, winner: %o',
+						move, game_ended, winner);
+	
+				if (game_ended) {
+					// 3-values boolean logic...
+					endgame(winner === user_id
+							? true
+							: winner === null
+									? null
+									: false);
+					break
 				}
-				// append letters
-				rows.push('  A B C D E F G H');
-
-				document.querySelector('#overlay .table').textContent = rows.join('\n');
+	
+				{
+					const rows = table.split('\n');
+					// decorate rows with numbers
+					for (let i = 8; i >= 1; i -= 1) {
+						rows[8 - i] = `${i} ${rows[8 - i]}`;
+					}
+					// append letters
+					rows.push('  A B C D E F G H');
+	
+					document.querySelector('#overlay .table').textContent = rows.join('\n');
+				}
+	
+				if (!move)
+					continue;
+	
+				const from = move.substr(0, 2);
+				const to = move.substr(2, 2);
+	
+				console.debug('from: %o, to: %o', from, to);
+	
+				const piece = lookup(from);
+				console.debug('piece: %o', piece);
+	
+				const { delta_x, delta_y } = movement(from, to);
+				console.debug('delta_x: %o, delta_y: %o', delta_x, delta_y);
+	
+				await apply_move(piece, delta_x, delta_y, to);
+	
+				await maybe_castling(piece, delta_x, delta_y);
 			}
-
-			if (!move)
-				continue;
-
-			const from = move.substr(0, 2);
-			const to = move.substr(2, 2);
-
-			console.debug('from: %o, to: %o', from, to);
-
-			const piece = lookup(from);
-			console.debug('piece: %o', piece);
-
-			const { delta_x, delta_y } = movement(from, to);
-			console.debug('delta_x: %o, delta_y: %o', delta_x, delta_y);
-
-			await apply_move(piece, delta_x, delta_y, to);
-
-			await maybe_castling(piece, delta_x, delta_y);
+		}
+		catch (error) {
+			console.error(error);
+			window.location.assign('/');
 		}
 	};
 
