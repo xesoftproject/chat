@@ -31,7 +31,7 @@ var socketUsers = {};
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser())
-
+app.enable('trust proxy');
 
 app.all('*', (req, res, next) => {
     console.log('ALL *');
