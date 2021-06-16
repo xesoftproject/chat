@@ -95,7 +95,7 @@ class LoginButton extends React.Component{
                 AmazonCognitoIdentity.CookieSto
                 
                 
-                window.location = '/home.html';
+                window.location = '/';
             },
 
             onFailure: function (err) {

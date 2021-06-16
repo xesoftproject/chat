@@ -22,7 +22,7 @@ const cognitoManager = new CognitoManager(CONFIG.awsUserPoolId);
 // const dm = new dynamo(CONFIG.awsDynamoChatRegion);
 const dm = new dynamo(CONFIG.awsDynamoChatRegion, CONFIG.awsDynamoAccessKeyId, CONFIG.awsDynamoSecretAccessKey);
 
-const PRIVATE_PAGES = ['/', '/game.html', '/home.html', '/index.html'];
+const PRIVATE_PAGES = ['/', '/game.html', '/index.html'];
 const LOGIN_PAGE = '/login.html';
 
 var socketUsers = {};

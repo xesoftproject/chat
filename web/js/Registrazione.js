@@ -65,7 +65,7 @@ var SignInButton = function (_React$Component2) {
             var data = { 'email': formData.get("emailSignIn"), 'nickname': formData.get("nicknameSignIn"), 'pass': formData.get("passwordSignIn") };
             $.post('/user/signup', data, function (response) {
                 alert(response);
-                window.location = '/home.html';
+                window.location = '/';
             });
         }
     }, {

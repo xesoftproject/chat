@@ -118,7 +118,7 @@ var LoginButton = function (_React$Component2) {
 
                     AmazonCognitoIdentity.CookieSto;
 
-                    window.location = '/home.html';
+                    window.location = '/';
                 },
 
                 onFailure: function onFailure(err) {
