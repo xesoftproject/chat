@@ -10,7 +10,15 @@
     
         <link rel="stylesheet" href="css/common.css" type="text/css">
         <link rel="stylesheet" href="css/home.css" type="text/css">
-            
+
+    <script>
+    window.onerror = function(message, source, lineno, colno, error) {
+        alert(message);
+        alert(source + '@' + lineno + ':' + colno);
+        alert(error);
+    };
+    </script>
+
     </head>
     <body id="home-container" class="background-wrapper">
         <header class="header-wrapper">
