@@ -231,6 +231,7 @@ const onload = async () => {
 
 		console.log('output loop');
 
+		/*
 		for (const a of document.querySelectorAll('[href="#win"]'))
 			a.addEventListener('click', e => {
 				e.preventDefault();
@@ -250,6 +251,7 @@ const onload = async () => {
 
 				register.force_winner(null);
 			});
+		*/
 
 		try {
 			for await (const { move, table, game_ended, winner } of register(GAME_ID)) {
