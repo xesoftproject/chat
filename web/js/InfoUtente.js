@@ -43,6 +43,9 @@ var InfoUtente = function (_React$Component) {
       /*TO DO settare l'icona utente*/
       player_games_history(get_username()).then(function (statistiche) {
         _this2.setState({ statistiche: statistiche });
+      }).catch(error => {
+        console.error(error);
+        alert(error);
       });
     }
   }, {

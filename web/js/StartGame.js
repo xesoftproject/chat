@@ -153,6 +153,9 @@ var StartGameButton = function (_React$Component2) {
                 });
 
                 window.location.assign(game_url);
+            }).catch(error => {
+                console.error(error);
+                alert(error);
             });
         }
     }, {
