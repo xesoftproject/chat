@@ -173,6 +173,10 @@ const b64encode = (blob) => {
 	});
 };
 
+const endgame = (you_win) => {
+	document.querySelector(you_win ? '.you-win' : '.you-lose').className += ' show-banner';
+};
+
 const onload = async () => {
 	const user_id = get_username();
 	console.debug('I_AM', user_id, 'GAME_ID', GAME_ID);
@@ -213,16 +217,36 @@ const onload = async () => {
 			numberOfAudioChannels: 1
 		}).startRecording();
 
-		console.log('output loop')
+		console.log('output loop');
+
+		for (const a of document.querySelectorAll('[href="#win"]'))
+			a.addEventListener('click', e => {
+				e.preventDefault();
+				register.force_winner(user_id);
+			});
+
+		for (const a of document.querySelectorAll('[href="#lose"]'))
+			a.addEventListener('click', e => {
+				e.preventDefault();
+
+				register.force_winner('not user_id');
+			});
 
 		for await (const { move, table, winner } of register(GAME_ID)) {
 			console.info('move: %o, winner: %o', move, winner);
 
+			if (winner) {
+				const you_win = winner === user_id;
+				console.info(you_win ? 'you win!' : 'you lose!');
+				endgame(you_win);
+				break
+			}
+
 			{
 				const rows = table.split('\n');
 				// decorate rows with numbers
-				for (let i=8; i>=1; i-=1) {
-					rows[8-i] = `${i} ${rows[8-i]}`;
+				for (let i = 8; i >= 1; i -= 1) {
+					rows[8 - i] = `${i} ${rows[8 - i]}`;
 				}
 				// append letters
 				rows.push('  A B C D E F G H');

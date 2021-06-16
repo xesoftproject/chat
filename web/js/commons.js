@@ -46,6 +46,17 @@ const get_query_param = (key, location = window.location) => {
 const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 
+const _messages_datas = [];
+const _messages_resolves = [];
+const _messages_on_message = (event) => {
+	if (_messages_resolves.length) {
+		_messages_resolves.shift()(event.data);
+		return;
+	}
+
+	_messages_datas.push(event.data);
+};
+
 /**
  * convert a websocket to an async generator
  * @param {WebSocket} ws
@@ -58,30 +69,24 @@ const messages = async function*(ws) {
 			ws.addEventListener('error', reject);
 		});
 
-	const datas = [];
-	const resolves = [];
-
-	ws.addEventListener('message', (event) => {
-		if (resolves.length) {
-			resolves.shift()(event.data);
-			return;
-		}
-
-		datas.push(event.data);
-	});
+	ws.addEventListener('message', _messages_on_message);
 
 	const receive = () => {
-		if (datas.length)
-			return Promise.resolve(datas.shift());
+		if (_messages_datas.length)
+			return Promise.resolve(_messages_datas.shift());
 
 		return new Promise(resolve => {
-			resolves.push(resolve);
+			_messages_resolves.push(resolve);
 		});
 	};
 
 	while (ws.readyState === WebSocket.OPEN) {
 		yield await receive();
 	}
+};
+messages.force_next_message = (data) => {
+	const event = { data };
+	_messages_on_message(event);
 };
 
 

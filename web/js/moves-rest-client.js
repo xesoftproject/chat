@@ -71,6 +71,12 @@ const register = (game_id) => {
 	return json_parse(messages(new WebSocket(`${WS_BASENAME}/register/${game_id}`)));
 };
 
+register.force_winner = (winner) => {
+	console.log('[winner: %o]', winner);
+
+	messages.force_next_message(JSON.stringify({ winner }));
+};
+
 /**
  *
  */
