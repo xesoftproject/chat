@@ -19,7 +19,8 @@ class Chat extends React.Component{
                 temp_messages.push(
                     {
                         "message":element.msg.S,
-                        "nickname": element.senderNickname.S
+                        "nickname": element.senderNickname.S,
+                        "date":  new Date(element.creationDate.S).toLocaleString()
                     }
                 )
             });
@@ -42,7 +43,8 @@ class Chat extends React.Component{
                 temp_messages.push(
                     {
                         "message":data.message,
-                        "nickname":data.nickname
+                        "nickname":data.nickname,
+                        "date": new Date(data.creationDate).toLocaleString()
                     }
                 )
             }
@@ -100,7 +102,7 @@ class Chat extends React.Component{
                                     {this.state.messages.map((value, index) => {
                                         return (
                                             <div key={index} className="chat-msg-box">
-                                                <h4 className="chat-nickname">{value.nickname}</h4>
+                                                <h4 className="chat-nickname">{value.nickname} <span className="chat-date">{value.date}</span></h4>
                                                 <p>{value.message}</p>
                                             </div>
                                         )

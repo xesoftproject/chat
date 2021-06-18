@@ -447,6 +447,11 @@ a.button__content{
 .chat-nickname{
 	margin: 5px 0;
 }
+.chat-date{
+	float: right;
+    font-weight: lighter;
+    font-size: 12px;
+}
 .chat-msg-box{
 	border: 1px solid #918ef4;
     padding: 5px;

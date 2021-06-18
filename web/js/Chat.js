@@ -37,7 +37,8 @@ var Chat = function (_React$Component) {
                     console.log(element);
                     temp_messages.push({
                         "message": element.msg.S,
-                        "nickname": element.senderNickname.S
+                        "nickname": element.senderNickname.S,
+                        "date": new Date(element.creationDate.S).toLocaleString()
                     });
                 });
 
@@ -55,7 +56,8 @@ var Chat = function (_React$Component) {
                 if (data.message != undefined && data.nickname != undefined) {
                     temp_messages.push({
                         "message": data.message,
-                        "nickname": data.nickname
+                        "nickname": data.nickname,
+                        "date": new Date(data.creationDate).toLocaleString()
                     });
                 }
 
@@ -132,7 +134,13 @@ var Chat = function (_React$Component) {
                                         React.createElement(
                                             'h4',
                                             { className: 'chat-nickname' },
-                                            value.nickname
+                                            value.nickname,
+                                            ' ',
+                                            React.createElement(
+                                                'span',
+                                                { className: 'chat-date' },
+                                                value.date
+                                            )
                                         ),
                                         React.createElement(
                                             'p',
