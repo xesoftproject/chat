@@ -20,7 +20,7 @@ class Chat extends React.Component{
                     {
                         "message":element.msg.S,
                         "nickname": element.senderNickname.S,
-                        "date":  new Date(element.creationDate.S).toLocaleString()
+                        "date":  new Date(parseInt(element.creationDate.S)).toLocaleString()
                     }
                 )
             });
