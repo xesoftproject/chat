@@ -94,8 +94,8 @@
 	})
 
 	socket.on('errorMsg', function (data) {
-		$('#message-room > ul').append('<li>' + "received ERROR msg on room: " + roomID + " - descriptipn: " + data.description + ' -</li>');
-		console.log("Error: " + data.TypeError);
+		console.log("Error code: " + data.code);
+		console.log("Error msg: " + data.message);
 	})
 
 	// socket.leave(roomID);

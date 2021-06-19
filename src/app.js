@@ -73,9 +73,23 @@ app.post('/user/signup', (req, res) => {
     var pass = req.body.pass;
     var profile = 'player';
 
-    cognitoManager.createUser(nickname, email, profile, pass);
+    // try {
+    cognitoManager.createUser(nickname, email, profile, pass).then(() => {
+        console.log("passato");
+        res.send('Registered as:' + email + ' ' + nickname);
+    }).catch(err => {
+        // io.sockets[socket.id].emit('errorMsg', err);
+        res.send('Error: ' + err.message);
+        // throw err //break the chain!
+    });
+    // cognitoManager.createUser(nickname, email, profile, pass);
 
-    res.send('Registered as:' + email + ' ' + nickname);
+    //     console.log("passato");
+    // } catch (err) {
+    //     console.log(err);
+    // }
+
+
 });
 
 const io = socket_io(https.createServer(CREDENTIALS, app).listen(443)).of('/' + CONFIG.chatNamespace);
@@ -134,7 +148,8 @@ io.on('connection', (socket) => {
 
         } catch (err) {
             logger.error(`Error joining: ${err}`);
-            socket.emit('errorMsg', {description: err});
+            io.sockets[socket.id].emit('errorMsg', err);
+            // socket.emit('errorMsg', err);
         }
     });
 
