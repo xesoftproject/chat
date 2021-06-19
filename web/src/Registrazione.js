@@ -38,6 +38,10 @@ class SignInButton extends React.Component{
                 console.log("Errore nella registrazione: "+response)
             }else{
                 const registration_success_modal = document.getElementById("registration-success-modal");
+                
+                document.getElementById("registrazione").checked = false;
+                document.getElementById("login").checked = true;
+                
                 registration_success_modal.classList.remove("hide");
             }
         });
