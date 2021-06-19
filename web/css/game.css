@@ -1,4 +1,4 @@
-.you-win, .you-lose, .draw {
+.you-win, .you-lose, .draw, .notify_wrong_turn, .notify_error {
 	position: fixed;
 	left: 0;
 	top: 0;
@@ -36,4 +36,20 @@
 .show-banner {
 	opacity: 1;
 	visibility: visible;
+}
+
+.notify_wrong_turn, .notify_error {
+	transition: opacity .25s ease-in;
+}
+
+.notify_wrong_turn {
+	background: radial-gradient(transparent, transparent, transparent, transparent, red);
+}
+
+.notify_error {
+	background: radial-gradient(transparent, transparent, transparent, transparent, orange);
+}
+
+pre {
+	display: none;
 }
