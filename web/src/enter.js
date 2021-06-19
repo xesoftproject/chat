@@ -1,11 +1,14 @@
 import Login from './Login.js';
 import Registrazione from './Registrazione.js';
 
+/*MODALE BEGIN - END*/
 const close_modal = document.getElementById("close-modal");
+const modal_error = document.getElementById("error-modal");
 close_modal.onclick = function(event){
     event.preventDefault();
-    close_modal.classList.add("hide");
+    modal_error.classList.add("hide");
 };
+/*MODALE ERRORE - END*/
 
 ReactDOM.render(
     <Login />,
