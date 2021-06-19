@@ -178,7 +178,7 @@ const endgame = (you_win) => {
 
 	let selector = null;
 	if (you_win === true)
-		selector = '.you-win' ;
+		selector = '.you-win';
 	else if (you_win === null)
 		selector = '.draw';
 	else if (you_win === false)
@@ -186,7 +186,45 @@ const endgame = (you_win) => {
 	else
 		throw new Exception(f`unsupported you_win (${you_win})`);
 
-	document.querySelector(selector).className += ' show-banner';
+	const a = document.querySelector(selector)
+	a.className += ' show-banner';
+	setTimeout(() => a.click(), 5000);
+};
+
+
+const toggle_class = (a, classname) => {
+	console.info('toggle class', a, classname, new Date());
+	const orig_classname = a.className;
+	const add_classname = ' ' + classname;
+	const i = orig_classname.indexOf(add_classname)
+
+	const new_classname = i !== -1
+		? orig_classname.substring(0, i)
+		: orig_classname + add_classname;
+
+	a.className = new_classname;
+};
+
+const notify = (div, n) => {
+	const classname = 'show-banner';
+
+	let i = 0;
+	const interval = setInterval(() => {
+		if (i < n)
+			toggle_class(div, classname);
+		else
+			clearInterval(interval);
+		i += 1;
+	}, 500);
+};
+
+const notify_wrong_turn = () => {
+	notify(document.querySelector('.notify_wrong_turn'), 2);
+};
+
+
+const notify_error = () => {
+	notify(document.querySelector('.notify_error'), 2);
 };
 
 const onload = async () => {
@@ -252,20 +290,29 @@ const onload = async () => {
 			});
 
 		try {
-			for await (const { move, table, game_ended, winner } of register(GAME_ID)) {
-				console.info('move: %o, game_ended: %o, winner: %o',
-						move, game_ended, winner);
-	
+			for await (const { move, table, game_ended, winner, error } of register(GAME_ID)) {
+				console.info('move: %o, game_ended: %o, winner: %o, error: %o',
+					move, game_ended, winner, error);
+
+				if (error) {
+					console.error(error);
+					if (error === 'wrong turn')
+						notify_wrong_turn();
+					else
+						notify_error();
+					continue;
+				}
+
 				if (game_ended) {
 					// 3-values boolean logic...
 					endgame(winner === user_id
-							? true
-							: winner === null
-									? null
-									: false);
+						? true
+						: winner === null
+							? null
+							: false);
 					break
 				}
-	
+
 				{
 					const rows = table.split('\n');
 					// decorate rows with numbers
@@ -274,26 +321,26 @@ const onload = async () => {
 					}
 					// append letters
 					rows.push('  A B C D E F G H');
-	
+
 					document.querySelector('#overlay .table').textContent = rows.join('\n');
 				}
-	
+
 				if (!move)
 					continue;
-	
+
 				const from = move.substr(0, 2);
 				const to = move.substr(2, 2);
-	
+
 				console.debug('from: %o, to: %o', from, to);
-	
+
 				const piece = lookup(from);
 				console.debug('piece: %o', piece);
-	
+
 				const { delta_x, delta_y } = movement(from, to);
 				console.debug('delta_x: %o, delta_y: %o', delta_x, delta_y);
-	
+
 				await apply_move(piece, delta_x, delta_y, to);
-	
+
 				await maybe_castling(piece, delta_x, delta_y);
 			}
 		}
