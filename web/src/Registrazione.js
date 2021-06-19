@@ -2,8 +2,6 @@
 
 import {FormGroupInputText,FormGroupInputEmail,FormGroupInputPwd} from './FormComponent.js';
 
-const modal_error = document.getElementById("error-modal");
-
 class Registrazione extends React.Component {
   constructor(props) {
     super(props);
@@ -34,12 +32,13 @@ class SignInButton extends React.Component{
 
         const data = {'email':formData.get("emailSignIn"),'nickname':formData.get("nicknameSignIn"), 'pass': formData.get("passwordSignIn")}
         $.post('/user/signup', data, function(response) {
-            alert(response);
             if(response.includes("Error")){
+                const modal_error = document.getElementById("error-modal");
                 modal_error.classList.remove("hide");
                 console.log("Errore nella registrazione: "+response)
             }else{
-                window.location = '/';
+                const registration_success_modal = document.getElementById("registration-success-modal");
+                registration_success_modal.classList.remove("hide");
             }
         });
     }

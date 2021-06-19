@@ -10,8 +10,6 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 import { FormGroupInputText, FormGroupInputEmail, FormGroupInputPwd } from './FormComponent.js';
 
-var modal_error = document.getElementById("error-modal");
-
 var Registrazione = function (_React$Component) {
     _inherits(Registrazione, _React$Component);
 
@@ -59,12 +57,13 @@ var SignInButton = function (_React$Component2) {
 
             var data = { 'email': formData.get("emailSignIn"), 'nickname': formData.get("nicknameSignIn"), 'pass': formData.get("passwordSignIn") };
             $.post('/user/signup', data, function (response) {
-                alert(response);
                 if (response.includes("Error")) {
+                    var modal_error = document.getElementById("error-modal");
                     modal_error.classList.remove("hide");
                     console.log("Errore nella registrazione: " + response);
                 } else {
-                    window.location = '/';
+                    var registration_success_modal = document.getElementById("registration-success-modal");
+                    registration_success_modal.classList.remove("hide");
                 }
             });
         }
