@@ -11,6 +11,8 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 import { FormGroupInputEmail, FormGroupInputPwd } from './FormComponent.js';
 import { COGNITO_USER_POOL } from './cognitoclient.js';
 
+var modal_error = document.getElementById("error-modal");
+
 var Login = function (_React$Component) {
     _inherits(Login, _React$Component);
 
@@ -29,18 +31,6 @@ var Login = function (_React$Component) {
     _createClass(Login, [{
         key: 'componentDidMount',
         value: function componentDidMount() {
-
-            console.log("Nome Utente: dario.brambilla@finconsgroup.com");
-            console.log("Password Utente: a7S+R%!(eawX");
-
-            /*var poolData = {
-                UserPoolId: "eu-west-1_BOr6IaBxC", // Your user pool id here
-                ClientId: "6vligtquo88fguj7e5dsr6mlmj", // Your client id here
-                Storage: new AmazonCognitoIdentity.CookieStorage({domain: location.hostname})
-            };
-              var userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
-              var cognitoUser = userPool.getCurrentUser();
-              if (cognitoUser == null) {*/
             if (COGNITO_USER_POOL.getCurrentUser() == null) {
                 console.log("user not found");
             } /*else{
@@ -110,21 +100,14 @@ var LoginButton = function (_React$Component2) {
 
             cognitoUser.authenticateUser(authenticationDetails, {
                 onSuccess: function onSuccess(result) {
-                    /*alert("authenticateUser onSuccess");
-                    console.log("authenticateUser onSuccess", result);
-                    loginOK(result);*/
                     localStorage.setItem("xejwt", result.idToken.jwtToken);
-                    /*console.log("xejwt: "+localStorage.getItem("xejwt"));*/
-
                     AmazonCognitoIdentity.CookieSto;
-
                     window.location = '/';
                 },
 
                 onFailure: function onFailure(err) {
-                    alert("authenticateUser onFailure" + JSON.stringify(err));
-                    /*console.log("authenticateUser onFailure", err);
-                    loginKO(err);*/
+                    modal_error.classList.remove("hide");
+                    console.log("authenticateUser onFailure" + JSON.stringify(err));
                 }
             });
         }

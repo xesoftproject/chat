@@ -3,6 +3,8 @@
 import {FormGroupInputEmail,FormGroupInputPwd} from './FormComponent.js';
 import {COGNITO_USER_POOL} from './cognitoclient.js';
 
+const modal_error = document.getElementById("error-modal");
+
 class Login extends React.Component {
   constructor(props) {
     super(props);
@@ -13,21 +15,6 @@ class Login extends React.Component {
   }
 
   componentDidMount() {
-    
-    console.log("Nome Utente: dario.brambilla@finconsgroup.com")
-    console.log("Password Utente: a7S+R%!(eawX")
-
-    /*var poolData = {
-        UserPoolId: "eu-west-1_BOr6IaBxC", // Your user pool id here
-        ClientId: "6vligtquo88fguj7e5dsr6mlmj", // Your client id here
-        Storage: new AmazonCognitoIdentity.CookieStorage({domain: location.hostname})
-    };
-
-    var userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
-
-    var cognitoUser = userPool.getCurrentUser();
-
-    if (cognitoUser == null) {*/
     if (COGNITO_USER_POOL.getCurrentUser() == null) {
         console.log("user not found");
         
@@ -86,22 +73,14 @@ class LoginButton extends React.Component{
 
         cognitoUser.authenticateUser(authenticationDetails, {
             onSuccess: function (result) {
-                /*alert("authenticateUser onSuccess");
-                console.log("authenticateUser onSuccess", result);
-                loginOK(result);*/
-                localStorage.setItem("xejwt", result.idToken.jwtToken);
-                /*console.log("xejwt: "+localStorage.getItem("xejwt"));*/
-                
+                localStorage.setItem("xejwt", result.idToken.jwtToken);               
                 AmazonCognitoIdentity.CookieSto
-                
-                
                 window.location = '/';
             },
 
             onFailure: function (err) {
-                alert("authenticateUser onFailure" + JSON.stringify(err));
-                /*console.log("authenticateUser onFailure", err);
-                loginKO(err);*/
+                modal_error.classList.remove("hide");
+                console.log("authenticateUser onFailure" + JSON.stringify(err));
             },
         });
 		

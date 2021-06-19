@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="css/common.css" type="text/css">
     <link rel="stylesheet" href="css/login.css" type="text/css">
 </head>
+
 <body id="login-content" class="background-wrapper">
     <header class="header-wrapper">
         <div class="grid-container">
@@ -19,6 +20,14 @@
             </div>
         </div>
     </header>
+    <!-- Error Modal - BEGIN-->
+    <div id="error-modal" class="modal hide">
+        <div class="modal-wrapper">
+            <span id="close-modal" class="close">&times;</span>
+            <p>Si è verificato un errore, si prega di riprovare.</p>
+        </div>
+    </div>
+    <!-- Error Modal - END -->
     <article class="login-content__wrpper">
         <div class="grid-container">
             <div class="grid-cl-4-mobile grid-cl-2-tablet grid-cl-6-desktop"></div>
@@ -45,27 +54,6 @@
             </div>
         </div>
     </article>
-    <!--form>
-        <h1>Please sign in</h1>
-        <input type="text" id="inputUsername" placeholder="Email address" name="username" value="" required autofocus>
-        <input type="password" id="inputPassword" placeholder="Password" name="password" value="a7S+R%!(eawX" required>
-
-        <br><br>
-        <button type="button" onclick="resetPassword()">Reset Password</button>
-        <br><br>
-        <button type="button" onclick="refreshToken()">Refresh</button>
-        <br><br>
-        <h4>Access Token - Last chars: <span id="tokenLast"></span></h4>
-        <div id="divAccessTokenJwt" style="width: 1024px; overflow-x: scroll; border: 1px solid black;"></div>
-        <div id="divAccessTokenData" style="width: 1024px; overflow-x: scroll; border: 1px solid black;"></div>
-
-        <h4>ID Token</h4>
-        <div id="divIdTokenJwt" style="width: 1024px; overflow-x: scroll; border: 1px solid black;"></div>
-        <div id="divIdTokenData" style="width: 1024px; overflow-x: scroll; border: 1px solid black;"></div>
-
-        <h4>Refresh Token</h4>
-        <div id="divRefreshTokenJwt" style="width: 1024px; overflow-x: scroll; border: 1px solid black;"></div>
-    </form-->
     <footer class="footer-wrapper">
         <div class="grid-container">
             <div class="grid-cl-4-mobile grid-cl-12-tablet grid-cl-12-desktop">
@@ -86,166 +74,5 @@
     <script type="module" src="js/enter.js"></script>
 </body>
 
-
-
-<!--script>
-
-   function refreshToken() {
-        var poolData = {
-            UserPoolId: _config.cognito.userPoolId, // Your user pool id here
-            ClientId: _config.cognito.clientId, // Your client id here
-            Storage: new AmazonCognitoIdentity.CookieStorage({domain: location.hostname})
-        };
-
-        var userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
-
-        var cognitoUser = userPool.getCurrentUser();
-
-        if (cognitoUser == null) {
-            console.log("user not found");
-            return;
-        }
-
-        cognitoUser.getSession(function (err, session) {
-            if (session) {
-                var refresh_token = session.getRefreshToken();
-
-                cognitoUser.refreshSession(refresh_token, (err, newSession) => {
-                    console.log("err", err);
-                    loginOK(newSession)
-                });
-            } else {
-                alert("session not found");
-                return;
-            }
-        });
-
-
-    }
-
-    function resetPassword() {
-        var poolData = {
-            UserPoolId: _config.cognito.userPoolId, // Your user pool id here
-            ClientId: _config.cognito.clientId, // Your client id here
-        };
-
-        var userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
-
-        var userData = {
-            Username: document.getElementById("inputUsername").value,
-            Pool: userPool,
-            Storage: new AmazonCognitoIdentity.CookieStorage({domain: location.hostname})
-        };
-
-        var cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
-
-        /*
-        cognitoUser.forgotPassword({
-            onSuccess: function (result) {
-                alert("forgotPassword onSuccess");
-                console.log("forgotPassword onSuccess",result);
-                loginOK(result);
-            },
-            onFailure: function(err) {
-                alert("forgotPassword onFailure" + JSON.stringify(err));
-                console.log("forgotPassword onFailure",err);
-                loginKO(err);
-            },
-            inputVerificationCode() {
-                var verificationCode = prompt('Please input verification code ' ,'');
-                var newPassword = prompt('Enter new password ' ,'');
-                cognitoUser.confirmPassword(verificationCode, newPassword, this);
-            }
-        });
-        */
-
-        cognitoUser.forgotPassword({
-            onSuccess: function (data) {
-                // successfully initiated reset password request
-                console.log('CodeDeliveryData from forgotPassword: ' + data);
-            },
-            onFailure: function (err) {
-                alert(err.message || JSON.stringify(err));
-            },
-            //Optional automatic callback
-            inputVerificationCode: function (data) {
-                console.log('Code sent to: ' + JSON.stringify(data));
-                var verificationCode = prompt('Please input verification code ', '');
-                var newPassword = prompt('Enter new password ', '');
-                cognitoUser.confirmPassword(verificationCode, newPassword, {
-                    onSuccess() {
-                        console.log('Password confirmed!');
-                    },
-                    onFailure(err) {
-                        console.log('Password not confirmed!');
-                    },
-                });
-            },
-        });
-    }
-
-
-    function loginOK(result) {
-        $("#divAccessTokenJwt").html(result.accessToken.jwtToken).fadeOut("500", function () {
-            $(this).fadeIn("500")
-        });
-        $("#divIdTokenJwt").html(result.idToken.jwtToken).fadeOut("500", function () {
-            $(this).fadeIn("500")
-        });
-        $("#divRefreshTokenJwt").html(result.refreshToken.token).fadeOut("500", function () {
-            $(this).fadeIn("500")
-        });
-        $("#divAccessTokenData").html(syntaxHighlight(result.accessToken.payload)).fadeOut("500", function () {
-            $(this).fadeIn("500")
-        });
-        $("#divIdTokenData").html(syntaxHighlight(result.idToken.payload)).fadeOut("500", function () {
-            $(this).fadeIn("500")
-        });
-        $("#tokenLast").html(result.accessToken.jwtToken.substr(result.accessToken.jwtToken.length - 5)).fadeOut("500", function () {
-            $(this).fadeIn("500")
-        });
-    }
-
-    function loginKO(result) {
-        $("#divAccessTokenJwt").html("").fadeOut("500", function () {
-            $(this).fadeIn("500")
-        });
-        $("#divIdTokenJwt").html("").fadeOut("500", function () {
-            $(this).fadeIn("500")
-        });
-        $("#divRefreshTokenJwt").html("").fadeOut("500", function () {
-            $(this).fadeIn("500")
-        });
-        $("#divAccessTokenData").html("").fadeOut("500", function () {
-            $(this).fadeIn("500")
-        });
-        $("#divIdTokenData").html("").fadeOut("500", function () {
-            $(this).fadeIn("500")
-        });
-    }
-
-    function syntaxHighlight(json) {
-        if (typeof json != 'string') {
-            json = JSON.stringify(json, undefined, 2);
-        }
-        json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g, "<br>");
-        return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
-            var cls = 'number';
-            if (/^"/.test(match)) {
-                if (/:$/.test(match)) {
-                    cls = 'key';
-                } else {
-                    cls = 'string';
-                }
-            } else if (/true|false/.test(match)) {
-                cls = 'boolean';
-            } else if (/null/.test(match)) {
-                cls = 'null';
-            }
-            return '<span class="' + cls + '">' + match + '</span>';
-        });
-    }
-
-</script-->
 
 </html>
