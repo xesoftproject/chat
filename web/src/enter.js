@@ -1,23 +1,25 @@
 import Login from './Login.js';
 import Registrazione from './Registrazione.js';
 
-/*MODALE BEGIN - END*/
-const close_modal = document.getElementById("close-modal");
+/*MODALE ERRORE - BEGIN*/
+const close_modal_error = document.getElementById("close-modal-error");
 const modal_error = document.getElementById("error-modal");
-const registration_success_modal = document.getElementById("registration-success-modal");
 
-close_modal.onclick = function(event){
+close_modal_error.onclick = function(event){
     event.preventDefault();
-
-    if(modal_error.offsetWidth > 0 && modal_error.offsetHeight > 0){
-        modal_error.classList.add("hide");
-    }
-    
-    if(registration_success_modal.offsetWidth > 0 && registration_success_modal.offsetHeight > 0){
-        registration_success_modal.classList.add("hide");
-    }
+    modal_error.classList.add("hide");
 };
 /*MODALE ERRORE - END*/
+
+/*MODALE REGITSRAIONE AVVENUTA - BEGIN*/
+const close_modal_registration_success = document.getElementById("close-modal-registration-success");
+const registration_success_modal = document.getElementById("registration-success-modal");
+
+close_modal_registration_success.onclick = function(event){
+    event.preventDefault();
+    registration_success_modal.classList.add("hide");
+};
+/*MODALE REGITSRAIONE AVVENUTA - END*/
 
 ReactDOM.render(
     <Login />,
