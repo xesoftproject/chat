@@ -18,7 +18,7 @@ const logger = new lgg({
 });
 
 const app = express();
-const cognitoManager = new CognitoManager(CONFIG.awsUserPoolId);
+const cognitoManager = new CognitoManager(CONFIG.awsUserPoolId, CONFIG.awsCognitoAccessKey, CONFIG.awsCognitoSecretAccessKey);
 // const dm = new dynamo(CONFIG.awsDynamoChatRegion);
 const dm = new dynamo(CONFIG.awsDynamoChatRegion, CONFIG.awsDynamoAccessKeyId, CONFIG.awsDynamoSecretAccessKey);
 
