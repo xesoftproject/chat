@@ -187,7 +187,8 @@
                     0.21783900260925293,
                     1
                 ],
-                "metallicFactor" : 0
+                "metallicFactor" : 0,
+                "roughnessFactor" : 0.19930796325206757
             }
         },
         {
@@ -195,12 +196,13 @@
             "name" : "Black Squares",
             "pbrMetallicRoughness" : {
                 "baseColorFactor" : [
-                    0.10653363913297653,
-                    0.018034763634204865,
-                    0.004808771423995495,
+                    1,
+                    0.13081954419612885,
+                    0.022672398015856743,
                     1
                 ],
-                "metallicFactor" : 0
+                "metallicFactor" : 0,
+                "roughnessFactor" : 0
             }
         },
         {
