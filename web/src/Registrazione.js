@@ -7,12 +7,6 @@ class Registrazione extends React.Component {
     super(props);
   }
 
-  componentDidMount() {
-    console.log("Nome Utente: test_01")
-    console.log("Email Utente: ldlipanmeppmiilvoi@kiabws.com")
-    console.log("Password Utente: pippo2021:")
-  }
-
   render() {
     return (
         <div className="form__group">
@@ -38,10 +32,19 @@ class SignInButton extends React.Component{
 
         const data = {'email':formData.get("emailSignIn"),'nickname':formData.get("nicknameSignIn"), 'pass': formData.get("passwordSignIn")}
         $.post('/user/signup', data, function(response) {
-            alert(response);
-            window.location = '/';
+            if(response.includes("Error")){
+                const modal_error = document.getElementById("error-modal");
+                modal_error.classList.remove("hide");
+                console.log("Errore nella registrazione: "+response)
+            }else{
+                const registration_success_modal = document.getElementById("registration-success-modal");
+                
+                document.getElementById("registrazione").checked = false;
+                document.getElementById("login").checked = true;
+                
+                registration_success_modal.classList.remove("hide");
+            }
         });
-		
     }
 
     render(){
