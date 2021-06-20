@@ -17,17 +17,27 @@
         // TODO: could this be replaced with bind="visible: !ar-mode"
         // with https://www.npmjs.com/package/aframe-state-component ?
         init: function () {
+          const scene = document.querySelector('a-scene');
+          const marker = document.querySelector('a-marker');
+          const table = document.querySelector('#table');
+
           this.el.sceneEl.addEventListener('enter-vr', (ev) => {
               this.el.setAttribute('visible', true);
-              
-              document.querySelector('#table').setAttribute("rotation", "0 -90 45");
-              document.querySelector('#table').setAttribute('position', '0 -1 -1');
+
+              table.setAttribute("rotation", "0 -90 45");
+              table.setAttribute('position', '0 -1 -1');
+
+              scene.appendChild(table);
+              marker.removeChild(table);
           });
           this.el.sceneEl.addEventListener('exit-vr', (ev) => {
             this.el.setAttribute('visible', false);
 
-              document.querySelector('#table').setAttribute("rotation", "0 -90 0");
-              document.querySelector('#table').removeAttribute('position');
+              table.setAttribute("rotation", "0 -90 0");
+              table.removeAttribute('position');
+
+              marker.appendChild(table);
+              scene.removeChild(table);
           });
           this.el.setAttribute('visible', false);
         }
