@@ -308,16 +308,6 @@ const onload = async () => {
 					continue;
 				}
 
-				if (game_ended) {
-					// 3-values boolean logic...
-					endgame(winner === user_id
-						? true
-						: winner === null
-							? null
-							: false);
-					break
-				}
-
 				{
 					const rows = table.split('\n');
 					// decorate rows with numbers
@@ -347,6 +337,16 @@ const onload = async () => {
 				await apply_move(piece, delta_x, delta_y, to);
 
 				await maybe_castling(piece, delta_x, delta_y);
+
+				if (game_ended) {
+					// 3-values boolean logic...
+					endgame(winner === user_id
+						? true
+						: winner === null
+							? null
+							: false);
+					break
+				}
 			}
 		}
 		catch (error) {
