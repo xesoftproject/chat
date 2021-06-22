@@ -11,7 +11,7 @@ const WS_BASENAME = `wss://${HOSTNAME}:8443`;
  * @param {string} black
  * @returns {Promise<string>} the game id
  */
-const start_new_game = async (user_id, white, black) => {
+const start_new_game = async (user_id, white, black, invited_user_id) => {
 	const response = await fetch(`${HTTP_BASENAME}/start_new_game`, {
 		method: 'POST',
 		headers: {
@@ -20,7 +20,8 @@ const start_new_game = async (user_id, white, black) => {
 		body: JSON.stringify({
 			'user_id': user_id,
 			'white': white,
-			'black': black
+			'black': black,
+			'invited_user_id': invited_user_id
 		})
 	});
 

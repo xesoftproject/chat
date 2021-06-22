@@ -134,11 +134,11 @@ var StartGameButton = function (_React$Component2) {
             var friend = formData.get("friend");
             console.log('[color: %o, opponent: %o, friend: %o]', color, opponent, friend);
 
-            var white = color === 'white' ? 'human' : opponent === 'cpu' ? 'cpu' : 'human';
-            var black = color === 'black' ? 'human' : opponent === 'cpu' ? 'cpu' : 'human';
+            var white = color === 'white' ? 'human' : opponent === 'cpu' ? 'cpu' : 'invited_human';
+            var black = color === 'black' ? 'human' : opponent === 'cpu' ? 'cpu' : 'invited_human';
             console.log('[white: %o, black: %o]', white, black);
 
-            start_new_game(this.props.userId, white, black).then(function (game_id) {
+            start_new_game(this.props.userId, white, black, friend).then(function (game_id) {
                 console.log('[game_id: %o]', game_id);
 
                 var game_url = PATH_GAME + '?' + QUERY_PARAMS_GAME_ID + '=' + game_id;

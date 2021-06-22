@@ -118,7 +118,7 @@ class StartGameButton extends React.Component{
 		const black = color === 'black' ? 'human' : opponent === 'cpu' ? 'cpu' : 'human';
 		console.log('[white: %o, black: %o]', white, black);
 
-		start_new_game(this.props.userId, white, black).then(function(game_id){
+		start_new_game(this.props.userId, white, black, friend).then(function(game_id){
             console.log('[game_id: %o]', game_id);
 
 			const game_url = `${PATH_GAME}?${QUERY_PARAMS_GAME_ID}=${game_id}`;
