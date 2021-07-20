@@ -121,7 +121,10 @@ io.on('connection', (socket) => {
             );
 
             socket.join(roomId);
-            socketUsers[socket.id] = decodedJwt.payload['nickname'];
+            socketUsers[socket.id] = {
+                nickname: decodedJwt.payload['nickname'],
+                username: decodedJwt.payload['cognito:username'],
+            };
 
             var params = {
                 ExpressionAttributeValues: {
@@ -256,7 +259,7 @@ io.on('connection', (socket) => {
             var clients = io.adapter.rooms[roomId].sockets;
             var receiverSocketID = null;
             for (const [key, value] of Object.entries(clients)) {
-                if (socketUsers[key] == receiverNickname) {
+                if (socketUsers[key] && socketUsers[key].nickname == receiverNickname) {
                     receiverSocketID = key;
                     break;
                 }
@@ -307,8 +310,8 @@ io.on('connection', (socket) => {
             let i = 0
 
             for (const [key, value] of Object.entries(clients)) {
-                if (socketUsers[key] != decodedJwt.payload.nickname)
-                    usersListInReturn.push(socketUsers[key]);
+                if (socketUsers[key] && socketUsers[key].nickname != decodedJwt.payload.nickname)
+                    usersListInReturn.push(socketUsers[key].username);
             }
 
 
