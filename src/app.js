@@ -259,7 +259,7 @@ io.on('connection', (socket) => {
             var clients = io.adapter.rooms[roomId].sockets;
             var receiverSocketID = null;
             for (const [key, value] of Object.entries(clients)) {
-                if (socketUsers[key] && socketUsers[key].nickname == receiverNickname) {
+                if (socketUsers[key] && socketUsers[key].username == receiverNickname) {
                     receiverSocketID = key;
                     break;
                 }
